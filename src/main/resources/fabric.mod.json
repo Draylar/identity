@@ -7,7 +7,7 @@
   "authors": [
     "Draylar"
   ],
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/identity/icon.png",
   "environment": "*",
   "entrypoints": {
