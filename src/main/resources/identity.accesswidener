@@ -1,0 +1,5 @@
+accessWidener v1 named
+
+extendable method net/minecraft/entity/LivingEntity getEyeHeight (Lnet/minecraft/entity/EntityPose;Lnet/minecraft/entity/EntityDimensions;)F
+accessible method net/minecraft/entity/LivingEntity getEyeHeight (Lnet/minecraft/entity/EntityPose;Lnet/minecraft/entity/EntityDimensions;)F
+extendable method net/minecraft/entity/Entity getStandingEyeHeight ()F

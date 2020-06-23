@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "identity",
+  "version": "${version}",
+  "name": "Identity",
+  "description": "Morph for Fabric!",
+  "authors": [
+    "Draylar"
+  ],
+  "license": "CC0-1.0",
+  "icon": "assets/identity/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "draylar.identity.Identity"
+    ],
+    "client": [
+      "draylar.identity.IdentityClient"
+    ]
+  },
+  "mixins": [
+    "identity.mixins.json"
+  ],
+  "accessWidener": "identity.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.8.7+build.201",
+    "fabric": "*",
+    "minecraft": "1.15.2"
+  }
+}
