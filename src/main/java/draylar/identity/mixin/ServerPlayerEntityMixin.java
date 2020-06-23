@@ -21,7 +21,7 @@ public abstract class ServerPlayerEntityMixin {
 
     @Shadow public abstract boolean isSpectator();
 
-    @Shadow public abstract void addChatMessage(Text message, boolean bl);
+    @Shadow public abstract void sendMessage(Text message, boolean actionBar);
 
     @Inject(
             method = "onDeath",
@@ -40,10 +40,10 @@ public abstract class ServerPlayerEntityMixin {
                 // todo: this option might be server-only given that this method isn't[?] called on the client
                 // send revoke message to player if they aren't in creative and the config option is on
                 if(Identity.CONFIG.overlayIdentityRevokes) {
-                    addChatMessage(
+                    sendMessage(
                             new TranslatableText(
                                     "identity.revoke_entity",
-                                    new TranslatableText(IdentityType.getTranslationKey()).asFormattedString()
+                                    new TranslatableText(IdentityType.getTranslationKey()).asString()
                             ), true
                     );
                 }

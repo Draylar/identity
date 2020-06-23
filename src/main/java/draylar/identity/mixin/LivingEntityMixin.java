@@ -51,10 +51,10 @@ public abstract class LivingEntityMixin extends Entity {
 
                 // send unlock message to player if they aren't in creative and the config option is on
                 if(Identity.CONFIG.overlayIdentityUnlocks && !((PlayerEntity) attacker).isCreative()) {
-                    ((PlayerEntity) attacker).addChatMessage(
+                    ((PlayerEntity) attacker).sendMessage(
                             new TranslatableText(
                                     "identity.unlock_entity",
-                                    new TranslatableText(thisType.getTranslationKey()).asFormattedString()
+                                    new TranslatableText(thisType.getTranslationKey()).asString()
                             ), true
                     );
                 }

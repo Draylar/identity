@@ -2,6 +2,8 @@ package draylar.identity.screen.widget;
 
 import draylar.identity.screen.ScreenUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -20,7 +22,7 @@ public class WEntityHint extends WButton {
     }
 
     @Override
-    public void draw() {
+    public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
         ClientWorld world = MinecraftClient.getInstance().world;
 
         if(world != null) {

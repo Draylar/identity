@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "EntityMixin",
+    "EntityTypeTagsAccessor",
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "PlayerEntityMixin",

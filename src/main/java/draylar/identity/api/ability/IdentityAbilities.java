@@ -35,7 +35,7 @@ public class IdentityAbilities {
             // take item from player
             stack.decrement(1);
 
-            fireball.owner = player;
+            fireball.setOwner(player);
             world.spawnEntity(fireball);
             stack.setCooldown(60);
         });
@@ -56,7 +56,7 @@ public class IdentityAbilities {
             // take item from player
             stack.decrement(1);
 
-            smallFireball.owner = player;
+            smallFireball.setOwner(player);
             world.spawnEntity(smallFireball);
             stack.setCooldown(20);
         });

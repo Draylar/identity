@@ -5,8 +5,10 @@ import draylar.identity.screen.ScreenUtils;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.PacketByteBuf;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
 import spinnery.widget.WButton;
 
@@ -31,7 +33,7 @@ public class WEntityButton extends WButton {
     }
 
     @Override
-    public void draw() {
+    public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
         ScreenUtils.drawEntity(
                 (int) (getX() + this.getWidth() / 2),
                 (int) (getY() + this.getHeight() * .75f),

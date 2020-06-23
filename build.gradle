@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.4.28'
+    id 'fabric-loom' version '0.4.29'
     id 'maven-publish'
 }
 
@@ -7,7 +7,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version + "-" + project.minecraft_version
+version = project.mod_version + "-beta-" + project.minecraft_version
 group = project.maven_group
 
 minecraft {
@@ -15,11 +15,10 @@ minecraft {
 }
 
 repositories {
-    maven { url 'https://jitpack.io' }
-//    maven {
-//        name = "Ladysnake Libs"
-//        url = 'https://dl.bintray.com/ladysnake/libs'
-//    }
+    maven {
+        name = "Ladysnake Libs"
+        url = 'https://dl.bintray.com/ladysnake/libs'
+    }
     maven {
         name = "Spinnery"
         url  "https://dl.bintray.com/spinnery/Spinnery"
@@ -33,12 +32,8 @@ dependencies {
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // Replace modImplementation with modApi if you expose components in your own API
-//    modImplementation "io.github.onyxstudios:Cardinal-Components-API:2.3.7"
-//    include "io.github.onyxstudios:Cardinal-Components-API:2.3.7"
-
-    modCompile 'com.github.OnyxStudios.Cardinal-Components-API:Cardinal-Components-API:2.3.6'
-    include 'com.github.OnyxStudios.Cardinal-Components-API:Cardinal-Components-API:2.3.6'
+    modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
+    include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
 
     // spinnery
     modCompile "com.github.vini2003:spinnery:${project.spinnery_version}"

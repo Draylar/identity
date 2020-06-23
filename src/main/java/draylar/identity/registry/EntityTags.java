@@ -1,6 +1,7 @@
 package draylar.identity.registry;
 
 import draylar.identity.Identity;
+import draylar.identity.mixin.EntityTypeTagsAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.tag.EntityTypeTags;
 import net.minecraft.tag.Tag;
@@ -19,6 +20,6 @@ public class EntityTags {
     }
 
     private static Tag<EntityType<?>> register(String id) {
-        return new EntityTypeTags.CachingTag(Identity.id(id));
+        return EntityTypeTagsAccessor.callRegister(Identity.id(id).toString());
     }
 }

@@ -43,7 +43,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             identity.lastLimbDistance = livingEntity.lastLimbDistance;
             identity.limbDistance = livingEntity.limbDistance;
             identity.limbAngle = livingEntity.limbAngle;
-            identity.isHandSwinging = livingEntity.isHandSwinging;
+            identity.handSwinging = livingEntity.handSwinging;
             identity.handSwingTicks = livingEntity.handSwingTicks;
             identity.lastHandSwingProgress = livingEntity.lastHandSwingProgress;
             identity.handSwingProgress = livingEntity.handSwingProgress;

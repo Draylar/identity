@@ -55,7 +55,7 @@ public class EntityUpdaters {
     public static void init() {
         // register specific entity animation handling
         EntityUpdaters.register(EntityType.BAT, (player, bat) -> {
-            if(player.onGround) {
+            if(player.isOnGround()) {
                 bat.setRoosting(true);
             } else {
                 bat.setRoosting(false);
@@ -63,24 +63,24 @@ public class EntityUpdaters {
         });
 
         EntityUpdaters.register(EntityType.PARROT, (player, parrot) -> {
-            if(player.onGround && ((NearbySongAccessor) player).isNearbySongPlaying()) {
+            if(player.isOnGround() && ((NearbySongAccessor) player).isNearbySongPlaying()) {
                 parrot.setNearbySongPlaying(player.getBlockPos(), true);
                 parrot.setSitting(true);
-                parrot.onGround = true;
-            } else if (player.onGround) {
+                parrot.setOnGround(true);
+            } else if (player.isOnGround()) {
                 parrot.setNearbySongPlaying(player.getBlockPos(), false);
                 parrot.setSitting(true);
-                parrot.onGround = true;
+                parrot.setOnGround(true);
             } else {
                 parrot.setNearbySongPlaying(player.getBlockPos(), false);
                 parrot.setSitting(false);
-                parrot.onGround = false;
+                parrot.setOnGround(false);
             }
         });
 
         EntityUpdaters.register(EntityType.ENDER_DRAGON, (player, dragon) -> {
-            dragon.field_7030 += 0.01F;
-            dragon.field_7019 = dragon.field_7030;
+            dragon.wingPosition += 0.01F;
+            dragon.prevWingPosition = dragon.wingPosition;
         });
     }
 }
