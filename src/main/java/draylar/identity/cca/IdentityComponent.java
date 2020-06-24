@@ -64,6 +64,7 @@ public class IdentityComponent implements EntitySyncedComponent {
             player.sendAbilitiesUpdate();
         } else if(!player.isCreative() && !player.isSpectator()) {
             player.abilities.allowFlying = false;
+            player.abilities.flying = false;
             player.sendAbilitiesUpdate();
         }
 
@@ -97,6 +98,11 @@ public class IdentityComponent implements EntitySyncedComponent {
 
                     // refresh player dimensions/hitbox on client
                     ((DimensionsRefresher) player).refresh();
+
+                    // refresh flight abilities
+                    if(EntityTags.FLYING.contains(identity.getType())) {
+                        player.abilities.allowFlying = true;
+                    }
                 }
 
                 identity.fromTag(entityTag);
