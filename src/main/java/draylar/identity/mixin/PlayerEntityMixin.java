@@ -47,7 +47,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
 
                 // check if the player's current identity burns in sunlight
                 if (EntityTags.BURNS_IN_DAYLIGHT.contains(type)) {
-                    boolean bl = this.isInDaylight();
+                    boolean bl = this.identity_isInDaylight();
                     if (bl) {
 
                         // check for helmets to negate burning
@@ -77,7 +77,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     }
 
     @Unique
-    protected boolean isInDaylight() {
+    private boolean identity_isInDaylight() {
         if (this.world.isDay() && !this.world.isClient) {
             float brightnessAtEyes = this.getBrightnessAtEyes();
             BlockPos daylightTestPosition = new BlockPos(this.getX(), (double) Math.round(this.getY()), this.getZ());
