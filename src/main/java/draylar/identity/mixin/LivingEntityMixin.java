@@ -54,7 +54,7 @@ public abstract class LivingEntityMixin extends Entity {
                     ((PlayerEntity) attacker).sendMessage(
                             new TranslatableText(
                                     "identity.unlock_entity",
-                                    new TranslatableText(thisType.getTranslationKey()).asString()
+                                    new TranslatableText(thisType.getTranslationKey())
                             ), true
                     );
                 }

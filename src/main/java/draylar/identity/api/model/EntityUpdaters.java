@@ -1,6 +1,7 @@
 package draylar.identity.api.model;
 
 import draylar.identity.impl.NearbySongAccessor;
+import draylar.identity.mixin.ParrotEntityAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -71,10 +72,16 @@ public class EntityUpdaters {
                 parrot.setNearbySongPlaying(player.getBlockPos(), false);
                 parrot.setSitting(true);
                 parrot.setOnGround(true);
+                parrot.prevFlapProgress = 0;
+                parrot.flapProgress = 0;
+                parrot.maxWingDeviation = 0;
+                parrot.prevMaxWingDeviation = 0;
             } else {
                 parrot.setNearbySongPlaying(player.getBlockPos(), false);
                 parrot.setSitting(false);
                 parrot.setOnGround(false);
+                parrot.setInSittingPose(false);
+                ((ParrotEntityAccessor) parrot).callFlapWings();
             }
         });
 
