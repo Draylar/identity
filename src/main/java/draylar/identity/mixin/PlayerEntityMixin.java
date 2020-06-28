@@ -38,13 +38,35 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
             method = "tick",
             at = @At("RETURN")
     )
-    private void tickIdentityFire(CallbackInfo ci) {
-        if (!world.isClient && !isCreative() && !isSpectator()) {
-            LivingEntity Identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+    private void tickIdentityTemperature(CallbackInfo ci) {
+        if(!world.isClient && !isCreative() && !isSpectator()) {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             // check if the player is identity
-            if (Identity != null) {
-                EntityType<?> type = Identity.getType();
+            if (identity != null) {
+                EntityType<?> type = identity.getType();
+
+                // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
+                if(EntityTags.HURT_BY_HIGH_TEMPERATURE.contains(type)) {
+                    if (this.world.getBiome(new BlockPos(this.getX(), 0, this.getZ())).getTemperature(new BlockPos(this.getX(), this.getY(), this.getZ())) > 1.0F) {
+                        this.damage(DamageSource.ON_FIRE, 1.0F);
+                    }
+                }
+            }
+        }
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At("RETURN")
+    )
+    private void tickIdentityFire(CallbackInfo ci) {
+        if (!world.isClient && !isCreative() && !isSpectator()) {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+            // check if the player is identity
+            if (identity != null) {
+                EntityType<?> type = identity.getType();
 
                 // check if the player's current identity burns in sunlight
                 if (EntityTags.BURNS_IN_DAYLIGHT.contains(type)) {
