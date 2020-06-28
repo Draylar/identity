@@ -37,6 +37,6 @@ public class IdentityConfig implements ConfigData {
     @Comment(value = "Whether Villagers will run from Players morphed as identities villagers normally run from (Zombies).")
     public boolean villagersRunFromIdentities = true;
 
-    @Comment(value = "Whether Wolves will attack Players with an identity that the Wolf would normally hunt (Fish, Chicken).")
+    @Comment(value = "Whether Foxes will attack Players with an identity that the Fox would normally hunt (Fish, Chicken).")
     public boolean foxesAttackIdentityPrey = true;
 }
