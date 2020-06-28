@@ -10,4 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface LivingEntityAccessor {
     @Invoker
     float callGetActiveEyeHeight(EntityPose pose, EntityDimensions dimensions);
+
+    @Invoker
+    void callTickActiveItemStack();
 }

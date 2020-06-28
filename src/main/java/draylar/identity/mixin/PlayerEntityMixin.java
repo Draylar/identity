@@ -102,17 +102,18 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     )
     private void onReturn(CallbackInfo ci) {
         if (!world.isClient) {
-            LivingEntity Identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             // assign basic data to entity from player on server; most data transferring occurs on client
-            if (Identity != null) {
-                Identity.setPos(this.getX(), this.getY(), this.getZ());
-                Identity.setHeadYaw(this.getHeadYaw());
-                Identity.setJumping(this.jumping);
-                Identity.setSprinting(this.isSprinting());
-                Identity.setStuckArrowCount(this.getStuckArrowCount());
-                Identity.setInvulnerable(true);
-                Identity.setNoGravity(true);
+            if (identity != null) {
+                identity.setPos(this.getX(), this.getY(), this.getZ());
+                identity.setHeadYaw(this.getHeadYaw());
+                identity.setJumping(this.jumping);
+                identity.setSprinting(this.isSprinting());
+                identity.setStuckArrowCount(this.getStuckArrowCount());
+                identity.setInvulnerable(true);
+                identity.setNoGravity(true);
+                ((LivingEntityAccessor) identity).callTickActiveItemStack();
                 Components.CURRENT_IDENTITY.get(this).sync();
             }
         }
@@ -129,6 +130,17 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
         if (entity != null) {
             cir.setReturnValue(entity.getDimensions(pose));
         }
+    }
+
+    @Override
+    public boolean hurtByWater() {
+        LivingEntity entity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (entity != null) {
+            return entity.hurtByWater();
+        }
+
+        return super.hurtByWater();
     }
 
     @Override
