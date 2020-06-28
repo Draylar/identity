@@ -46,7 +46,7 @@ public class Identity implements ModInitializer {
                     ItemStack heldStack = player.getStackInHand(hand);
 
                     // ensure cooldown is valid (0) for custom use action
-                    if(heldStack.getCooldown() <= 0) {
+                    if(player.getItemCooldownManager().getCooldownProgress(heldStack.getItem(), 0) <= 0) {
                         IdentityAbility ability = IdentityAbilities.get((EntityType<? extends LivingEntity>) identity.getType(), heldStack.getItem());
 
                         if(ability != null) {

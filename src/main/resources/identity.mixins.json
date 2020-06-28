@@ -5,12 +5,18 @@
   "mixins": [
     "EntityMixin",
     "EntityTypeTagsAccessor",
+    "FollowTargetGoalMixin",
+    "FoxEntityMixin",
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "ParrotEntityAccessor",
     "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
-    "ServerPlayerInteractionManagerMixin"
+    "ServerPlayerInteractionManagerMixin",
+    "VillagerEntityMixin",
+    "VillagerHostilesSensorMixin",
+    "WitherEntityMixin",
+    "WolfEntityMixin"
   ],
   "client": [
     "ClientPlayerInteractionManagerMixin",

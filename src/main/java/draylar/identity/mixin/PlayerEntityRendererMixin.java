@@ -16,6 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,10 +52,17 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             identity.prevBodyYaw = livingEntity.prevBodyYaw;
             identity.headYaw = livingEntity.headYaw;
             identity.prevHeadYaw = livingEntity.prevHeadYaw;
-            identity.pitch = livingEntity.pitch;
-            identity.prevPitch = livingEntity.prevPitch;
             identity.age = livingEntity.age;
             identity.preferredHand = livingEntity.preferredHand;
+
+            // phantoms' pitch is inverse for whatever reason
+            if(identity instanceof PhantomEntity) {
+                identity.pitch = -livingEntity.pitch;
+                identity.prevPitch = -livingEntity.prevPitch;
+            } else {
+                identity.pitch = livingEntity.pitch;
+                identity.prevPitch = livingEntity.prevPitch;
+            }
 
             // equip held items on identity
             if(Identity.CONFIG.identitiesEquipItems) {

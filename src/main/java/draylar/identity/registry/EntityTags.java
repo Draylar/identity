@@ -12,6 +12,8 @@ public class EntityTags {
     public static final Tag<EntityType<?>> BURNS_IN_DAYLIGHT = register("burns_in_daylight");
     public static final Tag<EntityType<?>> FLYING = register("flying");
     public static final Tag<EntityType<?>> SLOW_FALLING = register("slow_falling");
+    public static final Tag<EntityType<?>> WOLF_PREY = register("wolf_prey");
+    public static final Tag<EntityType<?>> FOX_PREY = register("fox_prey");
 
     private EntityTags() { }
 

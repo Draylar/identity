@@ -21,4 +21,22 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "Whether identities equip the armor (chestplate, leggings, elytra) worn by the underlying player.")
     public boolean identitiesEquipArmor = true;
+
+    @Comment(value = "Whether hostile mobs ignore players with hostile mob identities.")
+    public boolean hostilesIgnoreHostileIdentityPlayer = true;
+
+    @Comment(value = "Whether a hostile mob will stop targeting you after switching to a hostile mob identity.")
+    public boolean hostilesForgetNewHostileIdentityPlayer = false;
+
+    @Comment(value = "Whether Wolves will attack Players with an identity that the Wolf would normally hunt (Sheep, Fox, Skeleton).")
+    public boolean wolvesAttackIdentityPrey = true;
+
+    @Comment(value = "Whether owned Wolves will attack Players with an identity that the Wolf would normally hunt (Sheep, Fox, Skeleton).")
+    public boolean ownedWolvesAttackIdentityPrey = false;
+
+    @Comment(value = "Whether Villagers will run from Players morphed as identities villagers normally run from (Zombies).")
+    public boolean villagersRunFromIdentities = true;
+
+    @Comment(value = "Whether Wolves will attack Players with an identity that the Wolf would normally hunt (Fish, Chicken).")
+    public boolean foxesAttackIdentityPrey = true;
 }

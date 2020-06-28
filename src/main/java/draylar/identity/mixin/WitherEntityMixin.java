@@ -1,0 +1,54 @@
+package draylar.identity.mixin;
+
+import draylar.identity.registry.Components;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Mixin(WitherEntity.class)
+public abstract class WitherEntityMixin extends HostileEntity {
+
+    private WitherEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
+        super(entityType, world);
+    }
+
+    @Inject(
+            method = "mobTick",
+            at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"),
+            locals = LocalCapture.CAPTURE_FAILHARD
+    )
+    private void removeInvalidPlayerTargets(CallbackInfo ci, int j, List<LivingEntity> list, int l) {
+        List<LivingEntity> toRemove = new ArrayList();
+
+        list.forEach(entity -> {
+            if(entity instanceof PlayerEntity) {
+                LivingEntity identity = Components.CURRENT_IDENTITY.get(entity).getIdentity();
+
+                // potentially ignore undead identity players
+                if(identity != null && identity.isUndead()) {
+                    if(this.getTarget() != null) {
+                        // if this wither's target is not equal to the current entity
+                        if(!this.getTarget().getUuid().equals(entity.getUuid())) {
+                            toRemove.add(entity);
+                        }
+                    } else {
+                        toRemove.add(entity);
+                    }
+                }
+            }
+        });
+
+        list.removeAll(toRemove);
+    }
+}

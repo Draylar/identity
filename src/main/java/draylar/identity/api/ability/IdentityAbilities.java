@@ -37,10 +37,11 @@ public class IdentityAbilities {
 
             fireball.setOwner(player);
             world.spawnEntity(fireball);
-            stack.setCooldown(60);
+            player.getItemCooldownManager().set(stack.getItem(), 60);
         });
 
         IdentityAbilities.register(EntityType.BLAZE, Items.BLAZE_POWDER, (player, world, stack, hand) -> {
+
             SmallFireballEntity smallFireball = new SmallFireballEntity(
                     world,
                     player.getX(),
@@ -58,7 +59,7 @@ public class IdentityAbilities {
 
             smallFireball.setOwner(player);
             world.spawnEntity(smallFireball);
-            stack.setCooldown(20);
+            player.getItemCooldownManager().set(stack.getItem(), 20);
         });
     }
 
