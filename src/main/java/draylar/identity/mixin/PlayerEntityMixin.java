@@ -7,6 +7,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -244,12 +245,24 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     @Override
     public float getStandingEyeHeight() {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        LivingEntity Identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
 
-        if (Identity != null) {
-            return Identity.getStandingEyeHeight();
+        if (identity != null) {
+            return identity.getStandingEyeHeight();
         }
 
         return super.getStandingEyeHeight();
+    }
+
+    @Override
+    public boolean isClimbing() {
+        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
+
+        if (identity instanceof SpiderEntity) {
+            return this.horizontalCollision;
+        }
+
+        return super.isClimbing();
     }
 }

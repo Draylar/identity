@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -87,14 +86,15 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private boolean chickenSlowFall(LivingEntity livingEntity, StatusEffect effect) {
         if((Object) this instanceof PlayerEntity) {
-            LivingEntity Identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
-            if (Identity != null) {
-                if (EntityTags.SLOW_FALLING.contains(Identity.getType())) {
+            if (identity != null) {
+                if (!this.isSneaking() && EntityTags.SLOW_FALLING.contains(identity.getType())) {
                     return true;
                 }
             }
         }
+
         return this.hasStatusEffect(StatusEffects.LEVITATION);
     }
 
