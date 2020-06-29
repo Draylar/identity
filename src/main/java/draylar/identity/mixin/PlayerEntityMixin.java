@@ -1,5 +1,6 @@
 package draylar.identity.mixin;
 
+import draylar.identity.Identity;
 import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
@@ -13,6 +14,7 @@ import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +41,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
             at = @At("RETURN")
     )
     private void tickIdentityTemperature(CallbackInfo ci) {
-        if(!world.isClient && !isCreative() && !isSpectator()) {
+        if (!world.isClient && !isCreative() && !isSpectator()) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             // check if the player is identity
@@ -47,7 +49,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
                 EntityType<?> type = identity.getType();
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
-                if(EntityTags.HURT_BY_HIGH_TEMPERATURE.contains(type)) {
+                if (EntityTags.HURT_BY_HIGH_TEMPERATURE.contains(type)) {
                     if (this.world.getBiome(new BlockPos(this.getX(), 0, this.getZ())).getTemperature(new BlockPos(this.getX(), this.getY(), this.getZ())) > 1.0F) {
                         this.damage(DamageSource.ON_FIRE, 1.0F);
                     }
@@ -123,6 +125,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
             at = @At("RETURN")
     )
     private void onReturn(CallbackInfo ci) {
+        // todo: maybe items not working because world is client?
         if (!world.isClient) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
@@ -228,11 +231,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
             if (Identity != null) {
                 return ((LivingEntityAccessor) Identity).callGetActiveEyeHeight(getPose(), getDimensions(getPose()));
             }
-        } catch(Exception ignored) {
+        } catch (Exception ignored) {
 
         }
 
-        switch(pose) {
+        switch (pose) {
             case SWIMMING:
             case FALL_FLYING:
             case SPIN_ATTACK:
@@ -298,5 +301,44 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
         }
 
         return super.isClimbing();
+    }
+
+    @Inject(
+            method = "getHurtSound",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void getHurtSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (Identity.CONFIG.useIdentitySounds && identity != null) {
+            cir.setReturnValue(((LivingEntityAccessor) identity).callGetHurtSound(source));
+        }
+    }
+
+    @Inject(
+            method = "getDeathSound",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void getDeathSound(CallbackInfoReturnable<SoundEvent> cir) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (Identity.CONFIG.useIdentitySounds && identity != null) {
+            cir.setReturnValue(((LivingEntityAccessor) identity).callGetDeathSound());
+        }
+    }
+
+    @Inject(
+            method = "getFallSound",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void getFallSound(int distance, CallbackInfoReturnable<SoundEvent> cir) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (Identity.CONFIG.useIdentitySounds && identity != null) {
+            cir.setReturnValue(((LivingEntityAccessor) identity).callGetFallSound(distance));
+        }
     }
 }

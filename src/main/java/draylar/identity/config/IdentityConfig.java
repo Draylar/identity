@@ -39,4 +39,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "Whether Foxes will attack Players with an identity that the Fox would normally hunt (Fish, Chicken).")
     public boolean foxesAttackIdentityPrey = true;
+
+    @Comment(value = "Whether Identity sounds take priority over Player Sounds (eg. Blaze hurt sound when hit).")
+    public boolean useIdentitySounds = true;
 }

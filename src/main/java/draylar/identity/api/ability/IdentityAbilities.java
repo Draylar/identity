@@ -6,6 +6,7 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.util.hit.HitResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,16 +33,13 @@ public class IdentityAbilities {
 
             // todo: play ghast sound
 
-            // take item from player
             stack.decrement(1);
-
             fireball.setOwner(player);
             world.spawnEntity(fireball);
             player.getItemCooldownManager().set(stack.getItem(), 60);
         });
 
         IdentityAbilities.register(EntityType.BLAZE, Items.BLAZE_POWDER, (player, world, stack, hand) -> {
-
             SmallFireballEntity smallFireball = new SmallFireballEntity(
                     world,
                     player.getX(),
@@ -54,12 +52,17 @@ public class IdentityAbilities {
 
             // todo: play blaze sound
 
-            // take item from player
             stack.decrement(1);
-
             smallFireball.setOwner(player);
             world.spawnEntity(smallFireball);
             player.getItemCooldownManager().set(stack.getItem(), 20);
+        });
+
+        IdentityAbilities.register(EntityType.ENDERMAN, Items.ENDER_PEARL, (player, world, stack, hand) -> {
+            HitResult lookingAt = player.rayTrace(32, 0, true);
+            player.requestTeleport(lookingAt.getPos().x, lookingAt.getPos().y, lookingAt.getPos().z);
+            stack.decrement(1);
+            player.getItemCooldownManager().set(stack.getItem(), 100);
         });
     }
 
