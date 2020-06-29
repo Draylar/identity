@@ -7,6 +7,7 @@ import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.world.explosion.Explosion;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +62,12 @@ public class IdentityAbilities {
         IdentityAbilities.register(EntityType.ENDERMAN, Items.ENDER_PEARL, (player, world, stack, hand) -> {
             HitResult lookingAt = player.rayTrace(32, 0, true);
             player.requestTeleport(lookingAt.getPos().x, lookingAt.getPos().y, lookingAt.getPos().z);
+            stack.decrement(1);
+            player.getItemCooldownManager().set(stack.getItem(), 100);
+        });
+
+        IdentityAbilities.register(EntityType.CREEPER, Items.GUNPOWDER, (player, world, stack, hand) -> {
+            world.createExplosion(player, player.getX(), player.getY(), player.getZ(), 3.0f, Explosion.DestructionType.NONE);
             stack.decrement(1);
             player.getItemCooldownManager().set(stack.getItem(), 100);
         });
