@@ -42,4 +42,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "Whether Identity sounds take priority over Player Sounds (eg. Blaze hurt sound when hit).")
     public boolean useIdentitySounds = true;
+
+    @Comment(value = "Whether mobs in the flying entity tag can fly.")
+    public boolean enableFlight = true;
 }

@@ -1,5 +1,6 @@
 package draylar.identity.mixin;
 
+import draylar.identity.Identity;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +25,7 @@ public class ServerPlayerInteractionManagerMixin {
     private void keepCustomPlayerAbilities(GameMode gameMode, GameMode gameMode2, CallbackInfo ci) {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
-        if(identity != null && EntityTags.FLYING.contains(identity.getType())) {
+        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
             player.abilities.allowFlying = true;
         }
     }

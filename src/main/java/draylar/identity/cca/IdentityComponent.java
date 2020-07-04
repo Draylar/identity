@@ -1,5 +1,6 @@
 package draylar.identity.cca;
 
+import draylar.identity.Identity;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
@@ -59,10 +60,10 @@ public class IdentityComponent implements EntitySyncedComponent {
         ((DimensionsRefresher) player).refresh();
 
         // update flight properties on player depending on identity
-        if(identity != null && EntityTags.FLYING.contains(identity.getType())) {
+        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
             player.abilities.allowFlying = true;
             player.sendAbilitiesUpdate();
-        } else if(!player.isCreative() && !player.isSpectator()) {
+        } else if(!player.isCreative() && Identity.CONFIG.enableFlight && !player.isSpectator()) {
             player.abilities.allowFlying = false;
             player.abilities.flying = false;
             player.sendAbilitiesUpdate();
@@ -100,7 +101,7 @@ public class IdentityComponent implements EntitySyncedComponent {
                     ((DimensionsRefresher) player).refresh();
 
                     // refresh flight abilities
-                    if(EntityTags.FLYING.contains(identity.getType())) {
+                    if(EntityTags.FLYING.contains(identity.getType()) && Identity.CONFIG.enableFlight) {
                         player.abilities.allowFlying = true;
                     }
                 }

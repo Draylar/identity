@@ -1,5 +1,6 @@
 package draylar.identity.mixin;
 
+import draylar.identity.Identity;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
@@ -29,7 +30,7 @@ public class ClientPlayerInteractionManagerMixin {
     private void keepCustomPlayerAbilities(GameMode gameMode, CallbackInfo ci) {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(client.player).getIdentity();
 
-        if(identity != null && EntityTags.FLYING.contains(identity.getType())) {
+        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
             client.player.abilities.allowFlying = true;
         }
     }
@@ -41,7 +42,7 @@ public class ClientPlayerInteractionManagerMixin {
     private void keepCustomPlayerAbilities(PlayerEntity player, CallbackInfo ci) {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(client.player).getIdentity();
 
-        if(identity != null && EntityTags.FLYING.contains(identity.getType())) {
+        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
             client.player.abilities.allowFlying = true;
         }
     }
