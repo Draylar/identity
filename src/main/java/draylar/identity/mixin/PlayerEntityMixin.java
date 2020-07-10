@@ -40,6 +40,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
             method = "tick",
             at = @At("RETURN")
     )
+    private void tickHostility(CallbackInfo ci) {
+        if(!world.isClient) {
+            Components.HOSTILITY.get(this).tickHostility();
+        }
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At("RETURN")
+    )
     private void tickIdentityTemperature(CallbackInfo ci) {
         if (!world.isClient && !isCreative() && !isSpectator()) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();

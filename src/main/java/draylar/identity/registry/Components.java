@@ -1,6 +1,7 @@
 package draylar.identity.registry;
 
 import draylar.identity.Identity;
+import draylar.identity.cca.HostilityComponent;
 import draylar.identity.cca.IdentityComponent;
 import draylar.identity.cca.UnlockedIdentitysComponent;
 import nerdhub.cardinal.components.api.ComponentRegistry;
@@ -16,9 +17,15 @@ public class Components {
             Identity.id("current_identity"),
             IdentityComponent.class
     );
+
     public static final ComponentType<UnlockedIdentitysComponent> UNLOCKED_IDENTITIES = ComponentRegistry.INSTANCE.registerIfAbsent(
             Identity.id("unlocked_identities"),
             UnlockedIdentitysComponent.class
+    );
+
+    public static final ComponentType<HostilityComponent> HOSTILITY = ComponentRegistry.INSTANCE.registerIfAbsent(
+            Identity.id("hostility"),
+            HostilityComponent.class
     );
 
     private Components() {
@@ -28,6 +35,7 @@ public class Components {
     public static void init() {
         EntityComponents.setRespawnCopyStrategy(Components.CURRENT_IDENTITY, RespawnCopyStrategy.ALWAYS_COPY);
         EntityComponents.setRespawnCopyStrategy(Components.UNLOCKED_IDENTITIES, RespawnCopyStrategy.ALWAYS_COPY);
+        EntityComponents.setRespawnCopyStrategy(Components.HOSTILITY, RespawnCopyStrategy.ALWAYS_COPY);
 
         EntityComponentCallback.event(PlayerEntity.class).register((player, components) -> {
             components.put(Components.CURRENT_IDENTITY, new IdentityComponent(player));
@@ -35,6 +43,10 @@ public class Components {
 
         EntityComponentCallback.event(PlayerEntity.class).register((player, components) -> {
             components.put(Components.UNLOCKED_IDENTITIES, new UnlockedIdentitysComponent(player));
+        });
+
+        EntityComponentCallback.event(PlayerEntity.class).register((player, components) -> {
+            components.put(Components.HOSTILITY, new HostilityComponent());
         });
     }
 }

@@ -45,4 +45,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "Whether mobs in the flying entity tag can fly.")
     public boolean enableFlight = true;
+
+    @Comment(value = "How long hostility lasts for players morphed as hostile mobs (think: Pigman aggression")
+    public int hostilityTime = 20 * 15;
 }
