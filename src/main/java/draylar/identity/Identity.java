@@ -11,12 +11,17 @@ import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
+
+import java.util.List;
 
 public class Identity implements ModInitializer {
 
@@ -74,5 +79,34 @@ public class Identity implements ModInitializer {
 
             context.getPlayer().calculateDimensions();
         });
+    }
+
+    public static boolean hasFlyingPermissions(ServerPlayerEntity player) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
+
+        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
+            List<String> requiredAdvancements = CONFIG.advancementsRequiredForFlight;
+
+            // requires at least 1 advancement, check if player has them
+            if (!requiredAdvancements.isEmpty()) {
+
+                boolean hasPermission = true;
+                for (String requiredAdvancement : requiredAdvancements) {
+                    Advancement advancement = player.server.getAdvancementLoader().get(new Identifier(requiredAdvancement));
+                    AdvancementProgress progress = player.getAdvancementTracker().getProgress(advancement);
+
+                    if (!progress.isDone()) {
+                        hasPermission = false;
+                    }
+                }
+
+                return hasPermission;
+            }
+
+
+            return true;
+        }
+
+        return false;
     }
 }

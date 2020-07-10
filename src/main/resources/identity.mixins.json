@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "CreeperEntityMixin",
+    "EntityAccessor",
     "EntityMixin",
     "EntityTypeTagsAccessor",
     "FollowTargetGoalMixin",
@@ -11,6 +12,7 @@
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "ParrotEntityAccessor",
+    "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
     "ServerPlayerInteractionManagerMixin",

@@ -21,29 +21,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPlayerInteractionManager.class)
 public class ClientPlayerInteractionManagerMixin {
 
-    @Shadow @Final private MinecraftClient client;
-
-    @Inject(
-            method = "setGameMode",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameMode;setAbilitites(Lnet/minecraft/entity/player/PlayerAbilities;)V", shift = At.Shift.AFTER)
-    )
-    private void keepCustomPlayerAbilities(GameMode gameMode, CallbackInfo ci) {
-        LivingEntity identity = Components.CURRENT_IDENTITY.get(client.player).getIdentity();
-
-        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
-            client.player.abilities.allowFlying = true;
-        }
-    }
-
-    @Inject(
-            method = "copyAbilities",
-            at = @At(value = "RETURN")
-    )
-    private void keepCustomPlayerAbilities(PlayerEntity player, CallbackInfo ci) {
-        LivingEntity identity = Components.CURRENT_IDENTITY.get(client.player).getIdentity();
-
-        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
-            client.player.abilities.allowFlying = true;
-        }
-    }
+//    @Shadow @Final private MinecraftClient client;
+//
+//    @Inject(
+//            method = "setGameMode",
+//            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/GameMode;setAbilitites(Lnet/minecraft/entity/player/PlayerAbilities;)V", shift = At.Shift.AFTER)
+//    )
+//    private void keepCustomPlayerAbilities(GameMode gameMode, CallbackInfo ci) {
+//        if(Identity.hasFlyingPermissions(client.player)) {
+//            client.player.abilities.allowFlying = true;
+//        }
+//    }
+//
+//    @Inject(
+//            method = "copyAbilities",
+//            at = @At(value = "RETURN")
+//    )
+//    private void keepCustomPlayerAbilities(PlayerEntity player, CallbackInfo ci) {
+//        if(Identity.hasFlyingPermissions(player)) {
+//            client.player.abilities.allowFlying = true;
+//        }
+//    }
 }

@@ -231,6 +231,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     }
 
     @Override
+    public boolean isUndead() {
+        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
+
+        return identity != null && identity.isUndead();
+    }
+
+    @Override
     public float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
 
@@ -261,10 +269,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     @Override
     public float getEyeHeight(EntityPose pose) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        LivingEntity Identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
 
-        if (Identity != null) {
-            return Identity.getEyeHeight(pose);
+        if (identity != null) {
+            return identity.getEyeHeight(pose);
         } else {
             return this.getEyeHeight(pose, this.getDimensions(pose));
         }

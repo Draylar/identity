@@ -4,6 +4,9 @@ import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
 import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
 import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Config(name = "identity")
 public class IdentityConfig implements ConfigData {
 
@@ -48,4 +51,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "How long hostility lasts for players morphed as hostile mobs (think: Pigman aggression")
     public int hostilityTime = 20 * 15;
+
+    @Comment(value = "A list of Advancements required before the player can fly using an Identity.")
+    public List<String> advancementsRequiredForFlight = new ArrayList<>();
 }

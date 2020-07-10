@@ -3,7 +3,6 @@ package draylar.identity.cca;
 import draylar.identity.Identity;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.registry.Components;
-import draylar.identity.registry.EntityTags;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.util.sync.EntitySyncedComponent;
 import net.minecraft.entity.Entity;
@@ -11,6 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Optional;
@@ -60,7 +60,7 @@ public class IdentityComponent implements EntitySyncedComponent {
         ((DimensionsRefresher) player).refresh();
 
         // update flight properties on player depending on identity
-        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
+        if(Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
             player.abilities.allowFlying = true;
             player.sendAbilitiesUpdate();
         } else if(!player.isCreative() && Identity.CONFIG.enableFlight && !player.isSpectator()) {
@@ -101,8 +101,10 @@ public class IdentityComponent implements EntitySyncedComponent {
                     ((DimensionsRefresher) player).refresh();
 
                     // refresh flight abilities
-                    if(EntityTags.FLYING.contains(identity.getType()) && Identity.CONFIG.enableFlight) {
-                        player.abilities.allowFlying = true;
+                    if(!player.world.isClient) {
+                        if (Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
+                            player.abilities.allowFlying = true;
+                        }
                     }
                 }
 

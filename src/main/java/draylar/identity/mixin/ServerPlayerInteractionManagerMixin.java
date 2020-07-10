@@ -23,10 +23,9 @@ public class ServerPlayerInteractionManagerMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;sendAbilitiesUpdate()V")
     )
     private void keepCustomPlayerAbilities(GameMode gameMode, GameMode gameMode2, CallbackInfo ci) {
-        LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
-
-        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
+        if(Identity.hasFlyingPermissions(player)) {
             player.abilities.allowFlying = true;
+            player.sendAbilitiesUpdate();
         }
     }
 }
