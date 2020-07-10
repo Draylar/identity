@@ -22,7 +22,6 @@
     "WolfEntityMixin"
   ],
   "client": [
-    "ClientPlayerInteractionManagerMixin",
     "PlayerEntityRendererMixin"
   ],
   "injectors": {
