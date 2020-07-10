@@ -3,10 +3,12 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.registry.Components;
 import net.minecraft.entity.EntityGroup;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FollowTargetGoal;
 import net.minecraft.entity.ai.goal.TrackTargetGoal;
 import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,8 +40,14 @@ public abstract class FollowTargetGoalMixin extends TrackTargetGoal {
 
             // only cancel if the player does not have hostility
             if(!hasHostility) {
+                // creepers should ignore cats
+                if(this.mob instanceof CreeperEntity && identity.getType().equals(EntityType.OCELOT)) {
+                    super.stop();
+                    ci.cancel();
+                }
+
                 // withers should ignore undead
-                if (this.mob instanceof WitherEntity && identity.getGroup().equals(EntityGroup.UNDEAD)) {
+                else if (this.mob instanceof WitherEntity && identity.getGroup().equals(EntityGroup.UNDEAD)) {
                     super.stop();
                     ci.cancel();
                 }
