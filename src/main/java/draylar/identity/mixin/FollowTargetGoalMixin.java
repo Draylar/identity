@@ -37,26 +37,29 @@ public abstract class FollowTargetGoalMixin extends TrackTargetGoal {
         if (Identity.CONFIG.hostilesIgnoreHostileIdentityPlayer && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity) {
             PlayerEntity targetPlayer = (PlayerEntity) this.targetEntity;
             LivingEntity identity = Components.CURRENT_IDENTITY.get(targetPlayer).getIdentity();
-            boolean hasHostility = Components.HOSTILITY.get(targetPlayer).hasHostility();
 
-            // only cancel if the player does not have hostility
-            if(!hasHostility) {
-                // creepers should ignore cats
-                if(this.mob instanceof CreeperEntity && identity.getType().equals(EntityType.OCELOT)) {
-                    super.stop();
-                    ci.cancel();
-                }
+            if(identity != null) {
+                boolean hasHostility = Components.HOSTILITY.get(targetPlayer).hasHostility();
 
-                // withers should ignore undead
-                else if (this.mob instanceof WitherEntity && identity.getGroup().equals(EntityGroup.UNDEAD)) {
-                    super.stop();
-                    ci.cancel();
-                }
+                // only cancel if the player does not have hostility
+                if (!hasHostility) {
+                    // creepers should ignore cats
+                    if (this.mob instanceof CreeperEntity && identity.getType().equals(EntityType.OCELOT)) {
+                        super.stop();
+                        ci.cancel();
+                    }
 
-                // hostile mobs (besides wither) should not target players morphed as hostile mobs
-                else if (!(this.mob instanceof WitherEntity) && identity instanceof Monster) {
-                    super.stop();
-                    ci.cancel();
+                    // withers should ignore undead
+                    else if (this.mob instanceof WitherEntity && identity.getGroup().equals(EntityGroup.UNDEAD)) {
+                        super.stop();
+                        ci.cancel();
+                    }
+
+                    // hostile mobs (besides wither) should not target players morphed as hostile mobs
+                    else if (!(this.mob instanceof WitherEntity) && identity instanceof Monster) {
+                        super.stop();
+                        ci.cancel();
+                    }
                 }
             }
         }
@@ -68,23 +71,26 @@ public abstract class FollowTargetGoalMixin extends TrackTargetGoal {
         if(Identity.CONFIG.hostilesIgnoreHostileIdentityPlayer && Identity.CONFIG.hostilesForgetNewHostileIdentityPlayer && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity) {
             PlayerEntity targetPlayer = (PlayerEntity) this.targetEntity;
             LivingEntity identity = Components.CURRENT_IDENTITY.get(targetPlayer).getIdentity();
-            boolean hasHostility = Components.HOSTILITY.get(targetPlayer).hasHostility();
 
-            // only cancel if the player does not have hostility
-            if(!hasHostility) {
-                // creepers should ignore cats
-                if(this.mob instanceof CreeperEntity && identity.getType().equals(EntityType.OCELOT)) {
-                    return false;
-                }
+            if (identity != null) {
+                boolean hasHostility = Components.HOSTILITY.get(targetPlayer).hasHostility();
 
-                // withers should ignore undead
-                if (this.mob instanceof WitherEntity && identity.getGroup().equals(EntityGroup.UNDEAD)) {
-                    return false;
-                }
+                // only cancel if the player does not have hostility
+                if (!hasHostility) {
+                    // creepers should ignore cats
+                    if (this.mob instanceof CreeperEntity && identity.getType().equals(EntityType.OCELOT)) {
+                        return false;
+                    }
 
-                // hostile mobs (besides wither) should not target players morphed as hostile mobs
-                else if (!(this.mob instanceof WitherEntity) && identity instanceof Monster) {
-                    return false;
+                    // withers should ignore undead
+                    if (this.mob instanceof WitherEntity && identity.getGroup().equals(EntityGroup.UNDEAD)) {
+                        return false;
+                    }
+
+                    // hostile mobs (besides wither) should not target players morphed as hostile mobs
+                    else if (!(this.mob instanceof WitherEntity) && identity instanceof Monster) {
+                        return false;
+                    }
                 }
             }
         }

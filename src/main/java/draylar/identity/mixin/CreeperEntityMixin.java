@@ -2,6 +2,7 @@ package draylar.identity.mixin;
 
 import draylar.identity.registry.Components;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -31,7 +32,8 @@ public abstract class CreeperEntityMixin extends HostileEntity {
                 PlayerEntity.class,
                 player -> {
                     if (player instanceof PlayerEntity) {
-                        return Components.CURRENT_IDENTITY.get(player).getIdentity().getType().equals(EntityType.OCELOT);
+                        LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
+                        return identity != null && identity.getType().equals(EntityType.OCELOT);
                     }
 
                     return true;
