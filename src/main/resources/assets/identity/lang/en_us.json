@@ -1,4 +1,5 @@
 {
   "identity.unlock_entity": "Unlocked %s identity.",
-  "identity.revoke_entity": "Your memories of being a %s fade to dust..."
+  "identity.revoke_entity": "Your memories of being a %s fade to dust...",
+  "identity.menu_hint": "To gain an Identity, slay any creature in your world..."
 }

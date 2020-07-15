@@ -11,10 +11,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Window;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 import spinnery.client.screen.BaseScreen;
 import spinnery.widget.WAbstractWidget;
 import spinnery.widget.WInterface;
+import spinnery.widget.WStaticText;
 import spinnery.widget.WVerticalScrollableContainer;
 import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
@@ -50,6 +52,14 @@ public class IdentityScreen extends BaseScreen {
 
         // add entity widgets
         populateEntityWidgets(container, unlocked);
+
+        // add hint if the player has no unlocks on what to do
+        if(unlocked.isEmpty()) {
+            TranslatableText message = new TranslatableText("identity.menu_hint");
+            float xPosition = (container.getWidth() / 2) - (MinecraftClient.getInstance().textRenderer.getWidth(message) / 2f);
+            float yPosition = (container.getHeight() / 2);
+            WStaticText hint = wInterface.createChild(WStaticText::new).setText(message).setPosition(Position.of(wInterface, xPosition, yPosition));
+        }
 
         // implement search handler
         searchBar.setPostKeyPressListener(widget -> {
