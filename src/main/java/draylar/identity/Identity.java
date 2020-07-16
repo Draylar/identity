@@ -3,6 +3,7 @@ package draylar.identity;
 import draylar.identity.api.ability.IdentityAbilities;
 import draylar.identity.api.ability.IdentityAbility;
 import draylar.identity.config.IdentityConfig;
+import draylar.identity.registry.Commands;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import draylar.identity.registry.EventHandlers;
@@ -35,6 +36,7 @@ public class Identity implements ModInitializer {
         Components.init();
         IdentityAbilities.init();
         EventHandlers.init();
+        Commands.init();
 
         registerIdentityRequestPacketHandler();
         registerAbilityItemUseHandler();
