@@ -7,6 +7,8 @@ import draylar.identity.registry.Commands;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import draylar.identity.registry.EventHandlers;
+import io.github.ladysnake.pal.AbilitySource;
+import io.github.ladysnake.pal.Pal;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
@@ -29,6 +31,7 @@ public class Identity implements ModInitializer {
     public static final IdentityConfig CONFIG = AutoConfig.register(IdentityConfig.class, JanksonConfigSerializer::new).getConfig();
 
     public static final Identifier IDENTITY_REQUEST = id("request");
+    public static final AbilitySource ABILITY_SOURCE = Pal.getAbilitySource(id("equipped_identity"));
 
     @Override
     public void onInitialize() {

@@ -32,6 +32,9 @@ dependencies {
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    modImplementation "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}"
+    include "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}"
+
     modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
     include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
 
