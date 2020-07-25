@@ -1,6 +1,6 @@
 {
   "identity.unlock_entity": "已解锁%s种化身",
-  "identity.revoke_entity": "你的对%s化身的记忆已化为尘埃..."
+  "identity.revoke_entity": "你的对%s化身的记忆已化为尘埃...",
    "identity.grant_success": "成功将化身%s给予%s。",
   "identity.revoke_success": "成功删除%s化身(%s身上的化身)。",
   "identity.already_has": "%s已经拥有%s化身！",
