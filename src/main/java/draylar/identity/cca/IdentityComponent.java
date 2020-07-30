@@ -3,6 +3,7 @@ package draylar.identity.cca;
 import draylar.identity.Identity;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.registry.Components;
+import io.github.ladysnake.pal.VanillaAbilities;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.util.sync.EntitySyncedComponent;
 import net.minecraft.entity.Entity;
@@ -61,12 +62,9 @@ public class IdentityComponent implements EntitySyncedComponent {
 
         // update flight properties on player depending on identity
         if(Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
-            player.abilities.allowFlying = true;
-            player.sendAbilitiesUpdate();
-        } else if(!player.isCreative() && Identity.CONFIG.enableFlight && !player.isSpectator()) {
-            player.abilities.allowFlying = false;
-            player.abilities.flying = false;
-            player.sendAbilitiesUpdate();
+            Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
+        } else {
+            Identity.ABILITY_SOURCE.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
         }
 
         // sync with client
@@ -101,9 +99,10 @@ public class IdentityComponent implements EntitySyncedComponent {
                     ((DimensionsRefresher) player).refresh();
 
                     // refresh flight abilities
+                    // TODO remove when compatibility with old saves is no longer needed
                     if(!player.world.isClient) {
                         if (Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
-                            player.abilities.allowFlying = true;
+                            Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
                         }
                     }
                 }
