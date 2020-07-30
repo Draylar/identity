@@ -33,7 +33,7 @@ public class WEntityButton extends WButton {
     }
 
     @Override
-    public void draw(MatrixStack matrices, VertexConsumerProvider.Immediate provider) {
+    public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
         ScreenUtils.drawEntity(
                 (int) (getX() + this.getWidth() / 2),
                 (int) (getY() + this.getHeight() * .75f),
