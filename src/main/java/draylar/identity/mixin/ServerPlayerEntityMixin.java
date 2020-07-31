@@ -2,6 +2,7 @@ package draylar.identity.mixin;
 
 import draylar.identity.Identity;
 import draylar.identity.registry.Components;
+import io.github.ladysnake.pal.VanillaAbilities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -48,6 +49,20 @@ public abstract class ServerPlayerEntityMixin {
                     );
                 }
             }
+        }
+    }
+
+    @Inject(
+            method = "onSpawn",
+            at = @At("HEAD")
+    )
+    private void onSpawn(CallbackInfo ci) {
+        if(Identity.hasFlyingPermissions((ServerPlayerEntity) (Object) this)) {
+            if(!Identity.ABILITY_SOURCE.grants((ServerPlayerEntity) (Object) this, VanillaAbilities.ALLOW_FLYING)) {
+                Identity.ABILITY_SOURCE.grantTo((ServerPlayerEntity) (Object) this, VanillaAbilities.ALLOW_FLYING);
+            }
+
+            Identity.ABILITY_SOURCE.grantTo((ServerPlayerEntity) (Object) this, VanillaAbilities.FLYING);
         }
     }
 }

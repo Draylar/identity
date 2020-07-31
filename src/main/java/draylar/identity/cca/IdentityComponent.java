@@ -97,14 +97,6 @@ public class IdentityComponent implements EntitySyncedComponent {
 
                     // refresh player dimensions/hitbox on client
                     ((DimensionsRefresher) player).refresh();
-
-                    // refresh flight abilities
-                    // TODO remove when compatibility with old saves is no longer needed
-                    if(!player.world.isClient) {
-                        if (Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
-                            Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
-                        }
-                    }
                 }
 
                 identity.fromTag(entityTag);
