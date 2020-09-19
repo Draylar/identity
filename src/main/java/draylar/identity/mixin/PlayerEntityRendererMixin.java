@@ -55,6 +55,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             identity.prevHeadYaw = player.prevHeadYaw;
             identity.age = player.age;
             identity.preferredHand = player.preferredHand;
+            ((EntityAccessor) identity).setVehicle(player.getVehicle());
             ((EntityAccessor) identity).setTouchingWater(player.isTouchingWater());
 
             // phantoms' pitch is inverse for whatever reason

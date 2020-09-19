@@ -9,8 +9,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TranslatableText;
@@ -21,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -96,6 +99,55 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return this.hasStatusEffect(StatusEffects.SLOW_FALLING);
+    }
+
+    @Redirect(
+            method = "travel",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 1)
+    )
+    private boolean applyWaterCreatureSwimSpeedBoost(LivingEntity livingEntity, StatusEffect effect) {
+        if((Object) this instanceof PlayerEntity) {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+            // Apply 'Dolphin's Grace' status effect benefits if the player's Identity is a water creature
+            if (identity instanceof WaterCreatureEntity) {
+                return true;
+            }
+        }
+
+        return this.hasStatusEffect(StatusEffects.DOLPHINS_GRACE);
+    }
+
+    @Inject(
+            method = "hasStatusEffect",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void returnHasNightVision(StatusEffect effect, CallbackInfoReturnable<Boolean> cir) {
+        if(effect.equals(StatusEffects.NIGHT_VISION)) {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+            // Apply 'Night Vision' status effect to player if they are a Bat
+            if (identity instanceof BatEntity) {
+                cir.setReturnValue(true);
+            }
+        }
+    }
+
+    @Inject(
+            method = "getStatusEffect",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void returnNightVisionInstance(StatusEffect effect, CallbackInfoReturnable<StatusEffectInstance> cir) {
+        if (effect.equals(StatusEffects.NIGHT_VISION)) {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+            // Apply 'Night Vision' status effect to player if they are a Bat
+            if (identity instanceof BatEntity) {
+                cir.setReturnValue(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 100000, 0, false, false));
+            }
+        }
     }
 
 //

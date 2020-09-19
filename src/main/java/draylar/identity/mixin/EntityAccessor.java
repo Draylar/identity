@@ -8,4 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface EntityAccessor {
     @Accessor
     void setTouchingWater(boolean touchingWater);
+
+    @Accessor
+    void setVehicle(Entity vehicle);
 }
