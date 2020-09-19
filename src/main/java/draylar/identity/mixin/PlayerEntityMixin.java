@@ -32,6 +32,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     @Shadow public abstract boolean isSpectator();
     @Shadow public abstract EntityDimensions getDimensions(EntityPose pose);
 
+    @Shadow public abstract boolean isSwimming();
+
     private PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
     }
@@ -148,6 +150,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
                 identity.setStuckArrowCount(this.getStuckArrowCount());
                 identity.setInvulnerable(true);
                 identity.setNoGravity(true);
+                identity.setPose(this.getPose());
+                identity.setSwimming(this.isSwimming());
+                identity.setCurrentHand(this.getActiveHand());
+
                 ((LivingEntityAccessor) identity).callTickActiveItemStack();
                 Components.CURRENT_IDENTITY.get(this).sync();
             }
