@@ -84,7 +84,7 @@ public abstract class LivingEntityMixin extends Entity {
             method = "travel",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 0)
     )
-    private boolean chickenSlowFall(LivingEntity livingEntity, StatusEffect effect) {
+    private boolean slowFall(LivingEntity livingEntity, StatusEffect effect) {
         if((Object) this instanceof PlayerEntity) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
@@ -95,7 +95,7 @@ public abstract class LivingEntityMixin extends Entity {
             }
         }
 
-        return this.hasStatusEffect(StatusEffects.LEVITATION);
+        return this.hasStatusEffect(StatusEffects.SLOW_FALLING);
     }
 
 //
