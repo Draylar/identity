@@ -62,7 +62,7 @@ public class Identity implements ModInitializer {
                         IdentityAbility ability = IdentityAbilities.get((EntityType<? extends LivingEntity>) identity.getType(), heldStack.getItem());
 
                         if(ability != null) {
-                            ability.onUse(player, world, heldStack, hand);
+                            ability.onUse(player, identity, world, heldStack, hand);
                         }
                     }
                 }

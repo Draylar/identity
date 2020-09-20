@@ -9,6 +9,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -88,6 +90,14 @@ public class EntityUpdaters {
         EntityUpdaters.register(EntityType.ENDER_DRAGON, (player, dragon) -> {
             dragon.wingPosition += 0.01F;
             dragon.prevWingPosition = dragon.wingPosition;
+        });
+
+        EntityUpdaters.register(EntityType.ENDERMAN, (player, enderman) -> {
+            ItemStack heldStack = player.getMainHandStack();
+
+            if(heldStack.getItem() instanceof BlockItem) {
+                enderman.setCarriedBlock(((BlockItem) heldStack.getItem()).getBlock().getDefaultState());
+            }
         });
     }
 }

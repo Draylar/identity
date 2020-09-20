@@ -9,6 +9,7 @@ import nerdhub.cardinal.components.api.util.sync.EntitySyncedComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -59,6 +60,17 @@ public class IdentityComponent implements EntitySyncedComponent {
 
         // refresh entity hitbox dimensions
         ((DimensionsRefresher) player).refresh();
+
+        // Identity is valid and scaling health is on; set entity's max health and current health to reflect identity.
+        if(identity != null && Identity.CONFIG.scalingHealth) {
+            player.setHealth(Math.min(player.getHealth(), identity.getMaxHealth()));
+            player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(Math.min(Identity.CONFIG.maxHealth, identity.getMaxHealth()));
+        }
+
+        // If the identity is null (going back to player), set the player's base health value to 20 (default) to clear old changes.
+        if(identity == null) {
+            player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20);
+        }
 
         // update flight properties on player depending on identity
         if(Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {

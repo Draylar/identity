@@ -54,4 +54,10 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "A list of Advancements required before the player can fly using an Identity.")
     public List<String> advancementsRequiredForFlight = new ArrayList<>();
+
+    @Comment(value = "Whether Identities modify your max health value based on their max health value.")
+    public boolean scalingHealth = true;
+
+    @Comment(value = "The maximum value of scaling health. Useful for not giving players 300 HP when they turn into a wither.")
+    public int maxHealth = 40;
 }

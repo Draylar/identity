@@ -150,6 +150,23 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
+    @Inject(
+            method = "getMaxHealth",
+            at = @At("RETURN"),
+            cancellable = true
+    )
+    private void modifyMaxHealth(CallbackInfoReturnable<Float> cir) {
+        if(Identity.CONFIG.scalingHealth) {
+            if ((Object) this instanceof PlayerEntity) {
+                LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+                if (identity != null) {
+                    cir.setReturnValue(identity.getMaxHealth());
+                }
+            }
+        }
+    }
+
 //
 //    @Inject(
 //            method = "isClimbing",

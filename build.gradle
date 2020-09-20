@@ -15,10 +15,13 @@ minecraft {
 }
 
 repositories {
+    maven { url 'https://jitpack.io' }
+
     maven {
         name = "Ladysnake Libs"
         url = 'https://dl.bintray.com/ladysnake/libs'
     }
+
     maven {
         name = "Spinnery"
         url  "https://dl.bintray.com/spinnery/Spinnery"
@@ -43,6 +46,10 @@ dependencies {
     // spinnery
     modCompile "com.github.vini2003:spinnery:${project.spinnery_version}"
     include "com.github.vini2003:spinnery:${project.spinnery_version}"
+
+    // prevent log spam
+    modCompile 'com.github.Draylar:angerable-patch:1.0.0'
+    include 'com.github.Draylar:angerable-patch:1.0.0'
 
     // config
     modCompile "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
