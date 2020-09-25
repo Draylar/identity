@@ -18,6 +18,8 @@ import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.GuardianEntity;
+import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -62,7 +64,7 @@ public class Identity implements ModInitializer {
                         IdentityAbility ability = IdentityAbilities.get((EntityType<? extends LivingEntity>) identity.getType(), heldStack.getItem());
 
                         if(ability != null) {
-                            ability.onUse(player, identity, world, heldStack, hand);
+                            return ability.onUse(player, identity, world, heldStack, hand);
                         }
                     }
                 }
@@ -113,5 +115,9 @@ public class Identity implements ModInitializer {
         }
 
         return false;
+    }
+
+    public static boolean isAquatic(LivingEntity entity) {
+        return entity instanceof WaterCreatureEntity || entity instanceof GuardianEntity;
     }
 }

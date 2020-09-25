@@ -200,10 +200,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
             at = @At("HEAD")
     )
     private void tickAquaticBreathing(CallbackInfo ci) {
-        LivingEntity entity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
-        if (entity != null) {
-            if (entity instanceof WaterCreatureEntity && !(entity instanceof DolphinEntity)) {
+        if (identity != null) {
+            if (Identity.isAquatic(identity) && !(identity instanceof DolphinEntity)) {
                 int air = this.getAir();
 
                 // copy of WaterCreatureEntity#tickWaterBreathingAir

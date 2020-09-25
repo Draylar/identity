@@ -74,7 +74,7 @@ public abstract class LivingEntityMixin extends Entity {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             if (identity != null) {
-                if (identity instanceof WaterCreatureEntity && !(identity instanceof DolphinEntity)) {
+                if (Identity.isAquatic(identity) && !(identity instanceof DolphinEntity)) {
                     return;
                 }
             }
@@ -116,6 +116,31 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return this.hasStatusEffect(StatusEffects.DOLPHINS_GRACE);
+    }
+
+    @Inject(
+            method = "handleFallDamage",
+            at = @At(value = "HEAD"),
+            cancellable = true
+    )
+    private void handleFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Boolean> cir) {
+        if((Object) this instanceof PlayerEntity) {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+            if (identity != null) {
+                boolean takesFallDamage = identity.handleFallDamage(fallDistance, damageMultiplier);
+                int damageAmount = ((LivingEntityAccessor) identity).callComputeFallDamage(fallDistance, damageMultiplier);
+
+                if (takesFallDamage && damageAmount > 0) {
+                    this.playSound(((LivingEntityAccessor) identity).callGetFallSound(damageAmount), 1.0F, 1.0F);
+                    ((LivingEntityAccessor) identity).callPlayBlockFallSound();
+                    this.damage(DamageSource.FALL, (float) damageAmount);
+                    cir.setReturnValue(true);
+                } else {
+                    cir.setReturnValue(false);
+                }
+            }
+        }
     }
 
     @Inject(

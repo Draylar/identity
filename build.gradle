@@ -42,6 +42,8 @@ dependencies {
 
     modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
     include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
+    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
 
     // spinnery
     modCompile "com.github.vini2003:spinnery:${project.spinnery_version}"

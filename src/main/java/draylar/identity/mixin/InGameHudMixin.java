@@ -1,9 +1,9 @@
 package draylar.identity.mixin;
 
+import draylar.identity.Identity;
 import draylar.identity.registry.Components;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.FluidTags;
@@ -23,7 +23,7 @@ public class InGameHudMixin {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
         if(identity != null) {
-            if(identity instanceof WaterCreatureEntity && player.isSubmergedIn(FluidTags.WATER)) {
+            if(Identity.isAquatic(identity) && player.isSubmergedIn(FluidTags.WATER)) {
                 return false;
             }
         }
