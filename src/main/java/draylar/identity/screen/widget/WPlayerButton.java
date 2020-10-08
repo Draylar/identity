@@ -6,19 +6,19 @@ import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
-import spinnery.widget.WStaticImage;
+import io.github.cottonmc.cotton.gui.widget.WSprite;
 
-public class WPlayerButton extends WStaticImage {
+public class WPlayerButton extends WSprite {
 
     public WPlayerButton() {
-        setTexture(Identity.id("textures/gui/player.png"));
+        super(Identity.id("textures/gui/player.png"));
     }
 
     @Override
-    public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
+    public void onClick(int mouseX, int mouseY, int mouseButton) {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
         packet.writeIdentifier(Registry.ENTITY_TYPE.getId(EntityType.PLAYER));
         ClientSidePacketRegistry.INSTANCE.sendToServer(Identity.IDENTITY_REQUEST, packet);
-        super.onMouseClicked(mouseX, mouseY, mouseButton);
+        super.onClick(mouseX, mouseY, mouseButton);
     }
 }

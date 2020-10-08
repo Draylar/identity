@@ -10,7 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
-import spinnery.widget.WButton;
+import io.github.cottonmc.cotton.gui.widget.WButton;
 
 public class WEntityButton extends WButton {
 
@@ -25,18 +25,18 @@ public class WEntityButton extends WButton {
     }
 
     @Override
-    public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
+    public void onClick(int mouseX, int mouseY, int mouseButton) {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
         packet.writeIdentifier(Registry.ENTITY_TYPE.getId(entity.getType()));
         ClientSidePacketRegistry.INSTANCE.sendToServer(Identity.IDENTITY_REQUEST, packet);
-        super.onMouseClicked(mouseX, mouseY, mouseButton);
+        super.onClick(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    public void draw(MatrixStack matrices, VertexConsumerProvider provider) {
+    public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
         ScreenUtils.drawEntity(
-                (int) (getX() + this.getWidth() / 2),
-                (int) (getY() + this.getHeight() * .75f),
+                (int) (x + this.getWidth() / 2),
+                (int) (y + this.getHeight() * .75f),
                 size,
                 -10,
                 -10,

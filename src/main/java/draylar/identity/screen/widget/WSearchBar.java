@@ -1,6 +1,7 @@
 package draylar.identity.screen.widget;
 
-import spinnery.widget.WTextField;
+import io.github.cottonmc.cotton.gui.widget.WTextField;
+
 
 public class WSearchBar extends WTextField {
 
@@ -15,8 +16,8 @@ public class WSearchBar extends WTextField {
     }
 
     @Override
-    public void onCharTyped(char character, int keyCode) {
-        super.onCharTyped(character, keyCode);
+    public void onCharTyped(char character) {
+        super.onCharTyped(character);
 
         if(postKeyPressListener != null) {
             postKeyPressListener.yeet(this);
@@ -24,8 +25,8 @@ public class WSearchBar extends WTextField {
     }
 
     @Override
-    public void onKeyPressed(int keyCode, int character, int keyModifier) {
-        super.onKeyPressed(keyCode, character, keyModifier);
+    public void onKeyPressed(int character, int keyCode, int keyModifier) {
+        super.onKeyPressed(character, keyCode, keyModifier);
 
         if(postKeyPressListener != null) {
             postKeyPressListener.yeet(this);
