@@ -41,7 +41,7 @@ public class ScreenUtils {
         entity.pitch = -g * 20.0F;
         entity.headYaw = entity.yaw;
         entity.prevHeadYaw = entity.yaw;
-        EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderManager();
+        EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
         quaternion2.conjugate();
         entityRenderDispatcher.setRotation(quaternion2);
         entityRenderDispatcher.setRenderShadows(false);

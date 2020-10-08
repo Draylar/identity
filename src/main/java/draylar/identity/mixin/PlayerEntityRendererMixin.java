@@ -94,7 +94,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         }
 
         if(identity != null) {
-            EntityRenderer IdentityRenderer = MinecraftClient.getInstance().getEntityRenderManager().getRenderer(identity);
+            EntityRenderer IdentityRenderer = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(identity);
             IdentityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
         } else {
             super.render((AbstractClientPlayerEntity) player, f, g, matrixStack, vertexConsumerProvider, i);

@@ -70,7 +70,7 @@ public class IdentityAbilities {
         });
 
         IdentityAbilities.register(EntityType.ENDERMAN, Items.ENDER_PEARL, (player, identity, world, stack, hand) -> {
-            HitResult lookingAt = player.rayTrace(32, 0, true);
+            HitResult lookingAt = player.raycast(32, 0, true);
             player.requestTeleport(lookingAt.getPos().x, lookingAt.getPos().y, lookingAt.getPos().z);
             stack.decrement(1);
             player.getItemCooldownManager().set(stack.getItem(), 100);
