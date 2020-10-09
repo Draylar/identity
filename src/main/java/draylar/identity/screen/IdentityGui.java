@@ -38,16 +38,16 @@ public class IdentityGui extends LightweightGuiDescription {
         WScrollPanel scroller = new WScrollPanel(container);
         WPlainPanel root = new WPlainPanel();
 
-
-        BackgroundPainter painter = BackgroundPainter.createColorful(0x00_000000);
-        // root.setBackgroundPainter(painter);
-        container.setBackgroundPainter(painter);
-        scroller.setBackgroundPainter(painter);
         scroller.setScrollingHorizontally(TriState.FALSE);
         setRootPanel(root);
         setFullscreen(true);
-        container.setSize(getWindow().getScaledWidth(), 3* getWindow().getScaledHeight());
-        root.add(scroller, 0, 25, getWindow().getScaledWidth(), getWindow().getScaledHeight() - 25);
+
+        root.add(
+            scroller, 0, 25,
+            getWindow().getScaledWidth(),
+            getWindow().getScaledHeight() - 25
+        );
+
         // attempt to populate renderEntities list
         populateRenderEntities();
 
@@ -64,7 +64,7 @@ public class IdentityGui extends LightweightGuiDescription {
 
         root.add(
             playerButton,
-            getWindow().getScaledWidth() / 2 + (getWindow().getScaledWidth() / 8) + 5,
+            getWindow().getScaledWidth() * 5 / 8 + 5,
             7,
             15,
             15
@@ -75,7 +75,7 @@ public class IdentityGui extends LightweightGuiDescription {
         requestFocus(searchBar);
         root.add(
             searchBar,
-            getWindow().getScaledWidth() / 2 - (getWindow().getScaledWidth() / 4 / 2) - 5,
+            getWindow().getScaledWidth() * 3 / 8 - 5,
             5,
             getWindow().getScaledWidth() / 4,
             20
@@ -95,15 +95,6 @@ public class IdentityGui extends LightweightGuiDescription {
 
             populateEntityWidgets(container, filtered);
         });
-
-        // WSprite icon = new WSprite(new Identifier("minecraft:textures/item/redstone.png"));
-        // root.add(icon, 0, 2, 1, 1);
-
-        // WButton button = new WButton(new TranslatableText("gui.examplemod.examplebutton"));
-        // root.add(button, 0, 3, 4, 1);
-
-        // WLabel label = new WLabel(new LiteralText("Test"), 0xFFFFFF);
-        // root.add(label, 0, 4, 2, 1);
 
         root.validate(this);
     }
@@ -131,7 +122,7 @@ public class IdentityGui extends LightweightGuiDescription {
             container.add(
                 button,
                 (getWindow().getScaledWidth() - 27) / 7 * x + 13,
-                getWindow().getScaledHeight() / 5 * (y + 1),
+                (int) Math.ceil(getWindow().getScaledHeight() / 5 * (y + 0.5)),
                 (getWindow().getScaledWidth() - 27) / 7,
                 getWindow().getScaledHeight() / 5
             );
