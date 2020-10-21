@@ -16,6 +16,16 @@
     ],
     "client": [
       "draylar.identity.IdentityClient"
+    ],
+    "cardinal-components-entity": [
+      "draylar.identity.registry.Components"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "identity:current_identity",
+      "identity:unlocked_identities",
+      "identity:hostility"
     ]
   },
   "mixins": [

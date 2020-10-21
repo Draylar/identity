@@ -1,5 +1,6 @@
 package draylar.identity.cca;
 
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import draylar.identity.registry.Components;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.util.sync.EntitySyncedComponent;
@@ -16,7 +17,7 @@ import net.minecraft.util.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnlockedIdentitysComponent implements EntitySyncedComponent {
+public class UnlockedIdentitysComponent implements AutoSyncedComponent {
 
     private final PlayerEntity player;
     private final List<Identifier> unlocked = new ArrayList<>();
@@ -28,7 +29,7 @@ public class UnlockedIdentitysComponent implements EntitySyncedComponent {
     public void unlock(Identifier id) {
         if(!unlocked.contains(id)) {
             this.unlocked.add(id);
-            this.sync();
+            Components.UNLOCKED_IDENTITIES.sync(this.player);
         }
     }
 
@@ -50,23 +51,12 @@ public class UnlockedIdentitysComponent implements EntitySyncedComponent {
     public void revoke(Identifier id) {
         if(unlocked.contains(id)) {
             this.unlocked.remove(id);
-            this.sync();
+            Components.UNLOCKED_IDENTITIES.sync(this.player);
         }
     }
 
     @Override
-    public Entity getEntity() {
-        return player;
-    }
-
-
-    @Override
-    public ComponentType<?> getComponentType() {
-        return Components.UNLOCKED_IDENTITIES;
-    }
-
-    @Override
-    public void fromTag(CompoundTag tag) {
+    public void readFromNbt(CompoundTag tag) {
         unlocked.clear();
 
         ListTag idList = tag.getList("UnlockedMorphs", NbtType.STRING);
@@ -77,7 +67,7 @@ public class UnlockedIdentitysComponent implements EntitySyncedComponent {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
+    public void writeToNbt(CompoundTag tag) {
         ListTag idList = new ListTag();
 
         unlocked.forEach(entityId -> {
@@ -85,6 +75,5 @@ public class UnlockedIdentitysComponent implements EntitySyncedComponent {
         });
 
         tag.put("UnlockedMorphs", idList);
-        return tag;
     }
 }
