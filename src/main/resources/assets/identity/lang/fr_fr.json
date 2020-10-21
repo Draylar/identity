@@ -1,0 +1,13 @@
+{
+  "identity.unlock_entity": "Vous avez débloqué l'identité %s.",
+  "identity.revoke_entity": "Vos souvenirs en tant que %s s'effacent...",
+  "identity.grant_success": "Identité %s offerte à %s avec succès.",
+  "identity.revoke_success": "Identité %s retirée de %s avec succès.",
+  "identity.already_has": "%s a déjà l'identité %s !",
+  "identity.does_not_have": "%s n'a pas l'identité %s !",
+  "identity.equip_success": "L'identité de %s a été changée en %s.",
+  "identity.unequip_success": "L'identité de %s a été désactivée.",
+  "identity.test_positive": "%s est déguisé en %s.",
+  "identity.test_failed": "%s n'est pas déguisé en %s.",
+  "identity.menu_hint": "Pour gagner une Identité, abattez une créature quelconque dans votre monde..."
+}
