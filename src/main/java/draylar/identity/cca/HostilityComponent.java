@@ -1,9 +1,9 @@
 package draylar.identity.cca;
 
-import nerdhub.cardinal.components.api.component.Component;
+import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.minecraft.nbt.CompoundTag;
 
-public class HostilityComponent implements Component {
+public class HostilityComponent implements ServerTickingComponent {
 
     private int remainingTime = 0;
 
@@ -12,14 +12,13 @@ public class HostilityComponent implements Component {
     }
 
     @Override
-    public void fromTag(CompoundTag tag) {
+    public void readFromNbt(CompoundTag tag) {
         tag.putInt("RemainingTime", remainingTime);
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
+    public void writeToNbt(CompoundTag tag) {
         this.remainingTime = tag.getInt("RemainingTime");
-        return tag;
     }
 
     /**
@@ -45,7 +44,8 @@ public class HostilityComponent implements Component {
     /**
      * Ticks this hostility component. 0 means no hostility, so 15 * 20 means it will expire after 15 seconds.
      */
-    public void tickHostility() {
+    @Override
+    public void serverTick() {
         remainingTime = Math.max(0, remainingTime - 1);
     }
 }

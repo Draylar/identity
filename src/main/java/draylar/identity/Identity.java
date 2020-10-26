@@ -38,7 +38,6 @@ public class Identity implements ModInitializer {
     @Override
     public void onInitialize() {
         EntityTags.init();
-        Components.init();
         IdentityAbilities.init();
         EventHandlers.init();
         Commands.init();

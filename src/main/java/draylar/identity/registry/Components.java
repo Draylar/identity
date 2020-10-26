@@ -1,52 +1,36 @@
 package draylar.identity.registry;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import draylar.identity.Identity;
 import draylar.identity.cca.HostilityComponent;
 import draylar.identity.cca.IdentityComponent;
 import draylar.identity.cca.UnlockedIdentitysComponent;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.event.EntityComponentCallback;
-import nerdhub.cardinal.components.api.util.EntityComponents;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
-import net.minecraft.entity.player.PlayerEntity;
 
-public class Components {
+public class Components implements EntityComponentInitializer {
 
-    public static final ComponentType<IdentityComponent> CURRENT_IDENTITY = ComponentRegistry.INSTANCE.registerIfAbsent(
+    public static final ComponentKey<IdentityComponent> CURRENT_IDENTITY = ComponentRegistry.getOrCreate(
             Identity.id("current_identity"),
             IdentityComponent.class
     );
 
-    public static final ComponentType<UnlockedIdentitysComponent> UNLOCKED_IDENTITIES = ComponentRegistry.INSTANCE.registerIfAbsent(
+    public static final ComponentKey<UnlockedIdentitysComponent> UNLOCKED_IDENTITIES = ComponentRegistry.getOrCreate(
             Identity.id("unlocked_identities"),
             UnlockedIdentitysComponent.class
     );
 
-    public static final ComponentType<HostilityComponent> HOSTILITY = ComponentRegistry.INSTANCE.registerIfAbsent(
+    public static final ComponentKey<HostilityComponent> HOSTILITY = ComponentRegistry.getOrCreate(
             Identity.id("hostility"),
             HostilityComponent.class
     );
 
-    private Components() {
-
-    }
-
-    public static void init() {
-        EntityComponents.setRespawnCopyStrategy(Components.CURRENT_IDENTITY, RespawnCopyStrategy.ALWAYS_COPY);
-        EntityComponents.setRespawnCopyStrategy(Components.UNLOCKED_IDENTITIES, RespawnCopyStrategy.ALWAYS_COPY);
-        EntityComponents.setRespawnCopyStrategy(Components.HOSTILITY, RespawnCopyStrategy.ALWAYS_COPY);
-
-        EntityComponentCallback.event(PlayerEntity.class).register((player, components) -> {
-            components.put(Components.CURRENT_IDENTITY, new IdentityComponent(player));
-        });
-
-        EntityComponentCallback.event(PlayerEntity.class).register((player, components) -> {
-            components.put(Components.UNLOCKED_IDENTITIES, new UnlockedIdentitysComponent(player));
-        });
-
-        EntityComponentCallback.event(PlayerEntity.class).register((player, components) -> {
-            components.put(Components.HOSTILITY, new HostilityComponent());
-        });
+    @Override
+    public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+        registry.registerForPlayers(Components.CURRENT_IDENTITY, IdentityComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(Components.UNLOCKED_IDENTITIES, UnlockedIdentitysComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(Components.HOSTILITY, p -> new HostilityComponent(), RespawnCopyStrategy.ALWAYS_COPY);
     }
 }
