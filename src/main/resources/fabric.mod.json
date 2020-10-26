@@ -7,6 +7,11 @@
   "authors": [
     "Draylar"
   ],
+  "contributors": [
+    "James103",
+    "Pyrofab",
+    "AllanChain"
+  ],
   "license": "MIT",
   "icon": "assets/identity/icon.png",
   "environment": "*",
