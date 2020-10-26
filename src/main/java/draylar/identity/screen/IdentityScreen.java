@@ -16,6 +16,7 @@ public class IdentityScreen extends CottonClientScreen {
     public IdentityScreen() {
         super(new IdentityGui());
     }
+    
     public Window getWindow() {
         return MinecraftClient.getInstance().getWindow();
     }

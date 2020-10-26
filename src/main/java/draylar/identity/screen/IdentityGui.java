@@ -31,8 +31,10 @@ import draylar.identity.screen.widget.WSearchBar;
 import draylar.identity.registry.Components;
 
 public class IdentityGui extends LightweightGuiDescription {
+
     private final List<LivingEntity> renderEntities = new ArrayList<>();
     private List<WEntityButton> renderedButtons = new ArrayList<>();
+    
     public IdentityGui() {
         WPlainPanel container = new WPlainPanel();
         WScrollPanel scroller = new WScrollPanel(container);
@@ -98,6 +100,7 @@ public class IdentityGui extends LightweightGuiDescription {
 
         root.validate(this);
     }
+    
     private void populateRenderEntities() {
         if(renderEntities.isEmpty()) {
             Registry.ENTITY_TYPE.forEach(type -> {
@@ -110,6 +113,7 @@ public class IdentityGui extends LightweightGuiDescription {
             });
         }
     }
+    
     private void populateEntityWidgets(WPlainPanel container, List<LivingEntity> unlocked) {
 
         for (int listIndex = 0; listIndex < unlocked.size(); listIndex++) {
@@ -128,6 +132,7 @@ public class IdentityGui extends LightweightGuiDescription {
             );
         }
     }
+    
     private List<LivingEntity> collectUnlockedEntities(UnlockedIdentitysComponent unlockedIdentitys) {
         List<LivingEntity> unlocked = new ArrayList<>();
 
@@ -140,6 +145,7 @@ public class IdentityGui extends LightweightGuiDescription {
 
         return unlocked;
     }
+    
     public Window getWindow() {
         return MinecraftClient.getInstance().getWindow();
     }
