@@ -21,11 +21,6 @@ repositories {
         name = "Ladysnake Libs"
         url = 'https://dl.bintray.com/ladysnake/libs'
     }
-
-    maven {
-        name = "Spinnery"
-        url  "https://dl.bintray.com/spinnery/Spinnery"
-    }
 }
 
 dependencies {
@@ -46,8 +41,8 @@ dependencies {
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
 
     // spinnery
-    modCompile "com.github.vini2003:spinnery:${project.spinnery_version}"
-    include "com.github.vini2003:spinnery:${project.spinnery_version}"
+    modCompile "com.github.Draylar:Spinnery:${project.spinnery_version}"
+    include "com.github.Draylar:Spinnery:${project.spinnery_version}"
 
     // prevent log spam
     modCompile 'com.github.Draylar:angerable-patch:1.0.0'
