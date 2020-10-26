@@ -34,8 +34,9 @@ public class IdentityGui extends LightweightGuiDescription {
 
     private final List<LivingEntity> renderEntities = new ArrayList<>();
     private List<WEntityButton> renderedButtons = new ArrayList<>();
-    
+
     public IdentityGui() {
+        // panels and scrollbar setup
         WPlainPanel container = new WPlainPanel();
         WScrollPanel scroller = new WScrollPanel(container);
         WPlainPanel root = new WPlainPanel();
@@ -60,8 +61,10 @@ public class IdentityGui extends LightweightGuiDescription {
         // collect unlocked entities
         List<LivingEntity> unlocked = collectUnlockedEntities(unlockedIdentitys);
 
+        // add entity widgets
         populateEntityWidgets(container, unlocked);
 
+        // add player icon next to searchbar
         WPlayerButton playerButton = new WPlayerButton();
 
         root.add(
@@ -72,7 +75,7 @@ public class IdentityGui extends LightweightGuiDescription {
             15
         );
 
-
+        // searchbar setup
         WSearchBar searchBar = new WSearchBar();
         requestFocus(searchBar);
         root.add(
@@ -100,7 +103,7 @@ public class IdentityGui extends LightweightGuiDescription {
 
         root.validate(this);
     }
-    
+
     private void populateRenderEntities() {
         if(renderEntities.isEmpty()) {
             Registry.ENTITY_TYPE.forEach(type -> {
@@ -113,9 +116,9 @@ public class IdentityGui extends LightweightGuiDescription {
             });
         }
     }
-    
-    private void populateEntityWidgets(WPlainPanel container, List<LivingEntity> unlocked) {
 
+    private void populateEntityWidgets(WPlainPanel container, List<LivingEntity> unlocked) {
+        // add widget for each unlocked entity
         for (int listIndex = 0; listIndex < unlocked.size(); listIndex++) {
             int y = listIndex / 7;
             int x = listIndex % 7;
@@ -132,7 +135,7 @@ public class IdentityGui extends LightweightGuiDescription {
             );
         }
     }
-    
+
     private List<LivingEntity> collectUnlockedEntities(UnlockedIdentitysComponent unlockedIdentitys) {
         List<LivingEntity> unlocked = new ArrayList<>();
 
@@ -145,7 +148,7 @@ public class IdentityGui extends LightweightGuiDescription {
 
         return unlocked;
     }
-    
+
     public Window getWindow() {
         return MinecraftClient.getInstance().getWindow();
     }
