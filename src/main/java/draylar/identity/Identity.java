@@ -3,6 +3,7 @@ package draylar.identity;
 import draylar.identity.api.ability.IdentityAbilities;
 import draylar.identity.api.ability.IdentityAbility;
 import draylar.identity.config.IdentityConfig;
+import draylar.identity.network.ServerNetworking;
 import draylar.identity.registry.Commands;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
@@ -31,8 +32,6 @@ import java.util.List;
 public class Identity implements ModInitializer {
 
     public static final IdentityConfig CONFIG = AutoConfig.register(IdentityConfig.class, JanksonConfigSerializer::new).getConfig();
-
-    public static final Identifier IDENTITY_REQUEST = id("request");
     public static final AbilitySource ABILITY_SOURCE = Pal.getAbilitySource(id("equipped_identity"));
 
     @Override
@@ -41,8 +40,8 @@ public class Identity implements ModInitializer {
         IdentityAbilities.init();
         EventHandlers.init();
         Commands.init();
+        ServerNetworking.init();
 
-        registerIdentityRequestPacketHandler();
         registerAbilityItemUseHandler();
     }
 
@@ -70,20 +69,6 @@ public class Identity implements ModInitializer {
             }
 
             return TypedActionResult.pass(player.getStackInHand(hand));
-        });
-    }
-
-    private void registerIdentityRequestPacketHandler() {
-        ServerSidePacketRegistry.INSTANCE.register(IDENTITY_REQUEST, (context, packet) -> {
-            EntityType<?> type = Registry.ENTITY_TYPE.get(packet.readIdentifier());
-
-            if (type.equals(EntityType.PLAYER)) {
-                Components.CURRENT_IDENTITY.get(context.getPlayer()).setIdentity(null);
-            } else {
-                Components.CURRENT_IDENTITY.get(context.getPlayer()).setIdentity((LivingEntity) type.create(context.getPlayer().world));
-            }
-
-            context.getPlayer().calculateDimensions();
         });
     }
 

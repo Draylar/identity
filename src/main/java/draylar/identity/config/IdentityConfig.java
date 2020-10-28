@@ -60,4 +60,10 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "The maximum value of scaling health. Useful for not giving players 300 HP when they turn into a wither.")
     public int maxHealth = 40;
+
+    @Comment(value = "If set to false, only operators can switch identities through the ` menu.\nNote that this config option is synced from S2C when a client joins the game, but a client can still open the menu if they have a modified version of Identity.")
+    public boolean enableClientSwapMenu = true;
+
+    @Comment(value = "If set to false, only operators can switch identities. Used on the server; guaranteed to be authoritative.")
+    public boolean enableSwaps = true;
 }

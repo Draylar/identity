@@ -1,6 +1,7 @@
 package draylar.identity.screen.widget;
 
 import draylar.identity.Identity;
+import draylar.identity.network.ClientNetworking;
 import draylar.identity.screen.ScreenUtils;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -28,7 +29,7 @@ public class WEntityButton extends WButton {
     public void onMouseClicked(float mouseX, float mouseY, int mouseButton) {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
         packet.writeIdentifier(Registry.ENTITY_TYPE.getId(entity.getType()));
-        ClientSidePacketRegistry.INSTANCE.sendToServer(Identity.IDENTITY_REQUEST, packet);
+        ClientSidePacketRegistry.INSTANCE.sendToServer(ClientNetworking.IDENTITY_REQUEST, packet);
         super.onMouseClicked(mouseX, mouseY, mouseButton);
     }
 

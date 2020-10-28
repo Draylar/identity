@@ -1,10 +1,12 @@
 package draylar.identity;
 
 import draylar.identity.api.model.EntityUpdaters;
+import draylar.identity.network.ClientNetworking;
 import draylar.identity.screen.IdentityScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
@@ -15,6 +17,7 @@ import org.lwjgl.glfw.GLFW;
 @Environment(EnvType.CLIENT)
 public class IdentityClient implements ClientModInitializer {
 
+    public static boolean enableMenu = Identity.CONFIG.enableClientSwapMenu;
     public static final KeyBinding key = KeyBindingHelper.registerKeyBinding(
             new KeyBinding(
                     "key.identity",
@@ -27,11 +30,16 @@ public class IdentityClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         EntityUpdaters.init();
+        ClientNetworking.init();
 
         // add screen opening key-bind
-        ClientTickCallback.EVENT.register(client -> {
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            assert client.player != null;
+
             if(key.wasPressed()) {
-                MinecraftClient.getInstance().openScreen(new IdentityScreen());
+                if(enableMenu || client.player.hasPermissionLevel(3)) {
+                    MinecraftClient.getInstance().openScreen(new IdentityScreen());
+                }
             }
         });
     }

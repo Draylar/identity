@@ -1,6 +1,8 @@
 package draylar.identity.registry;
 
 import draylar.identity.Identity;
+import draylar.identity.api.event.PlayerJoinCallback;
+import draylar.identity.network.ServerNetworking;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.util.ActionResult;
@@ -15,5 +17,7 @@ public class EventHandlers {
 
             return ActionResult.PASS;
         });
+
+        PlayerJoinCallback.EVENT.register(ServerNetworking::updateClientConfig);
     }
 }
