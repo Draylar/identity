@@ -60,7 +60,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         this.identity = identity;
 
         // refresh entity hitbox dimensions
-        ((DimensionsRefresher) player).refresh();
+        ((DimensionsRefresher) player).identity_refreshDimensions();
 
         // Identity is valid and scaling health is on; set entity's max health and current health to reflect identity.
         if(identity != null && Identity.CONFIG.scalingHealth) {
@@ -195,7 +195,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         // set identity to null (no identity) if the entity id is "minecraft:empty"
         if(tag.getString("id").equals("minecraft:empty")) {
             this.identity = null;
-            ((DimensionsRefresher) player).refresh();
+            ((DimensionsRefresher) player).identity_refreshDimensions();
         }
 
         // if entity type was valid, deserialize entity data from tag
@@ -208,7 +208,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
                     identity = (LivingEntity) type.get().create(player.world);
 
                     // refresh player dimensions/hitbox on client
-                    ((DimensionsRefresher) player).refresh();
+                    ((DimensionsRefresher) player).identity_refreshDimensions();
                 }
 
                 identity.fromTag(entityTag);
