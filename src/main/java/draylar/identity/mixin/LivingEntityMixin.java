@@ -4,6 +4,8 @@ import draylar.identity.Identity;
 import draylar.identity.cca.UnlockedIdentitysComponent;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,6 +18,7 @@ import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +35,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow public abstract boolean hasStatusEffect(StatusEffect effect);
 
-    private LivingEntityMixin(EntityType<?> type, World world) {
+    protected LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
@@ -177,7 +180,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(
             method = "getMaxHealth",
-            at = @At("RETURN"),
+            at = @At("HEAD"),
             cancellable = true
     )
     private void modifyMaxHealth(CallbackInfoReturnable<Float> cir) {
@@ -192,16 +195,34 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-//
-//    @Inject(
-//            method = "isClimbing",
-//            at = @At(
-//                    value = "INVOKE",
-//                    target = "Lnet/minecraft/block/BlockState;getBlock()Lnet/minecraft/block/Block;"),
-//            cancellable = true,
-//            locals = LocalCapture.CAPTURE_FAILHARD
-//    )
-//    public void allowSpiderClimbing(CallbackInfoReturnable<Boolean> cir, BlockState state) {
-//        cir.setReturnValue(!state.isAir());
-//    }
+    @Inject(method = "hurtByWater", at = @At("HEAD"), cancellable = true)
+    protected void identity_hurtByWater(CallbackInfoReturnable<Boolean> cir) {
+        // NO-OP
+    }
+
+    @Inject(method = "canBreatheInWater", at = @At("HEAD"), cancellable = true)
+    protected void identity_canBreatheInWater(CallbackInfoReturnable<Boolean> cir) {
+        // NO-OP
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Inject(method = "setNearbySongPlaying", at = @At("RETURN"))
+    protected void identity_setNearbySongPlaying(BlockPos songPosition, boolean playing, CallbackInfo ci) {
+        // NO-OP
+    }
+
+    @Inject(method = "isUndead", at = @At("HEAD"), cancellable = true)
+    protected void identity_isUndead(CallbackInfoReturnable<Boolean> cir) {
+        // NO-OP
+    }
+
+
+    @Inject(
+            method = "isClimbing",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    protected void identity_allowSpiderClimbing(CallbackInfoReturnable<Boolean> cir) {
+        // NO-OP
+    }
 }
