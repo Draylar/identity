@@ -16,6 +16,7 @@
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
+    "TrackTargetGoalMixin",
     "VillagerEntityMixin",
     "VillagerHostilesSensorMixin",
     "WitherEntityMixin",
