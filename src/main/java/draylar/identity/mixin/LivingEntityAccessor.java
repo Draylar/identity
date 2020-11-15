@@ -34,4 +34,10 @@ public interface LivingEntityAccessor {
 
     @Invoker
     int callComputeFallDamage(float fallDistance, float damageMultiplier);
+
+    @Invoker
+    float callGetSoundVolume();
+
+    @Invoker
+    float callGetSoundPitch();
 }

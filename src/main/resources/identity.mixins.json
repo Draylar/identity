@@ -12,6 +12,7 @@
     "InGameHudMixin",
     "LivingEntityAccessor",
     "LivingEntityMixin",
+    "MobEntityAccessor",
     "ParrotEntityAccessor",
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",

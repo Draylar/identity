@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,10 +28,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntityMixin implements NearbySongAccessor {
 
-    @Shadow public abstract boolean isSpectator();
-    @Shadow public abstract EntityDimensions getDimensions(EntityPose pose);
+    @Shadow
+    public abstract boolean isSpectator();
 
-    @Shadow public abstract boolean isSwimming();
+    @Shadow
+    public abstract EntityDimensions getDimensions(EntityPose pose);
+
+    @Shadow
+    public abstract boolean isSwimming();
 
     private PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
@@ -70,7 +75,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
     /**
      * When a player turns into an Aquatic identity, they lose breath outside water.
      *
-     * @param ci  mixin callback info
+     * @param ci mixin callback info
      */
     @Inject(
             method = "tick",
@@ -88,7 +93,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
                     int i = EnchantmentHelper.getRespiration((LivingEntity) (Object) this);
 
                     // If the player has respiration, 50% chance to not consume air
-                    if(i > 0) {
+                    if (i > 0) {
                         if (random.nextInt(i + 1) <= 0) {
                             this.setAir(air - 1);
                         }
@@ -215,6 +220,44 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
         if (Identity.CONFIG.useIdentitySounds && identity != null) {
             cir.setReturnValue(((LivingEntityAccessor) identity).callGetHurtSound(source));
+        }
+    }
+
+
+    // todo: separate mixin for ambient sounds
+    private int identity_ambientSoundChance = 0;
+
+    @Inject(
+            method = "tick",
+            at = @At("HEAD")
+    )
+    private void tickAmbientSounds(CallbackInfo ci) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (!world.isClient && Identity.CONFIG.playAmbientSounds && identity instanceof MobEntity) {
+            MobEntity mobIdentity = (MobEntity) identity;
+
+            if (this.isAlive() && this.random.nextInt(1000) < this.identity_ambientSoundChance++) {
+                // reset sound delay
+                this.identity_ambientSoundChance = -mobIdentity.getMinAmbientSoundDelay();
+
+                // play ambient sound
+                SoundEvent sound = ((MobEntityAccessor) mobIdentity).callGetAmbientSound();
+                if (sound != null) {
+                    float volume = ((LivingEntityAccessor) mobIdentity).callGetSoundVolume();
+                    float pitch = ((LivingEntityAccessor) mobIdentity).callGetSoundPitch();
+
+                    // By default, players can not hear their own ambient noises.
+                    // This is because ambient noises can be very annoying.
+                    if(Identity.CONFIG.hearSelfAmbient) {
+                        this.playSound(sound, volume, pitch);
+                    } else {
+                        if (!this.isSilent()) {
+                            this.world.playSound((PlayerEntity) (Object) this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
+                        }
+                    }
+                }
+            }
         }
     }
 

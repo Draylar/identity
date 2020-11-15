@@ -46,6 +46,12 @@ public class IdentityConfig implements ConfigData {
     @Comment(value = "Whether Identity sounds take priority over Player Sounds (eg. Blaze hurt sound when hit).")
     public boolean useIdentitySounds = true;
 
+    @Comment(value = "Whether disguised players should randomly emit the ambient sound of their Identity.")
+    public boolean playAmbientSounds = true;
+
+    @Comment(value = "Whether disguised players should hear their own ambient sounds (only if playAmbientSounds is true).")
+    public boolean hearSelfAmbient = false;
+
     @Comment(value = "Whether mobs in the flying entity tag can fly.")
     public boolean enableFlight = true;
 

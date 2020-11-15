@@ -216,7 +216,6 @@ public abstract class LivingEntityMixin extends Entity {
         // NO-OP
     }
 
-
     @Inject(
             method = "isClimbing",
             at = @At("HEAD"),
