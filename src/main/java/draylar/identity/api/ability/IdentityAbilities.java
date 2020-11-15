@@ -2,6 +2,7 @@ package draylar.identity.api.ability;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
@@ -65,6 +66,24 @@ public class IdentityAbilities {
             stack.decrement(1);
             smallFireball.setOwner(player);
             world.spawnEntity(smallFireball);
+            player.getItemCooldownManager().set(stack.getItem(), 20);
+            return TypedActionResult.success(stack);
+        });
+
+        IdentityAbilities.register(EntityType.ENDER_DRAGON, Items.FIRE_CHARGE, (player, identity, world, stack, hand) -> {
+            DragonFireballEntity dragonFireball = new DragonFireballEntity(
+                    world,
+                    player.getX(),
+                    player.getEyeY(),
+                    player.getZ(),
+                    player.getRotationVector().x,
+                    player.getRotationVector().y,
+                    player.getRotationVector().z
+            );
+
+            stack.decrement(1);
+            dragonFireball.setOwner(player);
+            world.spawnEntity(dragonFireball);
             player.getItemCooldownManager().set(stack.getItem(), 20);
             return TypedActionResult.success(stack);
         });
