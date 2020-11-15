@@ -60,7 +60,7 @@ public abstract class EntityMixin implements DimensionsRefresher {
     }
 
     @Override
-    public void refresh() {
+    public void identity_refreshDimensions() {
         EntityDimensions currentDimensions = this.dimensions;
         EntityPose entityPose = this.getPose();
         EntityDimensions newDimensions = this.getDimensions(entityPose);

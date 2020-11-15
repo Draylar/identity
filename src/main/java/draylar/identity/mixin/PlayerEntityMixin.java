@@ -3,30 +3,28 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.registry.Components;
-import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.SpiderEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity implements NearbySongAccessor {
+public abstract class PlayerEntityMixin extends LivingEntityMixin implements NearbySongAccessor {
 
     @Shadow public abstract boolean isSpectator();
     @Shadow public abstract EntityDimensions getDimensions(EntityPose pose);
@@ -51,25 +49,21 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     }
 
     @Override
-    public boolean hurtByWater() {
+    protected void identity_hurtByWater(CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
         if (entity != null) {
-            return entity.hurtByWater();
+            cir.setReturnValue(entity.hurtByWater());
         }
-
-        return super.hurtByWater();
     }
 
     @Override
-    public boolean canBreatheInWater() {
+    protected void identity_canBreatheInWater(CallbackInfoReturnable<Boolean> cir) {
         LivingEntity entity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
         if (entity != null) {
-            return entity.canBreatheInWater();
+            cir.setReturnValue(entity.canBreatheInWater());
         }
-
-        return super.canBreatheInWater();
     }
 
     @Inject(
@@ -100,51 +94,42 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     }
 
     // todo: separate into other mixin?
-    private boolean isNearbySongPlaying = false;
+    private boolean nearbySongPlaying = false;
 
     @Environment(EnvType.CLIENT)
     @Override
-    public void setNearbySongPlaying(BlockPos songPosition, boolean playing) {
-        isNearbySongPlaying = playing;
+    protected void identity_setNearbySongPlaying(BlockPos songPosition, boolean playing, CallbackInfo ci) {
+        nearbySongPlaying = playing;
     }
 
     @Override
-    public boolean isNearbySongPlaying() {
-        return isNearbySongPlaying;
+    public boolean identity_isNearbySongPlaying() {
+        return nearbySongPlaying;
     }
 
     @Override
-    public boolean isUndead() {
+    protected void identity_isUndead(CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
         LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
 
-        return identity != null && identity.isUndead();
+        if (identity != null) {
+            cir.setReturnValue(identity.isUndead());
+        }
     }
 
-    @Override
-    public float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+    @Inject(method = "getActiveEyeHeight", at = @At("HEAD"), cancellable = true)
+    private void identity_getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
 
         // cursed
         try {
-            LivingEntity Identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
 
-            if (Identity != null) {
-                return ((LivingEntityAccessor) Identity).callGetActiveEyeHeight(getPose(), getDimensions(getPose()));
+            if (identity != null) {
+                cir.setReturnValue(((LivingEntityAccessor) identity).callGetActiveEyeHeight(getPose(), getDimensions(getPose())));
             }
         } catch (Exception ignored) {
 
-        }
-
-        switch (pose) {
-            case SWIMMING:
-            case FALL_FLYING:
-            case SPIN_ATTACK:
-                return 0.4F;
-            case CROUCHING:
-                return 1.27F;
-            default:
-                return 1.62F;
         }
     }
 
@@ -193,15 +178,13 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NearbySo
     }
 
     @Override
-    public boolean isClimbing() {
+    protected void identity_allowSpiderClimbing(CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
         LivingEntity identity = Components.CURRENT_IDENTITY.get(playerEntity).getIdentity();
 
         if (identity instanceof SpiderEntity) {
-            return this.horizontalCollision;
+            cir.setReturnValue(this.horizontalCollision);
         }
-
-        return super.isClimbing();
     }
 
     @Inject(

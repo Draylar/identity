@@ -66,7 +66,7 @@ public class EntityUpdaters {
         });
 
         EntityUpdaters.register(EntityType.PARROT, (player, parrot) -> {
-            if(player.isOnGround() && ((NearbySongAccessor) player).isNearbySongPlaying()) {
+            if(player.isOnGround() && ((NearbySongAccessor) player).identity_isNearbySongPlaying()) {
                 parrot.setNearbySongPlaying(player.getBlockPos(), true);
                 parrot.setSitting(true);
                 parrot.setOnGround(true);

@@ -18,6 +18,7 @@
     "PlayerManagerMixin",
     "ServerPlayerEntityMixin",
     "SweetBerryBushBlockMixin",
+    "TrackTargetGoalMixin",
     "VillagerEntityMixin",
     "VillagerHostilesSensorMixin",
     "WitherEntityMixin",
