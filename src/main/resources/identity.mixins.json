@@ -16,6 +16,7 @@
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
     "PlayerManagerMixin",
+    "RavagerEntityMixin",
     "ServerPlayerEntityMixin",
     "SweetBerryBushBlockMixin",
     "TrackTargetGoalMixin",
