@@ -71,7 +71,7 @@ public abstract class EntityMixin implements DimensionsRefresher {
         Box box = this.getBoundingBox();
         this.setBoundingBox(new Box(box.minX, box.minY, box.minZ, box.minX + (double) newDimensions.width, box.minY + (double) newDimensions.height, box.minZ + (double)newDimensions.width));
 
-        if (!this.firstUpdate && !this.world.isClient) {
+        if (!this.firstUpdate) {
             float f = currentDimensions.width - newDimensions.width;
             this.move(MovementType.SELF, new Vec3d(f, 0.0D, f));
         }
