@@ -1,7 +1,7 @@
 package draylar.identity.mixin;
 
 import draylar.identity.Identity;
-import draylar.identity.cca.UnlockedIdentitysComponent;
+import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
@@ -49,7 +49,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         // check if attacker is a player to grant identity
         if(attacker instanceof PlayerEntity) {
-            UnlockedIdentitysComponent unlocked = Components.UNLOCKED_IDENTITIES.get(attacker);
+            UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(attacker);
 
             // ensure type has not already been unlocked
             if(!unlocked.has(thisType)) {

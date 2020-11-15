@@ -2,7 +2,7 @@ package draylar.identity.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import draylar.identity.cca.IdentityComponent;
-import draylar.identity.cca.UnlockedIdentitysComponent;
+import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -154,7 +154,7 @@ public class IdentityCommand {
     }
 
     private static void grant(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity) {
-        UnlockedIdentitysComponent unlocked = Components.UNLOCKED_IDENTITIES.get(player);
+        UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(player);
         EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
 
         if(!unlocked.has(entity)) {
@@ -167,7 +167,7 @@ public class IdentityCommand {
     }
 
     private static void revoke(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity)  {
-        UnlockedIdentitysComponent unlocked = Components.UNLOCKED_IDENTITIES.get(player);
+        UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(player);
         EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
 
         if(unlocked.has(entity)) {

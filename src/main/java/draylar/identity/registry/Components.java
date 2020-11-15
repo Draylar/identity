@@ -5,9 +5,10 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import draylar.identity.Identity;
+import draylar.identity.cca.FavoriteIdentitiesComponent;
 import draylar.identity.cca.HostilityComponent;
 import draylar.identity.cca.IdentityComponent;
-import draylar.identity.cca.UnlockedIdentitysComponent;
+import draylar.identity.cca.UnlockedIdentitiesComponent;
 import nerdhub.cardinal.components.api.util.RespawnCopyStrategy;
 
 public class Components implements EntityComponentInitializer {
@@ -17,9 +18,14 @@ public class Components implements EntityComponentInitializer {
             IdentityComponent.class
     );
 
-    public static final ComponentKey<UnlockedIdentitysComponent> UNLOCKED_IDENTITIES = ComponentRegistry.getOrCreate(
+    public static final ComponentKey<UnlockedIdentitiesComponent> UNLOCKED_IDENTITIES = ComponentRegistry.getOrCreate(
             Identity.id("unlocked_identities"),
-            UnlockedIdentitysComponent.class
+            UnlockedIdentitiesComponent.class
+    );
+
+    public static final ComponentKey<FavoriteIdentitiesComponent> FAVORITE_IDENTITIES = ComponentRegistry.getOrCreate(
+            Identity.id("favorite_identities"),
+            FavoriteIdentitiesComponent.class
     );
 
     public static final ComponentKey<HostilityComponent> HOSTILITY = ComponentRegistry.getOrCreate(
@@ -30,7 +36,8 @@ public class Components implements EntityComponentInitializer {
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(Components.CURRENT_IDENTITY, IdentityComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
-        registry.registerForPlayers(Components.UNLOCKED_IDENTITIES, UnlockedIdentitysComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(Components.UNLOCKED_IDENTITIES, UnlockedIdentitiesComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(Components.FAVORITE_IDENTITIES, FavoriteIdentitiesComponent::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(Components.HOSTILITY, p -> new HostilityComponent(), RespawnCopyStrategy.ALWAYS_COPY);
     }
 }

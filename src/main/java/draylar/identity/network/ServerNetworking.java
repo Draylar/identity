@@ -1,6 +1,7 @@
 package draylar.identity.network;
 
 import draylar.identity.Identity;
+import draylar.identity.cca.FavoriteIdentitiesComponent;
 import draylar.identity.registry.Components;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
@@ -14,6 +15,7 @@ public class ServerNetworking implements NetworkHandler {
 
     public static void init() {
         registerIdentityRequestPacketHandler();
+        registerFavoritePacketHandler();
     }
 
     private static void registerIdentityRequestPacketHandler() {
@@ -30,6 +32,20 @@ public class ServerNetworking implements NetworkHandler {
 
                 // Refresh player dimensions
                 context.getPlayer().calculateDimensions();
+            }
+        });
+    }
+
+    private static void registerFavoritePacketHandler() {
+        ServerSidePacketRegistry.INSTANCE.register(FAVORITE_UPDATE, (context, packet) -> {
+            EntityType<?> type = Registry.ENTITY_TYPE.get(packet.readIdentifier());
+            boolean favorite = packet.readBoolean();
+            PlayerEntity player = context.getPlayer();
+
+            if(favorite) {
+                Components.FAVORITE_IDENTITIES.get(player).favorite(type);
+            } else {
+                Components.FAVORITE_IDENTITIES.get(player).unfavorite(type);
             }
         });
     }

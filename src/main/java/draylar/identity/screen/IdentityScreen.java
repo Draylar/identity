@@ -1,7 +1,8 @@
 package draylar.identity.screen;
 
+import draylar.identity.cca.FavoriteIdentitiesComponent;
 import draylar.identity.cca.IdentityComponent;
-import draylar.identity.cca.UnlockedIdentitysComponent;
+import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
 import draylar.identity.screen.widget.WEntityButton;
 import draylar.identity.screen.widget.WPlayerButton;
@@ -10,6 +11,7 @@ import draylar.identity.screen.widget.WVerticalScrollableUnfadingContainer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.Window;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
@@ -22,12 +24,14 @@ import spinnery.widget.api.Position;
 import spinnery.widget.api.Size;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class IdentityScreen extends BaseScreen {
 
     private final List<LivingEntity> renderEntities = new ArrayList<>();
+    private final List<WEntityButton> buttons = new ArrayList<>();
 
     public IdentityScreen() {
         super();
@@ -41,17 +45,27 @@ public class IdentityScreen extends BaseScreen {
         WSearchBar searchBar = createSearchBar(wInterface);
 
         // add player icon next to searchbar
-        WPlayerButton playerButton = createPlayerButton(wInterface);
+        createPlayerButton(wInterface);
 
         // get identity components from player
-        UnlockedIdentitysComponent unlockedIdentitys = Components.UNLOCKED_IDENTITIES.get(MinecraftClient.getInstance().player);
-        IdentityComponent currentIdentity = Components.CURRENT_IDENTITY.get(MinecraftClient.getInstance().player);
+        UnlockedIdentitiesComponent unlockedComponent = Components.UNLOCKED_IDENTITIES.get(MinecraftClient.getInstance().player);
+        FavoriteIdentitiesComponent favoritesComponent = Components.FAVORITE_IDENTITIES.get(MinecraftClient.getInstance().player);
+        IdentityComponent currentIdentityComponent = Components.CURRENT_IDENTITY.get(MinecraftClient.getInstance().player);
 
         // collect unlocked entities
-        List<LivingEntity> unlocked = collectUnlockedEntities(unlockedIdentitys);
+        List<LivingEntity> unlocked = collectUnlockedEntities(unlockedComponent);
+
+        // sort unlocked based on favorites
+        Collections.sort(unlocked, (first, second) -> {
+            if(favoritesComponent.has(first.getType())) {
+                return -1;
+            }
+
+            return 1;
+        });
 
         // add entity widgets
-        populateEntityWidgets(container, unlocked);
+        populateEntityWidgets(container, unlocked, favoritesComponent, currentIdentityComponent);
 
         // add hint if the player has no unlocks on what to do
         if(unlocked.isEmpty()) {
@@ -70,11 +84,11 @@ public class IdentityScreen extends BaseScreen {
                     .filter(livingEntity -> livingEntity.getType().getTranslationKey().contains(widget.getText()))
                     .collect(Collectors.toList());
 
-            populateEntityWidgets(container, filtered);
+            populateEntityWidgets(container, filtered, favoritesComponent, currentIdentityComponent);
         });
     }
 
-    private void populateEntityWidgets(WVerticalScrollableContainer container, List<LivingEntity> unlocked) {
+    private void populateEntityWidgets(WVerticalScrollableContainer container, List<LivingEntity> unlocked, FavoriteIdentitiesComponent favorites, IdentityComponent current) {
         // add widget for each unlocked entity
         int x = 0;
         int y = 0;
@@ -89,9 +103,18 @@ public class IdentityScreen extends BaseScreen {
                 if(listIndex < unlocked.size()) {
                     LivingEntity livingEntity = unlocked.get(listIndex);
 
-                    WEntityButton button = new WEntityButton(livingEntity)
+                    // Determine whether this widget should start with the selection outline
+                    boolean isCurrent = false;
+                    if(current.getIdentity() != null && livingEntity.getType().equals(current.getIdentity().getType())) {
+                        isCurrent = true;
+                    }
+
+                    // Add and create button
+                    WEntityButton button = new WEntityButton(livingEntity, this, favorites.has(livingEntity.getType()), isCurrent)
                             .setSize(Size.of((getWindow().getScaledWidth() - 27) / 7f, getWindow().getScaledHeight() / 5f))
                             .setPosition(Position.of(container, (getWindow().getScaledWidth() - 27) / 7f * x, getWindow().getScaledHeight() / 5f * y));
+
+                    buttons.add(button);
 
 //                    button.setOnAlign(widget -> widget.setSize(Size.of((getWindow().getScaledWidth() - 27) / 7f, getWindow().getScaledHeight() / 5f))
 //                            .setPosition(Position.of(container, (getWindow().getScaledWidth() - 27) / 7f * x, getWindow().getScaledHeight() / 5f * y)));
@@ -117,7 +140,7 @@ public class IdentityScreen extends BaseScreen {
         }
     }
 
-    private List<LivingEntity> collectUnlockedEntities(UnlockedIdentitysComponent unlockedIdentitys) {
+    private List<LivingEntity> collectUnlockedEntities(UnlockedIdentitiesComponent unlockedIdentitys) {
         List<LivingEntity> unlocked = new ArrayList<>();
 
         // collect current unlocked identities (or allow all for creative users)
@@ -157,17 +180,21 @@ public class IdentityScreen extends BaseScreen {
 
     private WPlayerButton createPlayerButton(WInterface wInterface) {
         WPlayerButton playerButton = wInterface
-                .createChild(WPlayerButton::new)
+                .createChild(() -> new WPlayerButton(this))
                 .setSize(Size.of(15f, 15f))
                 .setPosition(Position.of(getWindow().getScaledWidth() / 2f + (getWindow().getScaledWidth() / 8f) + 5, 7, 0));
 
-//        playerButton.setOnAlign(widget -> widget
-//                .setPosition(Position.of(getWindow().getScaledWidth() / 2f - (getWindow().getScaledWidth() / 4f / 2) - 5, 5, 0)));
+        playerButton.setOnAlign(widget -> widget
+                .setPosition(Position.of(getWindow().getScaledWidth() / 2f + (getWindow().getScaledWidth() / 8f) + 5, 7, 0)));
 
         return playerButton;
     }
 
     public Window getWindow() {
         return MinecraftClient.getInstance().getWindow();
+    }
+
+    public void disableAll() {
+        buttons.forEach(button -> button.setActive(false));
     }
 }

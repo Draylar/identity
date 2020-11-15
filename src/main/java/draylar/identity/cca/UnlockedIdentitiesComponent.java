@@ -17,12 +17,12 @@ import net.minecraft.util.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnlockedIdentitysComponent implements AutoSyncedComponent {
+public class UnlockedIdentitiesComponent implements AutoSyncedComponent {
 
     private final PlayerEntity player;
     private final List<Identifier> unlocked = new ArrayList<>();
 
-    public UnlockedIdentitysComponent(PlayerEntity player) {
+    public UnlockedIdentitiesComponent(PlayerEntity player) {
         this.player = player;
     }
 
@@ -59,6 +59,7 @@ public class UnlockedIdentitysComponent implements AutoSyncedComponent {
     public void readFromNbt(CompoundTag tag) {
         unlocked.clear();
 
+        // reminder: do not change this tag
         ListTag idList = tag.getList("UnlockedMorphs", NbtType.STRING);
 
         idList.forEach(idTag -> {
@@ -74,6 +75,7 @@ public class UnlockedIdentitysComponent implements AutoSyncedComponent {
             idList.add(StringTag.of(entityId.toString()));
         });
 
+        // reminder: do not change this tag
         tag.put("UnlockedMorphs", idList);
     }
 }

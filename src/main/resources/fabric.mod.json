@@ -30,6 +30,7 @@
     "cardinal-components": [
       "identity:current_identity",
       "identity:unlocked_identities",
+      "identity:favorite_identities",
       "identity:hostility"
     ]
   },
