@@ -5,6 +5,7 @@ import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.registry.Components;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
@@ -66,11 +67,16 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
         }
     }
 
+    /**
+     * When a player turns into an Aquatic identity, they lose breath outside water.
+     *
+     * @param ci  mixin callback info
+     */
     @Inject(
             method = "tick",
             at = @At("HEAD")
     )
-    private void tickAquaticBreathing(CallbackInfo ci) {
+    private void tickAquaticBreathingOutsideWater(CallbackInfo ci) {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
         if (identity != null) {
@@ -79,9 +85,21 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
                 // copy of WaterCreatureEntity#tickWaterBreathingAir
                 if (this.isAlive() && !this.isInsideWaterOrBubbleColumn()) {
-                    this.setAir(air - 1);
+                    int i = EnchantmentHelper.getRespiration((LivingEntity) (Object) this);
 
-                    // damage at threshold
+                    // If the player has respiration, 50% chance to not consume air
+                    if(i > 0) {
+                        if (random.nextInt(i + 1) <= 0) {
+                            this.setAir(air - 1);
+                        }
+                    }
+
+                    // No respiration, decrease air as normal
+                    else {
+                        this.setAir(air - 1);
+                    }
+
+                    // Air has ran out, start drowning
                     if (this.getAir() == -20) {
                         this.setAir(0);
                         this.damage(DamageSource.DROWN, 2.0F);
