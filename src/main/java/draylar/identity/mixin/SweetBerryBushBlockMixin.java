@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.BeeEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +22,7 @@ public class SweetBerryBushBlockMixin {
 
     @Inject(
             method = "onEntityCollision",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"),
+            at = @At(value = "HEAD"),
             cancellable = true
     )
     private void onDamage(BlockState state, World world, BlockPos pos, Entity entity, CallbackInfo ci) {
@@ -30,7 +31,7 @@ public class SweetBerryBushBlockMixin {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
             // Cancel damage if the player's identity is a fox
-            if(identity instanceof FoxEntity) {
+            if(identity instanceof FoxEntity || identity instanceof BeeEntity) {
                 ci.cancel();
             }
         }
