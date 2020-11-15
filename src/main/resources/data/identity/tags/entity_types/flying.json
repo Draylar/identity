@@ -6,6 +6,9 @@
     "minecraft:blaze",
     "minecraft:parrot",
     "minecraft:phantom",
-    "minecraft:bee"
+    "minecraft:bee",
+    "minecraft:ender_dragon",
+    "minecraft:wither",
+    "minecraft:vex"
   ]
 }
