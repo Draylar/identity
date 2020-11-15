@@ -3,6 +3,8 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.api.model.EntityUpdater;
 import draylar.identity.api.model.EntityUpdaters;
+import draylar.identity.api.sneak.SneakHandler;
+import draylar.identity.api.sneak.SneakHandlers;
 import draylar.identity.registry.Components;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -13,16 +15,20 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
@@ -55,7 +61,6 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             identity.prevHeadYaw = player.prevHeadYaw;
             identity.age = player.age;
             identity.preferredHand = player.preferredHand;
-            identity.setPose(player.getPose());
 
             ((EntityAccessor) identity).setVehicle(player.getVehicle());
             ((EntityAccessor) identity).setTouchingWater(player.isTouchingWater());
@@ -83,6 +88,16 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
                 identity.equipStack(EquipmentSlot.FEET, player.getEquippedStack(EquipmentSlot.FEET));
             }
 
+            // Assign pose
+            EntityPose pose = player.getPose();
+            EntityType<? extends LivingEntity> livingType = (EntityType<? extends LivingEntity>) identity.getType();
+            SneakHandler sneakHandler = SneakHandlers.get(livingType);
+            if(pose == EntityPose.CROUCHING && sneakHandler != null) {
+                sneakHandler.onSneak((PlayerEntity) player, identity);
+            } else {
+                identity.setPose(pose);
+            }
+
             // set active hand after configuring held items
             identity.setCurrentHand(player.getActiveHand() == null ? Hand.MAIN_HAND : player.getActiveHand());
 
@@ -98,6 +113,24 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             IdentityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
         } else {
             super.render((AbstractClientPlayerEntity) player, f, g, matrixStack, vertexConsumerProvider, i);
+        }
+    }
+
+    @Inject(
+            method = "getPositionOffset",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void modifyPositionOffset(AbstractClientPlayerEntity player, float f, CallbackInfoReturnable<Vec3d> cir) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
+
+        if(identity != null) {
+            EntityType<? extends LivingEntity> livingType = (EntityType<? extends LivingEntity>) identity.getType();
+            SneakHandler sneakHandler = SneakHandlers.get(livingType);
+
+            if(player.isInSneakingPose() && sneakHandler != null) {
+                cir.setReturnValue(super.getPositionOffset(player, f));
+            }
         }
     }
 }

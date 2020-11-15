@@ -2,6 +2,7 @@ package draylar.identity;
 
 import draylar.identity.api.ability.IdentityAbilities;
 import draylar.identity.api.ability.IdentityAbility;
+import draylar.identity.api.sneak.SneakHandlers;
 import draylar.identity.config.IdentityConfig;
 import draylar.identity.network.ServerNetworking;
 import draylar.identity.registry.Commands;
@@ -14,7 +15,6 @@ import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.entity.EntityType;
@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
@@ -39,6 +38,7 @@ public class Identity implements ModInitializer {
         EntityTags.init();
         IdentityAbilities.init();
         EventHandlers.init();
+        SneakHandlers.init();
         Commands.init();
         ServerNetworking.init();
 

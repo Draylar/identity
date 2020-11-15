@@ -105,9 +105,9 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
             identity.setStuckArrowCount(player.getStuckArrowCount());
             identity.setInvulnerable(true);
             identity.setNoGravity(true);
-            identity.setPose(player.getPose());
             identity.setSwimming(player.isSwimming());
             identity.setCurrentHand(player.getActiveHand());
+            identity.setPose(player.getPose());
 
             ((LivingEntityAccessor) identity).callTickActiveItemStack();
             Components.CURRENT_IDENTITY.sync(player);
