@@ -3,6 +3,7 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.registry.Components;
+import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -15,7 +16,9 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -284,6 +287,15 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
         if (Identity.CONFIG.useIdentitySounds && identity != null) {
             cir.setReturnValue(((LivingEntityAccessor) identity).callGetFallSound(distance));
+        }
+    }
+
+    @Override
+    protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
+            cir.setReturnValue(true);
         }
     }
 }

@@ -17,6 +17,7 @@ import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -213,6 +214,11 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "isUndead", at = @At("HEAD"), cancellable = true)
     protected void identity_isUndead(CallbackInfoReturnable<Boolean> cir) {
+        // NO-OP
+    }
+
+    @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
+    protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
         // NO-OP
     }
 

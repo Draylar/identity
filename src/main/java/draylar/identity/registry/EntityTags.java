@@ -17,6 +17,7 @@ public class EntityTags {
     public static final Tag<EntityType<?>> HURT_BY_HIGH_TEMPERATURE = register("hurt_by_high_temperature");
     public static final Tag<EntityType<?>> RAVAGER_RIDING = register("ravager_riding");
     public static final Tag<EntityType<?>> PIGLIN_FRIENDLY = register("piglin_friendly");
+    public static final Tag<EntityType<?>> LAVA_WALKING = register("lava_walking");
 
     private EntityTags() { }
 

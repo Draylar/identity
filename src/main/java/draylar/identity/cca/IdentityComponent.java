@@ -14,6 +14,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
@@ -106,9 +107,15 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
             identity.setStuckArrowCount(player.getStuckArrowCount());
             identity.setInvulnerable(true);
             identity.setNoGravity(true);
+            identity.setSneaking(player.isSneaking());
             identity.setSwimming(player.isSwimming());
             identity.setCurrentHand(player.getActiveHand());
             identity.setPose(player.getPose());
+
+            if(identity instanceof TameableEntity) {
+                ((TameableEntity) identity).setInSittingPose(player.isSneaking());
+                ((TameableEntity) identity).setSitting(player.isSneaking());
+            }
 
             ((EntityAccessor) identity).callSetFlag(7, player.isFallFlying());
 

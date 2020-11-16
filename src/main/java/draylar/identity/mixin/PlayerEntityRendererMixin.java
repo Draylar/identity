@@ -3,8 +3,6 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.api.model.EntityUpdater;
 import draylar.identity.api.model.EntityUpdaters;
-import draylar.identity.api.sneak.SneakHandler;
-import draylar.identity.api.sneak.SneakHandlers;
 import draylar.identity.registry.Components;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -14,19 +12,15 @@ import net.minecraft.client.render.entity.*;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PhantomEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -101,14 +95,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             }
 
             // Assign pose
-            EntityPose pose = player.getPose();
-            EntityType<? extends LivingEntity> livingType = (EntityType<? extends LivingEntity>) identity.getType();
-            SneakHandler sneakHandler = SneakHandlers.get(livingType);
-            if(pose == EntityPose.CROUCHING && sneakHandler != null) {
-                sneakHandler.onSneak((PlayerEntity) player, identity);
-            } else {
-                identity.setPose(pose);
-            }
+            identity.setPose(player.getPose());
 
             // set active hand after configuring held items
             identity.setCurrentHand(player.getActiveHand() == null ? Hand.MAIN_HAND : player.getActiveHand());
@@ -175,10 +162,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
         if(identity != null) {
-            EntityType<? extends LivingEntity> livingType = (EntityType<? extends LivingEntity>) identity.getType();
-            SneakHandler sneakHandler = SneakHandlers.get(livingType);
-
-            if(player.isInSneakingPose() && sneakHandler != null) {
+            if(identity instanceof TameableEntity) {
                 cir.setReturnValue(super.getPositionOffset(player, f));
             }
         }
