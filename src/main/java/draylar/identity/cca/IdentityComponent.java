@@ -4,6 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import draylar.identity.Identity;
 import draylar.identity.impl.DimensionsRefresher;
+import draylar.identity.mixin.EntityAccessor;
 import draylar.identity.mixin.LivingEntityAccessor;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
@@ -108,6 +109,8 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
             identity.setSwimming(player.isSwimming());
             identity.setCurrentHand(player.getActiveHand());
             identity.setPose(player.getPose());
+
+            ((EntityAccessor) identity).callSetFlag(7, player.isFallFlying());
 
             ((LivingEntityAccessor) identity).callTickActiveItemStack();
             Components.CURRENT_IDENTITY.sync(player);

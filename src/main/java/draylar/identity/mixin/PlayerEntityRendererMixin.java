@@ -8,20 +8,25 @@ import draylar.identity.api.sneak.SneakHandlers;
 import draylar.identity.registry.Components;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
+import net.minecraft.client.render.entity.*;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.CrossbowItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,7 +38,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
-    @Shadow protected abstract void setModelPose(AbstractClientPlayerEntity abstractClientPlayerEntity);
+    @Shadow
+    protected static BipedEntityModel.ArmPose getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand) {
+        return null;
+    }
 
     private PlayerEntityRendererMixin(EntityRenderDispatcher dispatcher, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowSize) {
         super(dispatcher, model, shadowSize);
@@ -88,6 +96,10 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
                 identity.equipStack(EquipmentSlot.FEET, player.getEquippedStack(EquipmentSlot.FEET));
             }
 
+            if (identity instanceof MobEntity) {
+                ((MobEntity) identity).setAttacking(player.isUsingItem());
+            }
+
             // Assign pose
             EntityPose pose = player.getPose();
             EntityType<? extends LivingEntity> livingType = (EntityType<? extends LivingEntity>) identity.getType();
@@ -100,6 +112,9 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
             // set active hand after configuring held items
             identity.setCurrentHand(player.getActiveHand() == null ? Hand.MAIN_HAND : player.getActiveHand());
+            ((LivingEntityAccessor) identity).callSetLivingFlag(1, player.isUsingItem());
+            identity.getItemUseTime();
+            ((LivingEntityAccessor) identity).callTickActiveItemStack();
 
             // update identity specific properties
             EntityUpdater entityUpdater = EntityUpdaters.getUpdater((EntityType<? extends LivingEntity>) identity.getType());
@@ -109,10 +124,45 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         }
 
         if(identity != null) {
-            EntityRenderer IdentityRenderer = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(identity);
-            IdentityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
+            EntityRenderer identityRenderer = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(identity);
+
+            // Sync biped information for stuff like bow drawing animation
+            if(identityRenderer instanceof BipedEntityRenderer) {
+                identity_setBipedIdentityModelPose((ClientPlayerEntity) player, identity, (BipedEntityRenderer) identityRenderer);
+            }
+
+            identityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
         } else {
             super.render((AbstractClientPlayerEntity) player, f, g, matrixStack, vertexConsumerProvider, i);
+        }
+    }
+
+    private void identity_setBipedIdentityModelPose(ClientPlayerEntity player, LivingEntity identity, LivingEntityRenderer identityRenderer) {
+        BipedEntityModel<?> identityBipedModel = (BipedEntityModel) identityRenderer.getModel();
+
+        if (identity.isSpectator()) {
+            identityBipedModel.setVisible(false);
+            identityBipedModel.head.visible = true;
+            identityBipedModel.helmet.visible = true;
+        } else {
+            identityBipedModel.setVisible(true);
+            identityBipedModel.helmet.visible = player.isPartVisible(PlayerModelPart.HAT);
+            identityBipedModel.sneaking = identity.isInSneakingPose();
+
+            BipedEntityModel.ArmPose mainHandPose = getArmPose(player, Hand.MAIN_HAND);
+            BipedEntityModel.ArmPose offHandPose = getArmPose(player, Hand.OFF_HAND);
+
+            if (mainHandPose.method_30156()) {
+                offHandPose = identity.getOffHandStack().isEmpty() ? BipedEntityModel.ArmPose.EMPTY : BipedEntityModel.ArmPose.ITEM;
+            }
+
+            if (identity.getMainArm() == Arm.RIGHT) {
+                identityBipedModel.rightArmPose = mainHandPose;
+                identityBipedModel.leftArmPose = offHandPose;
+            } else {
+                identityBipedModel.rightArmPose = offHandPose;
+                identityBipedModel.leftArmPose = mainHandPose;
+            }
         }
     }
 

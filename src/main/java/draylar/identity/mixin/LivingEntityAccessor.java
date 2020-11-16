@@ -40,4 +40,7 @@ public interface LivingEntityAccessor {
 
     @Invoker
     float callGetSoundPitch();
+
+    @Invoker
+    void callSetLivingFlag(int mask, boolean value);
 }
