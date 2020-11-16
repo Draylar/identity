@@ -2,7 +2,6 @@ package draylar.identity;
 
 import draylar.identity.api.ability.IdentityAbilities;
 import draylar.identity.api.ability.IdentityAbility;
-import draylar.identity.api.sneak.SneakHandlers;
 import draylar.identity.config.IdentityConfig;
 import draylar.identity.network.ServerNetworking;
 import draylar.identity.registry.Commands;
@@ -38,7 +37,6 @@ public class Identity implements ModInitializer {
         EntityTags.init();
         IdentityAbilities.init();
         EventHandlers.init();
-        SneakHandlers.init();
         Commands.init();
         ServerNetworking.init();
 
