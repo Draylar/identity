@@ -59,14 +59,13 @@ public class IdentityScreen extends Screen {
         populateEntityWidgets(unlocked, favoritesComponent, currentIdentityComponent);
 
         // implement search handler
-        searchBar.setChangedListener(widget -> {
-            buttons.removeIf(button -> {
-                return button instanceof EntityWidget;
-            });
+        searchBar.setChangedListener(text -> {
+            buttons.removeIf(button -> button instanceof EntityWidget);
+            children.removeIf(button -> button instanceof EntityWidget);
 
             List<LivingEntity> filtered = unlocked
                     .stream()
-                    .filter(livingEntity -> livingEntity.getType().getTranslationKey().contains(widget))
+                    .filter(livingEntity -> text.isEmpty() || livingEntity.getType().getTranslationKey().contains(text))
                     .collect(Collectors.toList());
 
             populateEntityWidgets(filtered, favoritesComponent, currentIdentityComponent);
