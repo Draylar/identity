@@ -93,4 +93,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "In ticks, how long until the Creeper can ka-boom again?")
     public int creeperAbilityCooldown = 100;
+
+    @Comment(value = "In ticks, how long until the Wither can shoot a wither skull again?")
+    public int witherAbilityCooldown = 200;
 }

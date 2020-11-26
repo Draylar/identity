@@ -132,7 +132,7 @@ public class IdentityAbilities {
                 world.spawnEntity(skull);
             }
 
-            player.getItemCooldownManager().set(stack.getItem(), 200);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.witherAbilityCooldown);
             return TypedActionResult.success(stack);
         });
     }
