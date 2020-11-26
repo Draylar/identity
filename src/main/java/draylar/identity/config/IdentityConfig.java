@@ -72,4 +72,25 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "If set to false, only operators can switch identities. Used on the server; guaranteed to be authoritative.")
     public boolean enableSwaps = true;
+
+    @Comment(value = "If set, using the ability will consume one of the related item")
+    public boolean abilityConsumesItem = true;
+
+    @Comment(value = "In ticks, how long until the Ghast can shoot a fireball again?")
+    public int ghastAbilityCooldown = 60;
+
+    @Comment(value = "In ticks, how long until the Blaze can shoot a mini fireball again?")
+    public int blazeAbilityCooldown = 20;
+
+    @Comment(value = "In ticks, how long until the Ender Dragon can shoot a dragon fireball again?")
+    public int dragonAbilityCooldown = 20;
+
+    @Comment(value = "In ticks, how long until the Enderman can teleport again?")
+    public int endermanAbilityCooldown = 100;
+
+    @Comment(value = "In blocks, how far can the Enderman ability teleport?")
+    public int endermanAbilityTeleportDistance = 32;
+
+    @Comment(value = "In ticks, how long until the Creeper can ka-boom again?")
+    public int creeperAbilityCooldown = 100;
 }
