@@ -115,7 +115,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
             // Sync biped information for stuff like bow drawing animation
             if(identityRenderer instanceof BipedEntityRenderer) {
-                identity_setBipedIdentityModelPose((ClientPlayerEntity) player, identity, (BipedEntityRenderer) identityRenderer);
+                identity_setBipedIdentityModelPose((AbstractClientPlayerEntity) player, identity, (BipedEntityRenderer) identityRenderer);
             }
 
             identityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
@@ -124,7 +124,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         }
     }
 
-    private void identity_setBipedIdentityModelPose(ClientPlayerEntity player, LivingEntity identity, LivingEntityRenderer identityRenderer) {
+    private void identity_setBipedIdentityModelPose(AbstractClientPlayerEntity player, LivingEntity identity, LivingEntityRenderer identityRenderer) {
         BipedEntityModel<?> identityBipedModel = (BipedEntityModel) identityRenderer.getModel();
 
         if (identity.isSpectator()) {
