@@ -1,5 +1,7 @@
 package draylar.identity.api.ability;
 
+import draylar.identity.Identity;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
@@ -23,6 +25,7 @@ import java.util.Map;
 public class IdentityAbilities {
 
     private static final Map<EntityType<? extends LivingEntity>, Map<Item, IdentityAbility>> abilities = new HashMap<>();
+    private static final int decrementAmount = Identity.CONFIG.abilityConsumesItem ? 1 : 0;
 
     private IdentityAbilities() {
 
@@ -40,12 +43,12 @@ public class IdentityAbilities {
                     player.getRotationVector().z
             );
 
-            stack.decrement(1);
+            stack.decrement(decrementAmount);
             fireball.setOwner(player);
             world.spawnEntity(fireball);
             world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
             world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_WARN, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
-            player.getItemCooldownManager().set(stack.getItem(), 60);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.ghastAbilityCooldown);
 
             return TypedActionResult.success(stack);
         });
@@ -63,10 +66,10 @@ public class IdentityAbilities {
 
             // todo: play blaze sound
 
-            stack.decrement(1);
+            stack.decrement(decrementAmount);
             smallFireball.setOwner(player);
             world.spawnEntity(smallFireball);
-            player.getItemCooldownManager().set(stack.getItem(), 20);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.blazeAbilityCooldown);
             return TypedActionResult.success(stack);
         });
 
@@ -81,25 +84,25 @@ public class IdentityAbilities {
                     player.getRotationVector().z
             );
 
-            stack.decrement(1);
+            stack.decrement(decrementAmount);
             dragonFireball.setOwner(player);
             world.spawnEntity(dragonFireball);
-            player.getItemCooldownManager().set(stack.getItem(), 20);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.dragonAbilityCooldown);
             return TypedActionResult.success(stack);
         });
 
         IdentityAbilities.register(EntityType.ENDERMAN, Items.ENDER_PEARL, (player, identity, world, stack, hand) -> {
-            HitResult lookingAt = player.raycast(32, 0, true);
+            HitResult lookingAt = player.raycast(Identity.CONFIG.endermanAbilityTeleportDistance, 0, true);
             player.requestTeleport(lookingAt.getPos().x, lookingAt.getPos().y, lookingAt.getPos().z);
-            stack.decrement(1);
-            player.getItemCooldownManager().set(stack.getItem(), 100);
+            stack.decrement(decrementAmount);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.endermanAbilityCooldown);
             return TypedActionResult.success(stack);
         });
 
         IdentityAbilities.register(EntityType.CREEPER, Items.GUNPOWDER, (player, identity, world, stack, hand) -> {
             world.createExplosion(player, player.getX(), player.getY(), player.getZ(), 3.0f, Explosion.DestructionType.NONE);
-            stack.decrement(1);
-            player.getItemCooldownManager().set(stack.getItem(), 100);
+            stack.decrement(decrementAmount);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.creeperAbilityCooldown);
             return TypedActionResult.success(stack);
         });
 
@@ -129,7 +132,7 @@ public class IdentityAbilities {
                 world.spawnEntity(skull);
             }
 
-            player.getItemCooldownManager().set(stack.getItem(), 200);
+            player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.witherAbilityCooldown);
             return TypedActionResult.success(stack);
         });
     }
