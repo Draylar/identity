@@ -44,7 +44,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
      *
      * <p>Note that this method may return null, which represents "no identity."
      *
-     * @return  the current {@link LivingEntity} identity associated with this component's player owner, or null if they have no identity equipped
+     * @return the current {@link LivingEntity} identity associated with this component's player owner, or null if they have no identity equipped
      */
     public LivingEntity getIdentity() {
         return identity;
@@ -56,7 +56,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
      * <p>Setting a identity refreshes the player's dimensions/hitbox, and toggles flight capabilities depending on the entity.
      * To clear this component's identity, pass null.
      *
-     * @param identity  {@link LivingEntity} new identity for this component, or null to clear
+     * @param identity {@link LivingEntity} new identity for this component, or null to clear
      */
     public void setIdentity(LivingEntity identity) {
         this.identity = identity;
@@ -65,18 +65,18 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         ((DimensionsRefresher) player).identity_refreshDimensions();
 
         // Identity is valid and scaling health is on; set entity's max health and current health to reflect identity.
-        if(identity != null && Identity.CONFIG.scalingHealth) {
+        if (identity != null && Identity.CONFIG.scalingHealth) {
             player.setHealth(Math.min(player.getHealth(), identity.getMaxHealth()));
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(Math.min(Identity.CONFIG.maxHealth, identity.getMaxHealth()));
         }
 
         // If the identity is null (going back to player), set the player's base health value to 20 (default) to clear old changes.
-        if(identity == null) {
+        if (identity == null) {
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20);
         }
 
         // update flight properties on player depending on identity
-        if(Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
+        if (Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
             Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
         } else {
             Identity.ABILITY_SOURCE.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
@@ -112,7 +112,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
             identity.setCurrentHand(player.getActiveHand());
             identity.setPose(player.getPose());
 
-            if(identity instanceof TameableEntity) {
+            if (identity instanceof TameableEntity) {
                 ((TameableEntity) identity).setInSittingPose(player.isSneaking());
                 ((TameableEntity) identity).setSitting(player.isSneaking());
             }
@@ -136,6 +136,11 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
                 if (EntityTags.BURNS_IN_DAYLIGHT.contains(type)) {
                     boolean bl = this.isInDaylight();
                     if (bl) {
+
+                        // Can't burn in the rain
+                        if (player.world.isRaining()) {
+                            return;
+                        }
 
                         // check for helmets to negate burning
                         ItemStack itemStack = this.player.getEquippedStack(EquipmentSlot.HEAD);
@@ -203,7 +208,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         Optional<EntityType<?>> type = EntityType.fromTag(tag);
 
         // set identity to null (no identity) if the entity id is "minecraft:empty"
-        if(tag.getString("id").equals("minecraft:empty")) {
+        if (tag.getString("id").equals("minecraft:empty")) {
             this.identity = null;
             ((DimensionsRefresher) player).identity_refreshDimensions();
         }
@@ -214,7 +219,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
 
             // ensure entity data exists
             if (entityTag != null) {
-                if(identity == null || !type.get().equals(identity.getType())) {
+                if (identity == null || !type.get().equals(identity.getType())) {
                     identity = (LivingEntity) type.get().create(player.world);
 
                     // refresh player dimensions/hitbox on client
@@ -231,7 +236,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         CompoundTag entityTag = new CompoundTag();
 
         // serialize current identity data to tag if it exists
-        if(identity != null) {
+        if (identity != null) {
             identity.toTag(entityTag);
         }
 
