@@ -53,6 +53,7 @@ public class ServerNetworking implements NetworkHandler {
     public static void updateClientConfig(PlayerEntity player) {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
         packet.writeBoolean(Identity.CONFIG.enableClientSwapMenu);
+        packet.writeBoolean(Identity.CONFIG.showPlayerNametag);
         ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, CAN_OPEN_MENU, packet);
     }
 

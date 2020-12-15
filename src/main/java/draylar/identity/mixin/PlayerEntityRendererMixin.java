@@ -1,6 +1,7 @@
 package draylar.identity.mixin;
 
 import draylar.identity.Identity;
+import draylar.identity.IdentityClient;
 import draylar.identity.api.model.EntityUpdater;
 import draylar.identity.api.model.EntityUpdaters;
 import draylar.identity.registry.Components;
@@ -119,6 +120,11 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             }
 
             identityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
+
+            // Only render nametags if the server option is true and the entity being rendered is NOT this player/client
+            if(IdentityClient.showNametags && player != MinecraftClient.getInstance().player) {
+                renderLabelIfPresent((AbstractClientPlayerEntity) player, player.getDisplayName(), matrixStack, vertexConsumerProvider, i);
+            }
         } else {
             super.render((AbstractClientPlayerEntity) player, f, g, matrixStack, vertexConsumerProvider, i);
         }

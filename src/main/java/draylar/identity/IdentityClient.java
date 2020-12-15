@@ -18,6 +18,9 @@ import org.lwjgl.glfw.GLFW;
 public class IdentityClient implements ClientModInitializer {
 
     public static boolean enableMenu = Identity.CONFIG.enableClientSwapMenu;
+    public static boolean showNametags = Identity.CONFIG.showPlayerNametag;
+    // todo: won't these change from the client config when the client leaves a server with different options?
+
     public static final KeyBinding key = KeyBindingHelper.registerKeyBinding(
             new KeyBinding(
                     "key.identity",

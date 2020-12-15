@@ -96,4 +96,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "In ticks, how long until the Wither can shoot a wither skull again?")
     public int witherAbilityCooldown = 200;
+
+    @Comment(value = "Should player nametags render above players disguised with an identity?\nNote that the server is the authority for this config option.")
+    public boolean showPlayerNametag = false;
 }
