@@ -46,14 +46,20 @@ public class IdentityScreen extends Screen {
         // collect unlocked entities
         unlocked = collectUnlockedEntities(unlockedComponent);
 
-        // sort unlocked based on favorites
-        Collections.sort(unlocked, (first, second) -> {
-            if(favoritesComponent.has(first.getType())) {
-                return -1;
-            }
+        // Some users were experiencing a crash with this sort method, so we catch potential errors here
+        // https://github.com/Draylar/identity/issues/87
+        try {
+            // sort unlocked based on favorites
+            unlocked.sort((first, second) -> {
+                if (favoritesComponent.has(first.getType())) {
+                    return -1;
+                }
 
-            return 1;
-        });
+                return 1;
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // add entity widgets
         populateEntityWidgets(unlocked, favoritesComponent, currentIdentityComponent);
