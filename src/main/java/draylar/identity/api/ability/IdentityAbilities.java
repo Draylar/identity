@@ -64,11 +64,10 @@ public class IdentityAbilities {
                     player.getRotationVector().z
             );
 
-            // todo: play blaze sound
-
             stack.decrement(decrementAmount);
             smallFireball.setOwner(player);
             world.spawnEntity(smallFireball);
+            world.playSoundFromEntity(null, player, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
             player.getItemCooldownManager().set(stack.getItem(), Identity.CONFIG.blazeAbilityCooldown);
             return TypedActionResult.success(stack);
         });
