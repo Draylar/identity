@@ -1,5 +1,6 @@
 package draylar.identity;
 
+import draylar.identity.ability.AbilityOverlayRenderer;
 import draylar.identity.api.model.EntityUpdaters;
 import draylar.identity.network.ClientNetworking;
 import draylar.identity.screen.IdentityScreen;
@@ -34,6 +35,7 @@ public class IdentityClient implements ClientModInitializer {
     public void onInitializeClient() {
         EntityUpdaters.init();
         ClientNetworking.init();
+        AbilityOverlayRenderer.register();
 
         // add screen opening key-bind
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
