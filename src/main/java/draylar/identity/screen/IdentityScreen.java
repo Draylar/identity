@@ -1,5 +1,6 @@
 package draylar.identity.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import draylar.identity.cca.FavoriteIdentitiesComponent;
 import draylar.identity.cca.IdentityComponent;
 import draylar.identity.cca.UnlockedIdentitiesComponent;
@@ -8,7 +9,6 @@ import draylar.identity.screen.widget.EntityWidget;
 import draylar.identity.screen.widget.PlayerWidget;
 import draylar.identity.screen.widget.SearchWidget;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.Window;
@@ -20,8 +20,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +28,16 @@ public class IdentityScreen extends Screen {
     private final List<LivingEntity> unlocked;
     private final List<LivingEntity> renderEntities = new ArrayList<>();
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
+    private final SearchWidget searchBar = createSearchBar();
+    private final PlayerWidget playerButton = createPlayerButton();
+    private String lastSearchContents = "";
 
     public IdentityScreen() {
         super(new LiteralText(""));
 
         populateRenderEntities();
-        SearchWidget searchBar = addButton(createSearchBar());
-        addButton(createPlayerButton());
+        addButton(searchBar);
+        addButton(playerButton);
 
         // get identity components from player
         UnlockedIdentitiesComponent unlockedComponent = Components.UNLOCKED_IDENTITIES.get(MinecraftClient.getInstance().player);
@@ -66,15 +67,23 @@ public class IdentityScreen extends Screen {
 
         // implement search handler
         searchBar.setChangedListener(text -> {
-            buttons.removeIf(button -> button instanceof EntityWidget);
-            children.removeIf(button -> button instanceof EntityWidget);
+            focusOn(searchBar);
 
-            List<LivingEntity> filtered = unlocked
-                    .stream()
-                    .filter(livingEntity -> text.isEmpty() || livingEntity.getType().getTranslationKey().contains(text))
-                    .collect(Collectors.toList());
+            // Only re-filter if the text contents changed
+            if(!lastSearchContents.equals(text)) {
+                buttons.removeIf(button -> button instanceof EntityWidget);
+                children.removeIf(button -> button instanceof EntityWidget);
+                entityWidgets.clear();
 
-            populateEntityWidgets(filtered, favoritesComponent, currentIdentityComponent);
+                List<LivingEntity> filtered = unlocked
+                        .stream()
+                        .filter(livingEntity -> text.isEmpty() || livingEntity.getType().getTranslationKey().contains(text))
+                        .collect(Collectors.toList());
+
+                populateEntityWidgets(filtered, favoritesComponent, currentIdentityComponent);
+            }
+
+            lastSearchContents = text;
         });
     }
 
@@ -108,7 +117,29 @@ public class IdentityScreen extends Screen {
             }
         }
 
-        super.render(matrices, mouseX, mouseY, delta);
+        searchBar.render(matrices, mouseX, mouseY, delta);
+        playerButton.render(matrices, mouseX, mouseY, delta);
+        renderEntityWidgets(matrices, mouseX, mouseY, delta);
+    }
+
+    public void renderEntityWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        double scaledFactor = this.client.getWindow().getScaleFactor();
+        int top = 35;
+
+        matrices.push();
+        RenderSystem.enableScissor(
+                (int) ((double) 0 * scaledFactor),
+                (int) ((double) 0 * scaledFactor),
+                (int) ((double) width * scaledFactor),
+                (int) ((double)(this.height -  top) * scaledFactor));
+
+        entityWidgets.forEach(widget -> {
+            widget.render(matrices, mouseX, mouseY, delta);
+        });
+
+        RenderSystem.disableScissor();
+
+        matrices.pop();
     }
 
     @Override
@@ -221,5 +252,14 @@ public class IdentityScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if(mouseY < 35) {
+            return searchBar.mouseClicked(mouseX, mouseY, button) || playerButton.mouseClicked(mouseX, mouseY, button);
+        } else {
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
     }
 }
