@@ -2,6 +2,7 @@ package draylar.identity.mixin;
 
 import draylar.identity.Identity;
 import draylar.identity.registry.Components;
+import draylar.identity.registry.EntityTags;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +28,7 @@ public abstract class InGameHudMixin {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
         if(identity != null) {
-            if(Identity.isAquatic(identity) && player.isSubmergedIn(FluidTags.WATER)) {
+            if((Identity.isAquatic(identity) || EntityTags.UNDROWNABLE.contains(identity.getType())) && player.isSubmergedIn(FluidTags.WATER)) {
                 return FluidTags.LAVA;    // will cause isSubmergedIn to return false, preventing air render
             }
         }

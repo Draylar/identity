@@ -79,7 +79,6 @@ public abstract class LivingEntityMixin extends Entity {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             if (identity != null) {
-                // Dolphins do regenerate breath on land
                 if (Identity.isAquatic(identity)) {
                     return;
                 }
