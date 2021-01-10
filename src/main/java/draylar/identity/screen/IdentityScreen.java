@@ -6,11 +6,13 @@ import draylar.identity.cca.IdentityComponent;
 import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
 import draylar.identity.screen.widget.EntityWidget;
+import draylar.identity.screen.widget.HelpWidget;
 import draylar.identity.screen.widget.PlayerWidget;
 import draylar.identity.screen.widget.SearchWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -19,6 +21,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +33,7 @@ public class IdentityScreen extends Screen {
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
     private final SearchWidget searchBar = createSearchBar();
     private final PlayerWidget playerButton = createPlayerButton();
+    private final ButtonWidget helpButton = createHelpButton();
     private String lastSearchContents = "";
 
     public IdentityScreen() {
@@ -38,6 +42,7 @@ public class IdentityScreen extends Screen {
         populateRenderEntities();
         addButton(searchBar);
         addButton(playerButton);
+        addButton(helpButton);
 
         // get identity components from player
         UnlockedIdentitiesComponent unlockedComponent = Components.UNLOCKED_IDENTITIES.get(MinecraftClient.getInstance().player);
@@ -119,6 +124,7 @@ public class IdentityScreen extends Screen {
 
         searchBar.render(matrices, mouseX, mouseY, delta);
         playerButton.render(matrices, mouseX, mouseY, delta);
+        helpButton.render(matrices, mouseX, mouseY, delta);
         renderEntityWidgets(matrices, mouseX, mouseY, delta);
     }
 
@@ -241,6 +247,14 @@ public class IdentityScreen extends Screen {
                 this);
     }
 
+    private ButtonWidget createHelpButton() {
+        return new HelpWidget(
+                (int) (getWindow().getScaledWidth() / 2f - (getWindow().getScaledWidth() / 4f / 2) - 5) - 30,
+                5,
+                20,
+                20);
+    }
+
     public Window getWindow() {
         return MinecraftClient.getInstance().getWindow();
     }
@@ -257,7 +271,7 @@ public class IdentityScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(mouseY < 35) {
-            return searchBar.mouseClicked(mouseX, mouseY, button) || playerButton.mouseClicked(mouseX, mouseY, button);
+            return searchBar.mouseClicked(mouseX, mouseY, button) || playerButton.mouseClicked(mouseX, mouseY, button) || helpButton.mouseClicked(mouseX, mouseY, button);
         } else {
             return super.mouseClicked(mouseX, mouseY, button);
         }

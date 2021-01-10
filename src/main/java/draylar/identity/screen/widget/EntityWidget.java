@@ -8,12 +8,17 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractPressableButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 public class EntityWidget extends AbstractPressableButtonWidget {
 
@@ -113,5 +118,14 @@ public class EntityWidget extends AbstractPressableButtonWidget {
     @Override
     public void onPress() {
 
+    }
+
+    @Override
+    public void renderToolTip(MatrixStack matrices, int mouseX, int mouseY) {
+        Screen currentScreen = MinecraftClient.getInstance().currentScreen;
+
+        if(currentScreen != null) {
+            currentScreen.renderTooltip(matrices, Collections.singletonList(new TranslatableText(entity.getType().getTranslationKey())), mouseX, mouseY);
+        }
     }
 }
