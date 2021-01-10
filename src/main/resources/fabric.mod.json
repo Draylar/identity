@@ -31,7 +31,8 @@
       "identity:current_identity",
       "identity:unlocked_identities",
       "identity:favorite_identities",
-      "identity:hostility"
+      "identity:hostility",
+      "identity:ability"
     ]
   },
   "mixins": [

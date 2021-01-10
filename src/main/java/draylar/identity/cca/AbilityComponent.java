@@ -19,21 +19,17 @@ public class AbilityComponent implements AutoSyncedComponent, ServerTickingCompo
 
     @Override
     public void readFromNbt(CompoundTag tag) {
-        tag.putInt(ABILITY_COOLDOWN_KEY, cooldown);
+        this.cooldown = tag.getInt(ABILITY_COOLDOWN_KEY);
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        this.cooldown = tag.getInt(ABILITY_COOLDOWN_KEY);
-    }
-
-    public void tickCooldown() {
-        setCooldown(Math.max(0, getCooldown() - 1));
+        tag.putInt(ABILITY_COOLDOWN_KEY, cooldown);
     }
 
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
-        Components.FAVORITE_IDENTITIES.sync(this.player);
+        Components.ABILITY.sync(this.player);
     }
 
     public int getCooldown() {
@@ -46,6 +42,6 @@ public class AbilityComponent implements AutoSyncedComponent, ServerTickingCompo
 
     @Override
     public void serverTick() {
-        cooldown = Math.max(0, cooldown - 1);
+        setCooldown(Math.max(0, getCooldown() - 1));
     }
 }

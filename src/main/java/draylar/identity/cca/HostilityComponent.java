@@ -13,12 +13,12 @@ public class HostilityComponent implements ServerTickingComponent {
 
     @Override
     public void readFromNbt(CompoundTag tag) {
-        tag.putInt("RemainingTime", remainingTime);
+        this.remainingTime = tag.getInt("RemainingTime");
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        this.remainingTime = tag.getInt("RemainingTime");
+        tag.putInt("RemainingTime", remainingTime);
     }
 
     /**

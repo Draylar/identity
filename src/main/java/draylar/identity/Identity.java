@@ -1,7 +1,7 @@
 package draylar.identity;
 
-import draylar.identity.api.ability.IdentityAbilities;
-import draylar.identity.api.ability.IdentityAbility;
+import draylar.identity.ability.AbilityRegistry;
+import draylar.identity.ability.IdentityAbility;
 import draylar.identity.config.IdentityConfig;
 import draylar.identity.network.ServerNetworking;
 import draylar.identity.registry.Commands;
@@ -35,39 +35,14 @@ public class Identity implements ModInitializer {
     @Override
     public void onInitialize() {
         EntityTags.init();
-        IdentityAbilities.init();
+        AbilityRegistry.init();
         EventHandlers.init();
         Commands.init();
         ServerNetworking.init();
-
-        registerAbilityItemUseHandler();
     }
 
     public static Identifier id(String name) {
         return new Identifier("identity", name);
-    }
-
-    private void registerAbilityItemUseHandler() {
-        UseItemCallback.EVENT.register((player, world, hand) -> {
-            if(!world.isClient) {
-                LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
-
-                if (identity != null) {
-                    ItemStack heldStack = player.getStackInHand(hand);
-
-                    // ensure cooldown is valid (0) for custom use action
-                    if(player.getItemCooldownManager().getCooldownProgress(heldStack.getItem(), 0) <= 0) {
-                        IdentityAbility ability = IdentityAbilities.get((EntityType<? extends LivingEntity>) identity.getType(), heldStack.getItem());
-
-                        if(ability != null) {
-                            return ability.onUse(player, identity, world, heldStack, hand);
-                        }
-                    }
-                }
-            }
-
-            return TypedActionResult.pass(player.getStackInHand(hand));
-        });
     }
 
     public static boolean hasFlyingPermissions(ServerPlayerEntity player) {

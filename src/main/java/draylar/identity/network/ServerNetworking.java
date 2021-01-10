@@ -1,10 +1,11 @@
 package draylar.identity.network;
 
 import draylar.identity.Identity;
-import draylar.identity.cca.FavoriteIdentitiesComponent;
+import draylar.identity.ability.AbilityRegistry;
 import draylar.identity.registry.Components;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +17,27 @@ public class ServerNetworking implements NetworkHandler {
     public static void init() {
         registerIdentityRequestPacketHandler();
         registerFavoritePacketHandler();
+        registerUseAbilityPacketHandler();
+    }
+
+    private static void registerUseAbilityPacketHandler() {
+        ServerPlayNetworking.registerGlobalReceiver(USE_ABILITY, (server, player, handler, buf, responseSender) -> {
+            LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
+
+            // Verify we should use ability for the player's current identity
+            if(identity != null) {
+                EntityType<?> identityType = identity.getType();
+
+                if(AbilityRegistry.has(identityType)) {
+
+                    // Check cooldown
+                    if(Components.ABILITY.get(player).canUseAbility()) {
+                        AbilityRegistry.get(identityType).onUse(player, identity, player.world);
+                        Components.ABILITY.get(player).setCooldown(AbilityRegistry.get(identityType).getCooldown());
+                    }
+                }
+            }
+        });
     }
 
     private static void registerIdentityRequestPacketHandler() {
