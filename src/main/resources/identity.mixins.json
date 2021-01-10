@@ -20,6 +20,7 @@
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
     "PlayerManagerMixin",
+    "PlayerSwimmingMixin",
     "RavagerEntityMixin",
     "ServerPlayerEntityMixin",
     "ShadowMixin",
