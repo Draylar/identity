@@ -74,11 +74,13 @@ public abstract class LivingEntityMixin extends Entity {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setAir(I)V", ordinal = 2)
     )
     private void cancelAirIncrement(LivingEntity livingEntity, int air) {
+        // Aquatic creatures should not regenerate breath on land
         if ((Object) this instanceof PlayerEntity) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             if (identity != null) {
-                if (Identity.isAquatic(identity) && !(identity instanceof DolphinEntity)) {
+                // Dolphins do regenerate breath on land
+                if (Identity.isAquatic(identity)) {
                     return;
                 }
             }

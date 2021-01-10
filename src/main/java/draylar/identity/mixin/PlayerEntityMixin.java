@@ -71,7 +71,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
         LivingEntity entity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
         if (entity != null) {
-            cir.setReturnValue(entity.canBreatheInWater());
+            cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity);
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
         LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
         if (identity != null) {
-            if (Identity.isAquatic(identity) && !(identity instanceof DolphinEntity)) {
+            if (Identity.isAquatic(identity)) {
                 int air = this.getAir();
 
                 // copy of WaterCreatureEntity#tickWaterBreathingAir
