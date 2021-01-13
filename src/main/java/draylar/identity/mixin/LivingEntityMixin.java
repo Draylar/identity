@@ -50,6 +50,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         // check if attacker is a player to grant identity
         if(attacker instanceof PlayerEntity) {
+            boolean isNew = false;
             UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(attacker);
 
             // ensure type has not already been unlocked
@@ -64,6 +65,18 @@ public abstract class LivingEntityMixin extends Entity {
                                     new TranslatableText(thisType.getTranslationKey())
                             ), true
                     );
+                }
+
+                isNew = true;
+            }
+
+            // force-morph player into new type
+            Entity instanced = thisType.create(attacker.world);
+            if(instanced instanceof LivingEntity) {
+                if(Identity.CONFIG.forceChangeNew && isNew) {
+                    Components.CURRENT_IDENTITY.get(attacker).setIdentity((LivingEntity) instanced);
+                } else if (Identity.CONFIG.forceChangeAlways) {
+                    Components.CURRENT_IDENTITY.get(attacker).setIdentity((LivingEntity) instanced);
                 }
             }
         }

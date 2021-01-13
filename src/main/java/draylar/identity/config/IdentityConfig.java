@@ -99,4 +99,10 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "Should player nametags render above players disguised with an identity?\nNote that the server is the authority for this config option.")
     public boolean showPlayerNametag = false;
+
+    @Comment(value = "If true, players that gain a NEW Identity will be forcibly changed into it on kill.")
+    public boolean forceChangeNew = false;
+
+    @Comment(value = "If true, players will be forcibly changed into any entity they kill. The above option, forceChangeNew, only applies to new unlocks.")
+    public boolean forceChangeAlways = false;
 }
