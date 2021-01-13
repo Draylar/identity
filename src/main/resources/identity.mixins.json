@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "CreeperEntityMixin",
+    "DrownedOverlayMixin",
     "EntityAccessor",
     "EntityMixin",
     "EntityShadowAccessor",
