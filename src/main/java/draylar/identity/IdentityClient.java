@@ -29,14 +29,14 @@ public class IdentityClient implements ClientModInitializer {
                     "key.identity",
                     InputUtil.Type.KEYSYM,
                     GLFW.GLFW_KEY_GRAVE_ACCENT,
-                    "key.categories.gameplay"));
+                    "key.categories.identity"));
 
     public static final KeyBinding ABILITY_KEY = KeyBindingHelper.registerKeyBinding(
             new KeyBinding(
                     "key.identity_ability",
                     InputUtil.Type.KEYSYM,
                     GLFW.GLFW_KEY_R,
-                    "key.categories.gameplay"));
+                    "key.categories.identity"));
 
     @Override
     public void onInitializeClient() {

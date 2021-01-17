@@ -33,6 +33,10 @@ public class IdentityHelpScreen extends Screen {
         MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.config_label").formatted(Formatting.BOLD), 15, 175, 0xffffff);
         MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.config_description"), 15, 190, 0xffffff);
 
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits_label").formatted(Formatting.BOLD), 15, 220, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits_general"), 15, 235, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits_translators"), 15, 250, 0xffffff);
+
         MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.return").formatted(Formatting.ITALIC), 15, height + 60, 0xffffff);
 
         matrices.pop();
