@@ -19,7 +19,7 @@
     "identity.help.ability_description_1": "如需使用该生物的能力，请按R键",
     "identity.help.ability_description_2": "屏幕右下方将出现一个冷却指示器，以向您显示何时可以再次使用该能力",
     "identity.help.ability_description_3": "有关所有能力的完整列表请访问 https://github.com/Draylar/identity/wiki/Abilities 。",
-    "identity.help.config_label": "如何配置身份",
+    "identity.help.config_label": "设置《化身》",
     "identity.help.config_description": "请浏览位于/config/identity.json5 来控制模组的所有选项。",
     "identity.help.return": "按任意键返回到《化身》菜单",
     "identity.help.credits_label": "鸣谢",
