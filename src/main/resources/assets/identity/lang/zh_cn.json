@@ -14,7 +14,7 @@
     "identity.help.welcome": "欢迎使用《化身》，这是模组《变形（Morph）》的1.16+ Fabric版本，由Draylar编写。",
     "identity.help.credits": "感谢所有通过提交bug和建议来支持我的模组的人们！",
     "identity.help.support_label": "遇到问题还是想提供建议？",
-    "identity.help.support_description": "通过《化身》的 GitHub 仓库 https://github.com/Draylar/identity 交流。",
+    "identity.help.support_description": "通过《化身》的 GitHub 仓库 https://github.com/Draylar/identity 与我交流。",
     "identity.help.ability_label": "使用能力",
     "identity.help.ability_description_1": "如需使用该生物的能力，请按R键",
     "identity.help.ability_description_2": "屏幕右下方将出现一个冷却指示器，以向您显示何时可以再次使用该能力",
