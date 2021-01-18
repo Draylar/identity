@@ -1,8 +1,8 @@
 {
     "identity.unlock_entity": "已解锁%s的化身",
     "identity.revoke_entity": "你化身为%s的记忆已化为尘埃......",
-    "identity.grant_success": "已成功将%s的化身转给%s。",
-    "identity.revoke_success": "已成功将%s的化身转回给%s。",
+    "identity.grant_success": "已将%s的化身转给%s。",
+    "identity.revoke_success": "%s的化身已从%s身上删除。",
     "identity.already_has": "%s已经拥有%s的化身了！",
     "identity.does_not_have": "%s还没有%s的化身！",
     "identity.equip_success": "%s的化身已装备给%s。",
