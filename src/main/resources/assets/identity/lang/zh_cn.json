@@ -11,7 +11,7 @@
     "identity.test_failed": "%s还没被伪装成%s。",
     "identity.menu_hint": "杀死任意一种生物来在你的世界里获得化身。",
     "identity.help": "打开《化身》模组帮助按钮",
-    "identity.help.welcome": "欢迎使用《化身》，这是模组《变形（Morph）》的1.16+ Fabric版本，由Draylar编写，由Godzmoline汉化。",
+    "identity.help.welcome": "欢迎使用《化身》，这是模组《变形（Morph）》的1.16+ Fabric版本，由Draylar编写。",
     "identity.help.credits": "感谢所有通过提交bug和建议来支持我的模组的人们！",
     "identity.help.support_label": "遇到问题还是想提供建议？",
     "identity.help.support_description": "请到《化身》的Github存储库来提交 https://github.com/Draylar/identity 。",
