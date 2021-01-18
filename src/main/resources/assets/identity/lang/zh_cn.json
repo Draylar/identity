@@ -21,5 +21,8 @@
     "identity.help.ability_description_3": "有关所有能力的完整列表请访问 https://github.com/Draylar/identity/wiki/Abilities 。",
     "identity.help.config_label": "如何配置身份",
     "identity.help.config_description": "请浏览位于/config/identity.json5 来控制模组的所有选项。",
-    "identity.help.return": "按任意键返回到《化身》菜单"
+    "identity.help.return": "按任意键返回到《化身》菜单",
+    "identity.help.credits_label": "信用点",
+    "identity.help.credits_general": "普通参与者：Pyrofab, AllanChain, James103, lawleagle",
+    "identity.help.credits_translators": "译者：qsefthuopq, Godzmoline"
   }
