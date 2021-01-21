@@ -17,15 +17,14 @@ public class GhastAbility extends IdentityAbility<GhastEntity> {
     public void onUse(PlayerEntity player, GhastEntity identity, World world) {
         FireballEntity fireball = new FireballEntity(
                 world,
-                player.getX(),
-                player.getEyeY(),
-                player.getZ(),
+                player,
                 player.getRotationVector().x,
                 player.getRotationVector().y,
                 player.getRotationVector().z
         );
 
-        fireball.setOwner(player);
+        fireball.refreshPositionAndAngles(fireball.getX(), fireball.getY() + 1.75, fireball.getZ(), fireball.yaw, fireball.pitch);
+        fireball.updatePosition(fireball.getX(), fireball.getY(), fireball.getZ());
         world.spawnEntity(fireball);
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_WARN, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
