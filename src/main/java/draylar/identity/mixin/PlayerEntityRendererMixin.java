@@ -69,23 +69,6 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             ((EntityAccessor) identity).setVehicle(player.getVehicle());
             ((EntityAccessor) identity).setTouchingWater(player.isTouchingWater());
 
-            if(identity instanceof EnderDragonEntity) {
-                // setting yaw without +180 making tail faces front, for some reason
-                if (((EnderDragonEntity) identity).latestSegment < 0) {
-                    for(int l = 0; l < ((EnderDragonEntity) identity).segmentCircularBuffer.length; ++l) {
-                       ((EnderDragonEntity) identity).segmentCircularBuffer[l][0] = (double)player.yaw + 180;
-                       ((EnderDragonEntity) identity).segmentCircularBuffer[l][1] = player.getY();
-                    }
-                 }
-
-                 if (++((EnderDragonEntity) identity).latestSegment == ((EnderDragonEntity) identity).segmentCircularBuffer.length) {
-                    ((EnderDragonEntity) identity).latestSegment = 0;
-                 }
-
-                 ((EnderDragonEntity) identity).segmentCircularBuffer[((EnderDragonEntity) identity).latestSegment][0] = (double)player.yaw + 180;
-                 ((EnderDragonEntity) identity).segmentCircularBuffer[((EnderDragonEntity) identity).latestSegment][1] = player.getY();
-            }
-
             // phantoms' pitch is inverse for whatever reason
             if(identity instanceof PhantomEntity) {
                 identity.pitch = -player.pitch;

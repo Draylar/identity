@@ -9,6 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
@@ -30,9 +31,9 @@ public class EntityUpdaters {
     /**
      * Returns a {@link EntityUpdater} if one has been registered for the given {@link EntityType}, or null.
      *
-     * @param entityType  entity type key to retrieve a value registered in {@link EntityUpdaters#register(EntityType, EntityUpdater)}
-     * @param <T>  passed in {@link EntityType} generic
-     * @return  registered {@link EntityUpdater} instance for the given {@link EntityType}, or null if one does not exist
+     * @param entityType entity type key to retrieve a value registered in {@link EntityUpdaters#register(EntityType, EntityUpdater)}
+     * @param <T>        passed in {@link EntityType} generic
+     * @return registered {@link EntityUpdater} instance for the given {@link EntityType}, or null if one does not exist
      */
     public static <T extends LivingEntity> EntityUpdater<T> getUpdater(EntityType<T> entityType) {
         return (EntityUpdater<T>) map.getOrDefault(entityType, null);
@@ -43,9 +44,9 @@ public class EntityUpdaters {
      *
      * <p>Note that a given {@link EntityType} can only have 1 {@link EntityUpdater} associated with it.
      *
-     * @param type  entity type key associated with the given {@link EntityUpdater}
-     * @param entityUpdater  {@link EntityUpdater} associated with the given {@link EntityType}
-     * @param <T>  passed in {@link EntityType} generic
+     * @param type          entity type key associated with the given {@link EntityUpdater}
+     * @param entityUpdater {@link EntityUpdater} associated with the given {@link EntityType}
+     * @param <T>           passed in {@link EntityType} generic
      */
     public static <T extends LivingEntity> void register(EntityType<T> type, EntityUpdater<T> entityUpdater) {
         map.put(type, entityUpdater);
@@ -58,7 +59,7 @@ public class EntityUpdaters {
     public static void init() {
         // register specific entity animation handling
         EntityUpdaters.register(EntityType.BAT, (player, bat) -> {
-            if(player.isOnGround()) {
+            if (player.isOnGround()) {
                 bat.setRoosting(true);
             } else {
                 bat.setRoosting(false);
@@ -66,7 +67,7 @@ public class EntityUpdaters {
         });
 
         EntityUpdaters.register(EntityType.PARROT, (player, parrot) -> {
-            if(player.isOnGround() && ((NearbySongAccessor) player).identity_isNearbySongPlaying()) {
+            if (player.isOnGround() && ((NearbySongAccessor) player).identity_isNearbySongPlaying()) {
                 parrot.setNearbySongPlaying(player.getBlockPos(), true);
                 parrot.setSitting(true);
                 parrot.setOnGround(true);
@@ -90,12 +91,27 @@ public class EntityUpdaters {
         EntityUpdaters.register(EntityType.ENDER_DRAGON, (player, dragon) -> {
             dragon.wingPosition += 0.01F;
             dragon.prevWingPosition = dragon.wingPosition;
+
+            // setting yaw without +180 making tail faces front, for some reason
+            if (dragon.latestSegment < 0) {
+                for (int l = 0; l < dragon.segmentCircularBuffer.length; ++l) {
+                    dragon.segmentCircularBuffer[l][0] = (double) player.yaw + 180;
+                    dragon.segmentCircularBuffer[l][1] = player.getY();
+                }
+            }
+
+            if (++(dragon).latestSegment == (dragon).segmentCircularBuffer.length) {
+                (dragon).latestSegment = 0;
+            }
+
+            dragon.segmentCircularBuffer[dragon.latestSegment][0] = (double) player.yaw + 180;
+            dragon.segmentCircularBuffer[dragon.latestSegment][1] = player.getY();
         });
 
         EntityUpdaters.register(EntityType.ENDERMAN, (player, enderman) -> {
             ItemStack heldStack = player.getMainHandStack();
 
-            if(heldStack.getItem() instanceof BlockItem) {
+            if (heldStack.getItem() instanceof BlockItem) {
                 enderman.setCarriedBlock(((BlockItem) heldStack.getItem()).getBlock().getDefaultState());
             }
         });
