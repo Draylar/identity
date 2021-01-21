@@ -14,6 +14,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
@@ -80,6 +81,10 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
             Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
         } else {
             Identity.ABILITY_SOURCE.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
+        }
+
+        if (player.getVehicle() instanceof RavagerEntity && !EntityTags.RAVAGER_RIDING.contains(identity.getType())) {
+            player.stopRiding();
         }
 
         // sync with client
