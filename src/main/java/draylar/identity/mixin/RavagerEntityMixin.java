@@ -57,13 +57,12 @@ public abstract class RavagerEntityMixin extends LivingEntity {
 
                     // Limb updates for movement
                     this.method_29242(this, false);
+                    return;
                 }
             }
-
-            // Doesn't have a passenger, fall back to default travel logic
-            else {
-                super.travel(movementInput);
-            }
+            // Doesn't have a passenger, or passenger is not player,
+            // but still alive, fall back to default travel logic
+            super.travel(movementInput);
         }
     }
 }
