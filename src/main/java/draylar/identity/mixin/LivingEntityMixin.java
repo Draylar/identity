@@ -167,12 +167,14 @@ public abstract class LivingEntityMixin extends Entity {
             cancellable = true
     )
     private void returnHasNightVision(StatusEffect effect, CallbackInfoReturnable<Boolean> cir) {
-        if(effect.equals(StatusEffects.NIGHT_VISION)) {
-            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+        if((Object) this instanceof PlayerEntity) {
+            if (effect.equals(StatusEffects.NIGHT_VISION)) {
+                LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
-            // Apply 'Night Vision' status effect to player if they are a Bat
-            if (identity instanceof BatEntity) {
-                cir.setReturnValue(true);
+                // Apply 'Night Vision' status effect to player if they are a Bat
+                if (identity instanceof BatEntity) {
+                    cir.setReturnValue(true);
+                }
             }
         }
     }
@@ -183,12 +185,14 @@ public abstract class LivingEntityMixin extends Entity {
             cancellable = true
     )
     private void returnNightVisionInstance(StatusEffect effect, CallbackInfoReturnable<StatusEffectInstance> cir) {
-        if (effect.equals(StatusEffects.NIGHT_VISION)) {
-            LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+        if((Object) this instanceof PlayerEntity) {
+            if (effect.equals(StatusEffects.NIGHT_VISION)) {
+                LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
-            // Apply 'Night Vision' status effect to player if they are a Bat
-            if (identity instanceof BatEntity) {
-                cir.setReturnValue(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 100000, 0, false, false));
+                // Apply 'Night Vision' status effect to player if they are a Bat
+                if (identity instanceof BatEntity) {
+                    cir.setReturnValue(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 100000, 0, false, false));
+                }
             }
         }
     }
