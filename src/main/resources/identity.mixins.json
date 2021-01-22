@@ -26,6 +26,7 @@
     "RavagerEntityMixin",
     "ServerPlayerEntityMixin",
     "ShadowMixin",
+    "StrayOverlayMixin",
     "SweetBerryBushBlockMixin",
     "TrackTargetGoalMixin",
     "VillagerEntityMixin",
