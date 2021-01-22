@@ -15,9 +15,7 @@ public class EnderDragonAbility extends IdentityAbility<EnderDragonEntity> {
     public void onUse(PlayerEntity player, EnderDragonEntity identity, World world) {
         DragonFireballEntity dragonFireball = new DragonFireballEntity(
                 world,
-                player.getX(),
-                player.getEyeY(),
-                player.getZ(),
+                player,
                 player.getRotationVector().x,
                 player.getRotationVector().y,
                 player.getRotationVector().z
