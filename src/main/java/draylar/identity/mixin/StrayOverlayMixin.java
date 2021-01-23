@@ -4,8 +4,11 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.feature.StrayOverlayFeatureRenderer;
+import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.SkeletonEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.StrayEntity;
 import org.spongepowered.asm.mixin.Final;
@@ -16,23 +19,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(StrayOverlayFeatureRenderer.class)
-public abstract class StrayOverlayMixin extends FeatureRenderer<StrayEntity, SkeletonEntityModel<StrayEntity>> {
+public abstract class StrayOverlayMixin<T extends MobEntity & RangedAttackMob, M extends EntityModel<T>> extends FeatureRenderer<T, M> {
 
     @Shadow @Final private SkeletonEntityModel<StrayEntity> model;
 
-    public StrayOverlayMixin(FeatureRendererContext<StrayEntity, SkeletonEntityModel<StrayEntity>> context) {
+    public StrayOverlayMixin(FeatureRendererContext<T, M> context) {
         super(context);
     }
 
     @Inject(
-            method = "render",
+            method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/entity/mob/MobEntity;FFFFFF)V",
             at = @At("HEAD"))
-    private void onRender(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, MobEntity mobEntity, float f, float g, float h, float j, float k, float l, CallbackInfo ci) {
-        SkeletonEntityModel<StrayEntity> model = getContextModel();
+    private void onRender(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T mobEntity, float f, float g, float h, float j, float k, float l, CallbackInfo ci) {
+        M model = getContextModel();
 
-        if (model != null) {
-            model.setAttributes(this.model);
-            model.sneaking = mobEntity.isInSneakingPose();
+        if (model instanceof BipedEntityModel) {
+            ((BipedEntityModel) model).setAttributes(this.model);
+            ((BipedEntityModel) model).sneaking = mobEntity.isInSneakingPose();
         }
     }
 }
