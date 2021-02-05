@@ -83,7 +83,8 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
             Identity.ABILITY_SOURCE.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
         }
 
-        if (player.getVehicle() instanceof RavagerEntity && !EntityTags.RAVAGER_RIDING.contains(identity.getType())) {
+        // If the player is riding a Ravager and changes into an Identity that cannot ride Ravagers, kick them off.
+        if (player.getVehicle() instanceof RavagerEntity && (identity == null || !EntityTags.RAVAGER_RIDING.contains(identity.getType()))) {
             player.stopRiding();
         }
 
