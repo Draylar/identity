@@ -38,6 +38,7 @@ public class IdentityScreen extends Screen {
 
     public IdentityScreen() {
         super(new LiteralText(""));
+        super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
 
         populateRenderEntities();
         addButton(searchBar);

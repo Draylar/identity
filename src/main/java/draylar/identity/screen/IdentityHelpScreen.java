@@ -11,6 +11,7 @@ public class IdentityHelpScreen extends Screen {
 
     public IdentityHelpScreen() {
         super(new LiteralText(""));
+        super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
     }
 
     @Override
