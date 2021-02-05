@@ -21,6 +21,8 @@ public class EventHandlers {
             return ActionResult.PASS;
         });
 
+        // Players with an equipped Identity inside the `ravager_riding` entity tag should
+        //   be able to ride Ravagers.
         UseEntityCallback.EVENT.register((player, world, hand, entity, entityHitResult) -> {
             if(entity instanceof RavagerEntity) {
                 LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
