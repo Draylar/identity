@@ -1,6 +1,7 @@
 package draylar.identity.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import draylar.identity.Identity;
 import draylar.identity.cca.IdentityComponent;
 import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
@@ -132,11 +133,17 @@ public class IdentityCommand {
         EntityType<?> type = Registry.ENTITY_TYPE.get(identity);
 
         if(current.getIdentity() != null && current.getIdentity().getType().equals(type)) {
-            source.sendMessage(new TranslatableText("identity.test_positive", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), false);
+            if(Identity.CONFIG.logCommands) {
+                source.sendMessage(new TranslatableText("identity.test_positive", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+            }
+
             return 1;
         }
 
-        source.sendMessage(new TranslatableText("identity.test_failed", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), false);
+        if(Identity.CONFIG.logCommands) {
+            source.sendMessage(new TranslatableText("identity.test_failed", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+        }
+
         return 0;
     }
 
@@ -145,11 +152,17 @@ public class IdentityCommand {
         EntityType<?> type = Registry.ENTITY_TYPE.get(identity);
 
         if(current.getIdentity() != null && !current.getIdentity().getType().equals(type)) {
-            source.sendMessage(new TranslatableText("identity.test_failed", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), false);
+            if(Identity.CONFIG.logCommands) {
+                source.sendMessage(new TranslatableText("identity.test_failed", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+            }
+
             return 1;
         }
 
-        source.sendMessage(new TranslatableText("identity.test_positive", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), false);
+        if(Identity.CONFIG.logCommands) {
+            source.sendMessage(new TranslatableText("identity.test_positive", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+        }
+
         return 0;
     }
 
@@ -159,10 +172,15 @@ public class IdentityCommand {
 
         if(!unlocked.has(entity)) {
             unlocked.unlock(entity);
-            player.sendMessage(new TranslatableText("identity.unlock_entity", new TranslatableText(entity.getTranslationKey())), true);
-            source.sendMessage(new TranslatableText("identity.grant_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), false);
+
+            if(Identity.CONFIG.logCommands) {
+                player.sendMessage(new TranslatableText("identity.unlock_entity", new TranslatableText(entity.getTranslationKey())), true);
+                source.sendMessage(new TranslatableText("identity.grant_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+            }
         } else {
-            source.sendMessage(new TranslatableText("identity.already_has", player.getDisplayName(), new TranslatableText(entity.getTranslationKey())), false);
+            if(Identity.CONFIG.logCommands) {
+                source.sendMessage(new TranslatableText("identity.already_has", player.getDisplayName(), new TranslatableText(entity.getTranslationKey())), true);
+            }
         }
     }
 
@@ -172,10 +190,15 @@ public class IdentityCommand {
 
         if(unlocked.has(entity)) {
             unlocked.revoke(entity);
-            player.sendMessage(new TranslatableText("identity.revoke_entity", new TranslatableText(entity.getTranslationKey())), true);
-            source.sendMessage(new TranslatableText("identity.revoke_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), false);
+
+            if(Identity.CONFIG.logCommands) {
+                player.sendMessage(new TranslatableText("identity.revoke_entity", new TranslatableText(entity.getTranslationKey())), true);
+                source.sendMessage(new TranslatableText("identity.revoke_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+            }
         } else {
-            source.sendMessage(new TranslatableText("identity.does_not_have", player.getDisplayName(), new TranslatableText(entity.getTranslationKey())), false);
+            if(Identity.CONFIG.logCommands) {
+                source.sendMessage(new TranslatableText("identity.does_not_have", player.getDisplayName(), new TranslatableText(entity.getTranslationKey())), true);
+            }
         }
     }
 
@@ -187,13 +210,19 @@ public class IdentityCommand {
 
         if(createdEntity instanceof LivingEntity) {
             current.setIdentity((LivingEntity) createdEntity);
-            source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), false);
+
+            if(Identity.CONFIG.logCommands) {
+                source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+            }
         }
     }
 
     private static void unequip(ServerPlayerEntity source, ServerPlayerEntity player) {
         IdentityComponent current = Components.CURRENT_IDENTITY.get(player);
         current.setIdentity(null);
-        source.sendMessage(new TranslatableText("identity.unequip_success", player.getDisplayName()), false);
+
+        if(Identity.CONFIG.logCommands) {
+            source.sendMessage(new TranslatableText("identity.unequip_success", player.getDisplayName()), false);
+        }
     }
 }

@@ -105,4 +105,7 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "If true, players will be forcibly changed into any entity they kill. The above option, forceChangeNew, only applies to new unlocks.")
     public boolean forceChangeAlways = false;
+
+    @Comment(value = "If true, /identity commands will send feedback in the action bar.")
+    public boolean logCommands = true;
 }
