@@ -17,6 +17,7 @@ public class LlamaAbility extends IdentityAbility<LlamaEntity> {
     @Override
     public void onUse(PlayerEntity player, LlamaEntity identity, World world) {
         LlamaSpitEntity spit = new LlamaSpitEntity(EntityType.LLAMA_SPIT, world);
+        spit.setOwner(player);
         Vec3d rotation = player.getRotationVector();
         spit.setVelocity(rotation.x, rotation.y, rotation.z, 1.5F, 10.0F);
         spit.updateTrackedPosition(player.getX(), player.getEyeY(), player.getZ());
