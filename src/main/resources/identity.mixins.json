@@ -21,6 +21,7 @@
     "ParrotEntityAccessor",
     "PiglinBrainMixin",
     "PlayerAdvancementTrackerMixin",
+    "PlayerEntityAttackMixin",
     "PlayerEntityMixin",
     "PlayerManagerMixin",
     "PlayerSwimmingMixin",
