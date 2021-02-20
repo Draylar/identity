@@ -15,6 +15,7 @@
     "HoglinBrainMixin",
     "InGameHudMixin",
     "LivingEntityAccessor",
+    "LivingEntityFoodMixin",
     "LivingEntityMixin",
     "MobEntityAccessor",
     "ParrotEntityAccessor",
