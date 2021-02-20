@@ -20,6 +20,7 @@
     "MobEntityAccessor",
     "ParrotEntityAccessor",
     "PiglinBrainMixin",
+    "PiglinBruteBrainMixin",
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityAttackMixin",
     "PlayerEntityMixin",
