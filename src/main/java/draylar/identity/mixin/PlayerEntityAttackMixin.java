@@ -26,8 +26,13 @@ public abstract class PlayerEntityAttackMixin extends LivingEntity {
 
         if(identity != null) {
             if(getMainHandStack().isEmpty()) {
-                identity.tryAttack(target);
-                ci.cancel();
+                try {
+                    identity.tryAttack(target);
+                    ci.cancel();
+                } catch (Exception e) {
+                    // FALL BACK TO DEFAULT BEHAVIOR.
+                    // Some mobs do not override, so it defaults to attack damage attribute, but the identity does not have any
+                }
             }
         }
     }
