@@ -34,6 +34,20 @@ public class IdentityCommand {
             LiteralCommandNode<ServerCommandSource> grantNode = CommandManager
                     .literal("grant")
                     .then(CommandManager.argument("player", EntityArgumentType.players())
+                            .then(CommandManager.literal("everything")
+                                .executes(context -> {
+                                    ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
+                                    UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(player);
+
+                                    Registry.ENTITY_TYPE.forEach(type -> {
+                                        if(!unlocked.has(type)) {
+                                            unlocked.unlock(type);
+                                        }
+                                    });
+
+                                    return 1;
+                                })
+                            )
                             .then(CommandManager.argument("identity", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         grant(
@@ -50,6 +64,20 @@ public class IdentityCommand {
             LiteralCommandNode<ServerCommandSource> revokeNode = CommandManager
                     .literal("revoke")
                     .then(CommandManager.argument("player", EntityArgumentType.players())
+                            .then(CommandManager.literal("everything")
+                                    .executes(context -> {
+                                        ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
+                                        UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(player);
+
+                                        Registry.ENTITY_TYPE.forEach(type -> {
+                                            if(unlocked.has(type)) {
+                                                unlocked.revoke(type);
+                                            }
+                                        });
+
+                                        return 1;
+                                    })
+                            )
                             .then(CommandManager.argument("identity", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         revoke(
