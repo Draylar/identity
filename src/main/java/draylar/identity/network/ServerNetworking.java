@@ -24,19 +24,21 @@ public class ServerNetworking implements NetworkHandler {
         ServerPlayNetworking.registerGlobalReceiver(USE_ABILITY, (server, player, handler, buf, responseSender) -> {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
-            // Verify we should use ability for the player's current identity
-            if(identity != null) {
-                EntityType<?> identityType = identity.getType();
+            server.execute(() -> {
+                // Verify we should use ability for the player's current identity
+                if(identity != null) {
+                    EntityType<?> identityType = identity.getType();
 
-                if(AbilityRegistry.has(identityType)) {
+                    if(AbilityRegistry.has(identityType)) {
 
-                    // Check cooldown
-                    if(Components.ABILITY.get(player).canUseAbility()) {
-                        AbilityRegistry.get(identityType).onUse(player, identity, player.world);
-                        Components.ABILITY.get(player).setCooldown(AbilityRegistry.get(identityType).getCooldown());
+                        // Check cooldown
+                        if(Components.ABILITY.get(player).canUseAbility()) {
+                            AbilityRegistry.get(identityType).onUse(player, identity, player.world);
+                            Components.ABILITY.get(player).setCooldown(AbilityRegistry.get(identityType).getCooldown());
+                        }
                     }
                 }
-            }
+            });
         });
     }
 
@@ -44,17 +46,19 @@ public class ServerNetworking implements NetworkHandler {
         ServerSidePacketRegistry.INSTANCE.register(IDENTITY_REQUEST, (context, packet) -> {
             EntityType<?> type = Registry.ENTITY_TYPE.get(packet.readIdentifier());
 
-            // Ensure player has permission to switch identities
-            if (Identity.CONFIG.enableSwaps || context.getPlayer().hasPermissionLevel(3)) {
-                if (type.equals(EntityType.PLAYER)) {
-                    Components.CURRENT_IDENTITY.get(context.getPlayer()).setIdentity(null);
-                } else {
-                    Components.CURRENT_IDENTITY.get(context.getPlayer()).setIdentity((LivingEntity) type.create(context.getPlayer().world));
-                }
+            context.getTaskQueue().execute(() -> {
+                // Ensure player has permission to switch identities
+                if (Identity.CONFIG.enableSwaps || context.getPlayer().hasPermissionLevel(3)) {
+                    if (type.equals(EntityType.PLAYER)) {
+                        Components.CURRENT_IDENTITY.get(context.getPlayer()).setIdentity(null);
+                    } else {
+                        Components.CURRENT_IDENTITY.get(context.getPlayer()).setIdentity((LivingEntity) type.create(context.getPlayer().world));
+                    }
 
-                // Refresh player dimensions
-                context.getPlayer().calculateDimensions();
-            }
+                    // Refresh player dimensions
+                    context.getPlayer().calculateDimensions();
+                }
+            });
         });
     }
 
@@ -64,11 +68,13 @@ public class ServerNetworking implements NetworkHandler {
             boolean favorite = packet.readBoolean();
             PlayerEntity player = context.getPlayer();
 
-            if(favorite) {
-                Components.FAVORITE_IDENTITIES.get(player).favorite(type);
-            } else {
-                Components.FAVORITE_IDENTITIES.get(player).unfavorite(type);
-            }
+            context.getTaskQueue().execute(() -> {
+                if(favorite) {
+                    Components.FAVORITE_IDENTITIES.get(player).favorite(type);
+                } else {
+                    Components.FAVORITE_IDENTITIES.get(player).unfavorite(type);
+                }
+            });
         });
     }
 
