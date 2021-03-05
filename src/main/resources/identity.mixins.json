@@ -28,6 +28,7 @@
     "PlayerSwimmingMixin",
     "RavagerEntityMixin",
     "ServerPlayerEntityMixin",
+    "ServerWorldMixin",
     "ShadowMixin",
     "StrayOverlayMixin",
     "SweetBerryBushBlockMixin",

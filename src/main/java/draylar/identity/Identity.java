@@ -2,6 +2,7 @@ package draylar.identity;
 
 import draylar.identity.ability.AbilityRegistry;
 import draylar.identity.ability.IdentityAbility;
+import draylar.identity.cca.IdentityComponent;
 import draylar.identity.config.IdentityConfig;
 import draylar.identity.network.ServerNetworking;
 import draylar.identity.registry.Commands;
@@ -13,17 +14,21 @@ import io.github.ladysnake.pal.Pal;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
@@ -39,6 +44,25 @@ public class Identity implements ModInitializer {
         EventHandlers.init();
         Commands.init();
         ServerNetworking.init();
+
+        ServerTickEvents.START_WORLD_TICK.register(world -> {
+            if(world.getTime() % (60 * 20) == 0) {
+                if(Identity.CONFIG.switchEveryMinute) {
+                    world.getPlayers().forEach(player -> {
+                        if (player.isAlive()) {
+                            IdentityComponent identityComponent = Components.CURRENT_IDENTITY.get(player);
+
+                            // find a living, non-player identity to swap to
+                            Entity entity;
+                            do {
+                                entity = Registry.ENTITY_TYPE.get(world.getRandom().nextInt(Registry.ENTITY_TYPE.getEntries().size())).create(world);
+                            } while (!(entity instanceof LivingEntity) || entity instanceof PlayerEntity);
+                            identityComponent.setIdentity((LivingEntity) entity);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public static Identifier id(String name) {

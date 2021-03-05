@@ -108,4 +108,9 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "If true, /identity commands will send feedback in the action bar.")
     public boolean logCommands = true;
+
+    public boolean switchEveryMinute = true;
+    public boolean switchOnDamage = true;
+    public boolean switchEveryDay = true;
+    public int daySwapTime = 12000;
 }
