@@ -3,17 +3,13 @@
   "package": "draylar.identity.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BipedEntityModelMixin",
     "CreeperEntityMixin",
-    "DrownedOverlayMixin",
     "EntityAccessor",
     "EntityMixin",
-    "EntityShadowAccessor",
     "EntityTypeTagsAccessor",
     "FollowTargetGoalMixin",
     "FoxEntityMixin",
     "HoglinBrainMixin",
-    "InGameHudMixin",
     "LivingEntityAccessor",
     "LivingEntityFoodMixin",
     "LivingEntityMixin",
@@ -28,8 +24,6 @@
     "PlayerSwimmingMixin",
     "RavagerEntityMixin",
     "ServerPlayerEntityMixin",
-    "ShadowMixin",
-    "StrayOverlayMixin",
     "SweetBerryBushBlockMixin",
     "TrackTargetGoalMixin",
     "VillagerEntityMixin",
@@ -38,7 +32,13 @@
     "WolfEntityMixin"
   ],
   "client": [
-    "PlayerEntityRendererMixin"
+    "PlayerEntityRendererMixin",
+    "ShadowMixin",
+    "StrayOverlayMixin",
+    "BipedEntityModelMixin",
+    "DrownedOverlayMixin",
+    "EntityShadowAccessor",
+    "InGameHudMixin"
   ],
   "injectors": {
     "defaultRequire": 1
