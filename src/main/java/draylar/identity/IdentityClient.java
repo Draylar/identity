@@ -20,10 +20,6 @@ import org.lwjgl.glfw.GLFW;
 @Environment(EnvType.CLIENT)
 public class IdentityClient implements ClientModInitializer {
 
-    public static boolean enableMenu = Identity.CONFIG.enableClientSwapMenu;
-    public static boolean showNametags = Identity.CONFIG.showPlayerNametag;
-    // todo: won't these change from the client config when the client leaves a server with different options?
-
     public static final KeyBinding MENU_KEY = KeyBindingHelper.registerKeyBinding(
             new KeyBinding(
                     "key.identity",
@@ -49,7 +45,7 @@ public class IdentityClient implements ClientModInitializer {
             assert client.player != null;
 
             if(MENU_KEY.wasPressed()) {
-                if(enableMenu || client.player.hasPermissionLevel(3)) {
+                if(Identity.CONFIG.enableClientSwapMenu || client.player.hasPermissionLevel(3)) {
                     MinecraftClient.getInstance().openScreen(new IdentityScreen());
                 }
             }

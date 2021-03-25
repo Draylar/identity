@@ -1,14 +1,14 @@
 package draylar.identity.config;
 
-import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
-import me.sargunvohra.mcmods.autoconfig1u.shadowed.blue.endless.jankson.Comment;
+
+import draylar.omegaconfig.api.Comment;
+import draylar.omegaconfig.api.Config;
+import draylar.omegaconfig.api.Syncing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Config(name = "identity")
-public class IdentityConfig implements ConfigData {
+public class IdentityConfig implements Config {
 
     @Comment(value = "Whether an overlay message appears above the hotbar when a new identity is unlocked.")
     public boolean overlayIdentityUnlocks = true;
@@ -67,7 +67,8 @@ public class IdentityConfig implements ConfigData {
     @Comment(value = "The maximum value of scaling health. Useful for not giving players 300 HP when they turn into a wither.")
     public int maxHealth = 40;
 
-    @Comment(value = "If set to false, only operators can switch identities through the ` menu.\nNote that this config option is synced from S2C when a client joins the game, but a client can still open the menu if they have a modified version of Identity.")
+    @Syncing
+    @Comment(value = "If set to false, only operators can switch identities through the ` menu. Note that this config option is synced from S2C when a client joins the game, but a client can still open the menu if they have a modified version of Identity.")
     public boolean enableClientSwapMenu = true;
 
     @Comment(value = "If set to false, only operators can switch identities. Used on the server; guaranteed to be authoritative.")
@@ -97,7 +98,8 @@ public class IdentityConfig implements ConfigData {
     @Comment(value = "In ticks, how long until the Wither can shoot a wither skull again?")
     public int snowGolemAbilityCooldown = 10;
 
-    @Comment(value = "Should player nametags render above players disguised with an identity?\nNote that the server is the authority for this config option.")
+    @Syncing
+    @Comment(value = "Should player nametags render above players disguised with an identity? Note that the server is the authority for this config option.")
     public boolean showPlayerNametag = false;
 
     @Comment(value = "If true, players that gain a NEW Identity will be forcibly changed into it on kill.")
@@ -108,4 +110,14 @@ public class IdentityConfig implements ConfigData {
 
     @Comment(value = "If true, /identity commands will send feedback in the action bar.")
     public boolean logCommands = true;
+
+    @Override
+    public String getName() {
+        return "identity";
+    }
+
+    @Override
+    public String getExtension() {
+        return "json5";
+    }
 }

@@ -45,8 +45,8 @@ dependencies {
     include 'com.github.Draylar:angerable-patch:1.0.0'
 
     // config
-    modCompile "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
-    include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
+    modImplementation 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta'
+    include 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta:min'
 }
 
 processResources {

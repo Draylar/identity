@@ -123,7 +123,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             identityRenderer.render(identity, f, g, matrixStack, vertexConsumerProvider, i);
 
             // Only render nametags if the server option is true and the entity being rendered is NOT this player/client
-            if(IdentityClient.showNametags && player != MinecraftClient.getInstance().player) {
+            if(Identity.CONFIG.showPlayerNametag && player != MinecraftClient.getInstance().player) {
                 renderLabelIfPresent((AbstractClientPlayerEntity) player, player.getDisplayName(), matrixStack, vertexConsumerProvider, i);
             }
         } else {

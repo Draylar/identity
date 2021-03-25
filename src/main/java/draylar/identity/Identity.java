@@ -1,35 +1,29 @@
 package draylar.identity;
 
 import draylar.identity.ability.AbilityRegistry;
-import draylar.identity.ability.IdentityAbility;
 import draylar.identity.config.IdentityConfig;
 import draylar.identity.network.ServerNetworking;
 import draylar.identity.registry.Commands;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import draylar.identity.registry.EventHandlers;
+import draylar.omegaconfig.OmegaConfig;
 import io.github.ladysnake.pal.AbilitySource;
 import io.github.ladysnake.pal.Pal;
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
 
 import java.util.List;
 
 public class Identity implements ModInitializer {
 
-    public static final IdentityConfig CONFIG = AutoConfig.register(IdentityConfig.class, JanksonConfigSerializer::new).getConfig();
+    public static final IdentityConfig CONFIG = OmegaConfig.register(IdentityConfig.class);
     public static final AbilitySource ABILITY_SOURCE = Pal.getAbilitySource(id("equipped_identity"));
 
     @Override

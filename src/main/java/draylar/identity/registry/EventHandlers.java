@@ -34,7 +34,5 @@ public class EventHandlers {
 
             return ActionResult.PASS;
         });
-
-        PlayerJoinCallback.EVENT.register(ServerNetworking::updateClientConfig);
     }
 }
