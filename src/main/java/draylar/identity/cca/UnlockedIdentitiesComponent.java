@@ -1,6 +1,7 @@
 package draylar.identity.cca;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import draylar.identity.api.event.UnlockIdentityCallback;
 import draylar.identity.registry.Components;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.util.sync.EntitySyncedComponent;
@@ -11,6 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -27,7 +30,9 @@ public class UnlockedIdentitiesComponent implements AutoSyncedComponent {
     }
 
     public void unlock(Identifier id) {
-        if(!unlocked.contains(id)) {
+        ActionResult unlock = UnlockIdentityCallback.EVENT.invoker().unlock((ServerPlayerEntity) player, id);
+
+        if(unlock != ActionResult.FAIL && !unlocked.contains(id)) {
             this.unlocked.add(id);
             Components.UNLOCKED_IDENTITIES.sync(this.player);
         }
