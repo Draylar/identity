@@ -29,18 +29,21 @@ public class UnlockedIdentitiesComponent implements AutoSyncedComponent {
         this.player = player;
     }
 
-    public void unlock(Identifier id) {
+    public boolean unlock(Identifier id) {
         ActionResult unlock = UnlockIdentityCallback.EVENT.invoker().unlock((ServerPlayerEntity) player, id);
 
         if(unlock != ActionResult.FAIL && !unlocked.contains(id)) {
             this.unlocked.add(id);
             Components.UNLOCKED_IDENTITIES.sync(this.player);
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public void unlock(EntityType<?> type) {
+    public boolean unlock(EntityType<?> type) {
         Identifier id = Registry.ENTITY_TYPE.getId(type);
-        unlock(id);
+        return unlock(id);
     }
 
     public boolean has(EntityType<?> type) {

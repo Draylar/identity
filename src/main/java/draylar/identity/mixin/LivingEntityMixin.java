@@ -52,10 +52,10 @@ public abstract class LivingEntityMixin extends Entity {
         if(attacker instanceof PlayerEntity) {
             boolean isNew = false;
             UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(attacker);
+            boolean result = unlocked.unlock(thisType);
 
             // ensure type has not already been unlocked
-            if(!unlocked.has(thisType)) {
-                unlocked.unlock(thisType);
+            if(result && !unlocked.has(thisType)) {
 
                 // send unlock message to player if they aren't in creative and the config option is on
                 if(Identity.CONFIG.overlayIdentityUnlocks && !((PlayerEntity) attacker).isCreative()) {

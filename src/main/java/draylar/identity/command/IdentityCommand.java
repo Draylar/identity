@@ -199,9 +199,9 @@ public class IdentityCommand {
         EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
 
         if(!unlocked.has(entity)) {
-            unlocked.unlock(entity);
+            boolean result = unlocked.unlock(entity);
 
-            if(Identity.CONFIG.logCommands) {
+            if(result && Identity.CONFIG.logCommands) {
                 player.sendMessage(new TranslatableText("identity.unlock_entity", new TranslatableText(entity.getTranslationKey())), true);
                 source.sendMessage(new TranslatableText("identity.grant_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
             }
