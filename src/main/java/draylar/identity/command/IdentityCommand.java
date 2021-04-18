@@ -237,9 +237,9 @@ public class IdentityCommand {
         Entity createdEntity = entity.create(player.world);
 
         if(createdEntity instanceof LivingEntity) {
-            current.setIdentity((LivingEntity) createdEntity);
+            boolean result = current.setIdentity((LivingEntity) createdEntity);
 
-            if(Identity.CONFIG.logCommands) {
+            if(result && Identity.CONFIG.logCommands) {
                 source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
             }
         }
@@ -247,9 +247,9 @@ public class IdentityCommand {
 
     private static void unequip(ServerPlayerEntity source, ServerPlayerEntity player) {
         IdentityComponent current = Components.CURRENT_IDENTITY.get(player);
-        current.setIdentity(null);
+        boolean result = current.setIdentity(null);
 
-        if(Identity.CONFIG.logCommands) {
+        if(result && Identity.CONFIG.logCommands) {
             source.sendMessage(new TranslatableText("identity.unequip_success", player.getDisplayName()), false);
         }
     }

@@ -3,6 +3,7 @@ package draylar.identity.cca;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import draylar.identity.Identity;
+import draylar.identity.api.event.IdentitySwapCallback;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.mixin.EntityAccessor;
 import draylar.identity.mixin.LivingEntityAccessor;
@@ -21,6 +22,7 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
@@ -59,7 +61,12 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
      *
      * @param identity {@link LivingEntity} new identity for this component, or null to clear
      */
-    public void setIdentity(LivingEntity identity) {
+    public boolean setIdentity(LivingEntity identity) {
+        ActionResult result = IdentitySwapCallback.EVENT.invoker().swap((ServerPlayerEntity) player, identity);
+        if(result == ActionResult.FAIL) {
+            return false;
+        }
+
         this.identity = identity;
 
         // refresh entity hitbox dimensions
@@ -90,6 +97,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
 
         // sync with client
         Components.CURRENT_IDENTITY.sync(this.player);
+        return true;
     }
 
     @Override
