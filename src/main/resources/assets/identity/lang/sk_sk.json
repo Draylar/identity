@@ -23,7 +23,7 @@
   "identity.help.config_description": "Choďte do súboru nastavení: /config/identity.json5 pre všetky nastavenia módu.",
   "identity.help.credits_label": "Titulky",
   "identity.help.credits_general": "Všeobecné: Pyrofab, AllanChain, James103, lawleagle",
-  "identity.help.credits_translators": "Prekladatelia: qsefthuopq, Godzmoline, SmajloSlovakian", //I added my name in here in case of this translation being added ;)
+  "identity.help.credits_translators": "Prekladatelia: qsefthuopq, Godzmoline, SmajloSlovakian",
   "identity.help.return": "Stlačte hocijaké tlačidlo pre vrátenie do Identity menu.",
   "key.categories.identity": "Identity",
   "key.identity": "Otvoriť menu identít",
