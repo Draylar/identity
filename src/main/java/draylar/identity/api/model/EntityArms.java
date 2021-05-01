@@ -3,10 +3,8 @@ package draylar.identity.api.model;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.LlamaEntityModel;
-import net.minecraft.client.render.entity.model.PandaEntityModel;
-import net.minecraft.client.render.entity.model.QuadrupedEntityModel;
+import net.minecraft.client.render.entity.model.*;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Pair;
@@ -70,8 +68,12 @@ public class EntityArms {
     public static void init() {
         register(QuadrupedEntityModel.class, (quad, model) -> model.frontRightLeg, (stack, model) -> {});
         register(LlamaEntityModel.class, (llama, model) -> model.rightFrontLeg, (stack, model) -> {});
-        register(PandaEntityModel.class, (llama, model) -> model.frontRightLeg, (stack, model) -> {
-            stack.translate(0, 1, 0);
+        register(PandaEntityModel.class, (llama, model) -> model.frontRightLeg, (stack, model) -> stack.translate(0, -0.5, 0));
+        register(BlazeEntityModel.class, (llama, model) -> model.rods[10], (stack, model) -> {
+            stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(45));
+            stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-15));
+            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-25));
+            stack.translate(0, 0, -.25);
         });
     }
 

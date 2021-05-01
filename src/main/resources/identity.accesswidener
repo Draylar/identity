@@ -4,5 +4,7 @@ extendable method net/minecraft/entity/LivingEntity getEyeHeight (Lnet/minecraft
 accessible method net/minecraft/entity/LivingEntity getEyeHeight (Lnet/minecraft/entity/EntityPose;Lnet/minecraft/entity/EntityDimensions;)F
 extendable method net/minecraft/entity/Entity getStandingEyeHeight ()F
 accessible method net/minecraft/client/render/entity/LivingEntityRenderer getRenderLayer (Lnet/minecraft/entity/LivingEntity;ZZZ)Lnet/minecraft/client/render/RenderLayer;
+
 accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel frontRightLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/LlamaEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/BlazeEntityModel rods [Lnet/minecraft/client/model/ModelPart;
