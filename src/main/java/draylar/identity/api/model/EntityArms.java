@@ -14,14 +14,15 @@ import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
 public class EntityArms {
 
-    private static final Map<EntityType<? extends LivingEntity>, Pair<EntityArmProvider<? extends LivingEntity>, ArmRenderingManipulator<?>>> DIRECT_PROVIDERS = new HashMap<>();
-    private static final Map<Class<?>, Pair<ClassArmProvider<?>, ArmRenderingManipulator<?>>> CLASS_PROVIDERS = new HashMap<>();
+    private static final Map<EntityType<? extends LivingEntity>, Pair<EntityArmProvider<? extends LivingEntity>, ArmRenderingManipulator<?>>> DIRECT_PROVIDERS = new LinkedHashMap<>();
+    private static final Map<Class<?>, Pair<ClassArmProvider<?>, ArmRenderingManipulator<?>>> CLASS_PROVIDERS = new LinkedHashMap<>();
 
     public static <T extends LivingEntity> void register(EntityType<T> type, EntityArmProvider<T> provider, ArmRenderingManipulator<EntityModel<T>> manipulator) {
         DIRECT_PROVIDERS.put(type, new Pair<>(provider, manipulator));
@@ -69,7 +70,7 @@ public class EntityArms {
     }
 
     public static void init() {
-        register(QuadrupedEntityModel.class, (quad, model) -> model.frontRightLeg, (stack, model) -> {});
+        // specific
         register(LlamaEntityModel.class, (llama, model) -> model.rightFrontLeg, (stack, model) -> {});
         register(PandaEntityModel.class, (llama, model) -> model.frontRightLeg, (stack, model) -> stack.translate(0, -0.5, 0));
         register(BlazeEntityModel.class, (llama, model) -> model.rods[10], (stack, model) -> {
@@ -90,16 +91,21 @@ public class EntityArms {
         register(PigEntityModel.class, (pig, model) -> model.frontRightLeg, (stack, model) -> {
             stack.translate(0, 0, .6);
         });
-        register(EntityType.PILLAGER, (pillager, model) -> ((IllagerEntityModel) model).rightAttackingArm, (stack, model) -> {
-            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-10));
-            stack.translate(0, .5, -.3);
-        });
         register(PolarBearEntityModel.class, (bear, model) -> model.frontRightLeg, (stack, model) -> {
             stack.translate(0, 0, .3);
         });
         register(RavagerEntityModel.class, (bear, model) -> model.rightFrontLeg, (stack, model) -> { });
         register(SquidEntityModel.class, (squid, model) -> model.tentacles[0], (stack, model) -> {
 
+        });
+
+        // generic
+        register(QuadrupedEntityModel.class, (quad, model) -> model.frontRightLeg, (stack, model) -> {});
+
+        // types
+        register(EntityType.PILLAGER, (pillager, model) -> ((IllagerEntityModel) model).rightAttackingArm, (stack, model) -> {
+            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-10));
+            stack.translate(0, .5, -.3);
         });
     }
 
