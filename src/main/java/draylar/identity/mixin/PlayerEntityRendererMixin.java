@@ -2,15 +2,18 @@ package draylar.identity.mixin;
 
 import draylar.identity.Identity;
 import draylar.identity.IdentityClient;
-import draylar.identity.api.model.EntityUpdater;
-import draylar.identity.api.model.EntityUpdaters;
+import draylar.identity.api.model.*;
 import draylar.identity.registry.Components;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.*;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
@@ -23,12 +26,14 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntityRenderer.class)
@@ -171,6 +176,61 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         if(identity != null) {
             if(identity instanceof TameableEntity) {
                 cir.setReturnValue(super.getPositionOffset(player, f));
+            }
+        }
+    }
+
+    @Inject(
+            method = "renderArm",
+            at = @At("HEAD"), cancellable = true)
+    private void onRenderArm(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player, ModelPart arm, ModelPart sleeve, CallbackInfo ci) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
+
+        // sync player data to identity identity
+        if(identity != null) {
+            EntityRenderer<?> renderer = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(identity);
+
+            if(renderer instanceof LivingEntityRenderer) {
+                LivingEntityRenderer<LivingEntity, ?> rendererCasted = (LivingEntityRenderer<LivingEntity, ?>) renderer;
+                EntityModel model = ((LivingEntityRenderer) renderer).getModel();
+
+                // re-assign arm & sleeve models
+                arm = null;
+                sleeve = null;
+
+                if(model instanceof PlayerEntityModel) {
+                    arm = ((PlayerEntityModel) model).rightArm;
+                    sleeve = ((PlayerEntityModel) model).rightSleeve;
+                } else if(model instanceof BipedEntityModel) {
+                    arm = ((BipedEntityModel) model).rightArm;
+                    sleeve = null;
+                } else {
+                    Pair<ModelPart, ArmRenderingManipulator<EntityModel>> pair = EntityArms.get(identity, model);
+                    if(pair != null) {
+                        arm = pair.getLeft();
+                        pair.getRight().run(matrices, model);
+                        matrices.translate(0, -.35, .5);
+                    }
+                }
+
+                // assign model properties
+                model.handSwingProgress = 0.0F;
+//                model.sneaking = false;
+//                model.leaningPitch = 0.0F;
+                model.setAngles(identity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+
+                // render
+                if(arm != null) {
+                    arm.pitch = 0.0F;
+                    arm.render(matrices, vertexConsumers.getBuffer(rendererCasted.getRenderLayer(identity, true, false, true)), light, OverlayTexture.DEFAULT_UV);
+                }
+
+                if(sleeve != null) {
+                    sleeve.pitch = 0.0F;
+                    sleeve.render(matrices, vertexConsumers.getBuffer(rendererCasted.getRenderLayer(identity, true, false, true)), light, OverlayTexture.DEFAULT_UV);
+                }
+
+                ci.cancel();
             }
         }
     }

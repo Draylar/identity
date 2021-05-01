@@ -2,6 +2,7 @@ package draylar.identity;
 
 import draylar.identity.ability.AbilityOverlayRenderer;
 import draylar.identity.ability.AbilityRegistry;
+import draylar.identity.api.model.EntityArms;
 import draylar.identity.api.model.EntityUpdaters;
 import draylar.identity.network.ClientNetworking;
 import draylar.identity.registry.Components;
@@ -39,6 +40,7 @@ public class IdentityClient implements ClientModInitializer {
         EntityUpdaters.init();
         ClientNetworking.init();
         AbilityOverlayRenderer.register();
+        EntityArms.init();
 
         // add screen opening key-bind
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
