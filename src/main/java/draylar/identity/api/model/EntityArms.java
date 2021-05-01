@@ -5,9 +5,11 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.EvokerEntityRenderer;
 import net.minecraft.client.render.entity.model.*;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.PillagerEntity;
 import net.minecraft.util.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +23,7 @@ public class EntityArms {
     private static final Map<EntityType<? extends LivingEntity>, Pair<EntityArmProvider<? extends LivingEntity>, ArmRenderingManipulator<?>>> DIRECT_PROVIDERS = new HashMap<>();
     private static final Map<Class<?>, Pair<ClassArmProvider<?>, ArmRenderingManipulator<?>>> CLASS_PROVIDERS = new HashMap<>();
 
-    public static <T extends LivingEntity> void register(EntityType<T> type, EntityArmProvider<T> provider, ArmRenderingManipulator<T> manipulator) {
+    public static <T extends LivingEntity> void register(EntityType<T> type, EntityArmProvider<T> provider, ArmRenderingManipulator<EntityModel<T>> manipulator) {
         DIRECT_PROVIDERS.put(type, new Pair<>(provider, manipulator));
     }
 
@@ -84,6 +86,13 @@ public class EntityArms {
         });
         register(IronGolemEntityModel.class, (golem, model) -> model.getRightArm(), (stack, model) -> {
             stack.translate(0, 0, -.5);
+        });
+        register(PigEntityModel.class, (pig, model) -> model.frontRightLeg, (stack, model) -> {
+            stack.translate(0, 0, .6);
+        });
+        register(EntityType.PILLAGER, (pillager, model) -> ((IllagerEntityModel) model).rightAttackingArm, (stack, model) -> {
+            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-10));
+            stack.translate(0, .5, -.3);
         });
     }
 

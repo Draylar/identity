@@ -10,3 +10,4 @@ accessible field net/minecraft/client/render/entity/model/LlamaEntityModel right
 accessible field net/minecraft/client/render/entity/model/BlazeEntityModel rods [Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/OcelotEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/SpiderEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/IllagerEntityModel rightAttackingArm Lnet/minecraft/client/model/ModelPart;
