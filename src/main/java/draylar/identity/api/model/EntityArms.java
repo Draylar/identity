@@ -3,6 +3,7 @@ package draylar.identity.api.model;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.render.entity.EvokerEntityRenderer;
 import net.minecraft.client.render.entity.model.*;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.EntityType;
@@ -80,6 +81,9 @@ public class EntityArms {
             stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-15));
             stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(15));
             stack.translate(0, 0, 0);
+        });
+        register(IronGolemEntityModel.class, (golem, model) -> model.getRightArm(), (stack, model) -> {
+            stack.translate(0, 0, -.5);
         });
     }
 
