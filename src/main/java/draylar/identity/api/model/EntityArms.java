@@ -94,6 +94,13 @@ public class EntityArms {
             stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-10));
             stack.translate(0, .5, -.3);
         });
+        register(PolarBearEntityModel.class, (bear, model) -> model.frontRightLeg, (stack, model) -> {
+            stack.translate(0, 0, .3);
+        });
+        register(RavagerEntityModel.class, (bear, model) -> model.rightFrontLeg, (stack, model) -> { });
+        register(SquidEntityModel.class, (squid, model) -> model.tentacles[0], (stack, model) -> {
+
+        });
     }
 
     private EntityArms() {
