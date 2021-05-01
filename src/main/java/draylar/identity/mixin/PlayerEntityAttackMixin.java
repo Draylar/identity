@@ -1,5 +1,6 @@
 package draylar.identity.mixin;
 
+import draylar.identity.api.IdentityGranting;
 import draylar.identity.registry.Components;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -29,6 +30,11 @@ public abstract class PlayerEntityAttackMixin extends LivingEntity {
                 try {
                     identity.tryAttack(target);
                     ci.cancel();
+
+                    // If the target died, grant identity
+                    if(!target.isAlive()) {
+                        IdentityGranting.grantByAttack((PlayerEntity) (Object) this, target.getType());
+                    }
                 } catch (Exception e) {
                     // FALL BACK TO DEFAULT BEHAVIOR.
                     // Some mobs do not override, so it defaults to attack damage attribute, but the identity does not have any

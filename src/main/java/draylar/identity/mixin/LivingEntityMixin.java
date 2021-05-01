@@ -1,6 +1,7 @@
 package draylar.identity.mixin;
 
 import draylar.identity.Identity;
+import draylar.identity.api.IdentityGranting;
 import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
@@ -50,35 +51,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         // check if attacker is a player to grant identity
         if(attacker instanceof PlayerEntity) {
-            boolean isNew = false;
-            UnlockedIdentitiesComponent unlocked = Components.UNLOCKED_IDENTITIES.get(attacker);
-            boolean result = unlocked.unlock(thisType);
-
-            // ensure type has not already been unlocked
-            if(result && !unlocked.has(thisType)) {
-
-                // send unlock message to player if they aren't in creative and the config option is on
-                if(Identity.CONFIG.overlayIdentityUnlocks && !((PlayerEntity) attacker).isCreative()) {
-                    ((PlayerEntity) attacker).sendMessage(
-                            new TranslatableText(
-                                    "identity.unlock_entity",
-                                    new TranslatableText(thisType.getTranslationKey())
-                            ), true
-                    );
-                }
-
-                isNew = true;
-            }
-
-            // force-morph player into new type
-            Entity instanced = thisType.create(attacker.world);
-            if(instanced instanceof LivingEntity) {
-                if(Identity.CONFIG.forceChangeNew && isNew) {
-                    Components.CURRENT_IDENTITY.get(attacker).setIdentity((LivingEntity) instanced);
-                } else if (Identity.CONFIG.forceChangeAlways) {
-                    Components.CURRENT_IDENTITY.get(attacker).setIdentity((LivingEntity) instanced);
-                }
-            }
+            IdentityGranting.grantByAttack((PlayerEntity) attacker, thisType);
         }
     }
 
