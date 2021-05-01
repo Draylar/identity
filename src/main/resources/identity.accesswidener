@@ -8,3 +8,5 @@ accessible method net/minecraft/client/render/entity/LivingEntityRenderer getRen
 accessible field net/minecraft/client/render/entity/model/QuadrupedEntityModel frontRightLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/LlamaEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/BlazeEntityModel rods [Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/OcelotEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/SpiderEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;

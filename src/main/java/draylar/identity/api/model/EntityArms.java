@@ -75,6 +75,12 @@ public class EntityArms {
             stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-25));
             stack.translate(0, 0, -.25);
         });
+        register(OcelotEntityModel.class, (ocelot, model) -> model.rightFrontLeg, (stack, model) -> {});
+        register(SpiderEntityModel.class, (spider, model) -> model.rightFrontLeg, (stack, model) -> {
+            stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-15));
+            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(15));
+            stack.translate(0, 0, 0);
+        });
     }
 
     private EntityArms() {
