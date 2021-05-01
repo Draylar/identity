@@ -253,11 +253,9 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
                     // By default, players can not hear their own ambient noises.
                     // This is because ambient noises can be very annoying.
                     if(Identity.CONFIG.hearSelfAmbient) {
-                        this.playSound(sound, volume, pitch);
+                        this.world.playSound(null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
                     } else {
-                        if (!this.isSilent()) {
-                            this.world.playSound((PlayerEntity) (Object) this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
-                        }
+                        this.world.playSound((PlayerEntity) (Object) this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
                     }
                 }
             }
