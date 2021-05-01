@@ -95,7 +95,7 @@ public class IdentityConfig implements Config {
     @Comment(value = "In ticks, how long until the Wither can shoot a wither skull again?")
     public int witherAbilityCooldown = 200;
 
-    @Comment(value = "In ticks, how long until the Wither can shoot a wither skull again?")
+    @Comment(value = "Tick cooldown time of the Snow Golem ability")
     public int snowGolemAbilityCooldown = 10;
 
     @Syncing
