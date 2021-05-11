@@ -1,28 +1,20 @@
-name: Fabric CI
-
-on:
-  push:
-    branches: [ 1.16.2 ]
-  pull_request:
-    branches: [ 1.16.2 ]
+name: Fabric Build
+on: [ push, pull_request ]
 
 jobs:
-  runTests:
-    runs-on: ubuntu-latest
-
+  build:
+    strategy:
+      matrix:
+        java: [8-jdk ]
+    runs-on: ubuntu-20.04
+    container:
+      image: openjdk:${{ matrix.java }}
+      options: --user root
     steps:
-      - name: "Checkout Project"
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew check build publishToMavenLocal --stacktrace --parallel
+      - uses: actions/upload-artifact@v2
         with:
-          lfs: true
-
-      - name: "Run Fabric Tests"
-        uses: Geometrically/fabric-test-runner@v1
-        with:
-          minecraftVersion: 1.16.5
-
-      - name: "Upload Artifact"
-        uses: actions/upload-artifact@v1
-        with:
-          name: Builds
-          path: build/libs
+          name: Artifacts
+          path: build/libs/
