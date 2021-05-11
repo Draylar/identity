@@ -1,0 +1,28 @@
+name: Fabric CI
+
+on:
+  push:
+    branches: [ 1.16.2 ]
+  pull_request:
+    branches: [ 1.16.2 ]
+
+jobs:
+  runTests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout Project"
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      - name: "Run Fabric Tests"
+        uses: Geometrically/fabric-test-runner@v1
+        with:
+          minecraftVersion: 1.16.5
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v1
+        with:
+          name: Builds
+          path: build/libs
