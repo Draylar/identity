@@ -19,6 +19,7 @@ import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.item.AirBlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -86,8 +87,12 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         // update flight properties on player depending on identity
         if (Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
             Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
+            player.abilities.flySpeed = Identity.CONFIG.flySpeed;
+            player.sendAbilitiesUpdate();
         } else {
             Identity.ABILITY_SOURCE.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
+            player.abilities.flySpeed = 0.05f;
+            player.sendAbilitiesUpdate();
         }
 
         // If the player is riding a Ravager and changes into an Identity that cannot ride Ravagers, kick them off.

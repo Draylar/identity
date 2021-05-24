@@ -111,6 +111,8 @@ public class IdentityConfig implements Config {
     @Comment(value = "If true, /identity commands will send feedback in the action bar.")
     public boolean logCommands = true;
 
+    public float flySpeed = 0.05f;
+
     @Override
     public String getName() {
         return "identity";

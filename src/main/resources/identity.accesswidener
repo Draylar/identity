@@ -13,3 +13,5 @@ accessible field net/minecraft/client/render/entity/model/SpiderEntityModel righ
 accessible field net/minecraft/client/render/entity/model/IllagerEntityModel rightAttackingArm Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/RavagerEntityModel rightFrontLeg Lnet/minecraft/client/model/ModelPart;
 accessible field net/minecraft/client/render/entity/model/SquidEntityModel tentacles [Lnet/minecraft/client/model/ModelPart;
+
+accessible field net/minecraft/entity/player/PlayerAbilities flySpeed F

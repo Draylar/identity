@@ -23,6 +23,8 @@ public class PlayerAdvancementTrackerMixin {
     private void refreshFlight(Advancement advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
         if(Identity.hasFlyingPermissions(owner)) {
             Identity.ABILITY_SOURCE.grantTo(owner, VanillaAbilities.ALLOW_FLYING);
+            owner.abilities.flySpeed = Identity.CONFIG.flySpeed;
+            owner.sendAbilitiesUpdate();
         }
     }
 }

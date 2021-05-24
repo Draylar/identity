@@ -60,6 +60,8 @@ public abstract class ServerPlayerEntityMixin {
         if(Identity.hasFlyingPermissions((ServerPlayerEntity) (Object) this)) {
             if(!Identity.ABILITY_SOURCE.grants((ServerPlayerEntity) (Object) this, VanillaAbilities.ALLOW_FLYING)) {
                 Identity.ABILITY_SOURCE.grantTo((ServerPlayerEntity) (Object) this, VanillaAbilities.ALLOW_FLYING);
+                ((ServerPlayerEntity) (Object) this).abilities.flySpeed = Identity.CONFIG.flySpeed;
+                ((ServerPlayerEntity) (Object) this).sendAbilitiesUpdate();
             }
 
             Identity.ABILITY_SOURCE.grantTo((ServerPlayerEntity) (Object) this, VanillaAbilities.FLYING);
