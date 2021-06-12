@@ -1,15 +1,17 @@
 package draylar.identity.screen.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import draylar.identity.Identity;
 import draylar.identity.network.ClientNetworking;
 import draylar.identity.screen.IdentityScreen;
-import draylar.identity.screen.ScreenUtils;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractPressableButtonWidget;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
@@ -17,10 +19,9 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 
-import java.util.Arrays;
 import java.util.Collections;
 
-public class EntityWidget extends AbstractPressableButtonWidget {
+public class EntityWidget extends PressableWidget {
 
     private final LivingEntity entity;
     private final int size;
@@ -80,17 +81,18 @@ public class EntityWidget extends AbstractPressableButtonWidget {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
 
-        ScreenUtils.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity, 15728880);
+//        ScreenUtils.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity, 15728880);
+        InventoryScreen.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity);
 
         // Render selected outline
         if(active) {
-            MinecraftClient.getInstance().getTextureManager().bindTexture(Identity.id("textures/gui/selected.png"));
+            RenderSystem.setShaderTexture(0, Identity.id("textures/gui/selected.png"));
             DrawableHelper.drawTexture(matrices, x, y, getWidth(), getHeight(), 0, 0, 48, 32, 48, 32);
         }
 
         // Render favorite star
         if(starred) {
-            MinecraftClient.getInstance().getTextureManager().bindTexture(Identity.id("textures/gui/star.png"));
+            RenderSystem.setShaderTexture(0, Identity.id("textures/gui/star.png"));
             DrawableHelper.drawTexture(matrices, x, y, 0, 0, 15, 15, 15, 15);
         }
 
@@ -127,5 +129,10 @@ public class EntityWidget extends AbstractPressableButtonWidget {
         if(currentScreen != null) {
             currentScreen.renderTooltip(matrices, Collections.singletonList(new TranslatableText(entity.getType().getTranslationKey())), mouseX, mouseY);
         }
+    }
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+
     }
 }

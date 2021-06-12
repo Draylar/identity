@@ -4,15 +4,17 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import draylar.identity.cca.FavoriteIdentitiesComponent;
 import draylar.identity.cca.IdentityComponent;
 import draylar.identity.cca.UnlockedIdentitiesComponent;
+import draylar.identity.mixin.ScreenAccessor;
 import draylar.identity.registry.Components;
 import draylar.identity.screen.widget.EntityWidget;
 import draylar.identity.screen.widget.HelpWidget;
 import draylar.identity.screen.widget.PlayerWidget;
 import draylar.identity.screen.widget.SearchWidget;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -41,9 +43,9 @@ public class IdentityScreen extends Screen {
         super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
 
         populateRenderEntities();
-        addButton(searchBar);
-        addButton(playerButton);
-        addButton(helpButton);
+        addDrawableChild(searchBar);
+        addDrawableChild(playerButton);
+        addDrawableChild(helpButton);
 
         // get identity components from player
         UnlockedIdentitiesComponent unlockedComponent = Components.UNLOCKED_IDENTITIES.get(MinecraftClient.getInstance().player);
@@ -77,8 +79,8 @@ public class IdentityScreen extends Screen {
 
             // Only re-filter if the text contents changed
             if(!lastSearchContents.equals(text)) {
-                buttons.removeIf(button -> button instanceof EntityWidget);
-                children.removeIf(button -> button instanceof EntityWidget);
+                ((ScreenAccessor) this).getSelectables().removeIf(button -> button instanceof EntityWidget);
+                children().removeIf(button -> button instanceof EntityWidget);
                 entityWidgets.clear();
 
                 List<LivingEntity> filtered = unlocked
@@ -103,6 +105,8 @@ public class IdentityScreen extends Screen {
         this.setFocused(null);
     }
 
+
+
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
@@ -116,10 +120,12 @@ public class IdentityScreen extends Screen {
         }
 
         // tooltips
-        for (AbstractButtonWidget abstractButtonWidget : this.buttons) {
-            if (abstractButtonWidget.isHovered()) {
-                abstractButtonWidget.renderToolTip(matrices, mouseX, mouseY);
-                break;
+        for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
+            if(selectable instanceof PressableWidget button) {
+                if (button.isHovered()) {
+                    button.renderToolTip(matrices, mouseX, mouseY);
+                    break;
+                }
             }
         }
 
@@ -158,9 +164,9 @@ public class IdentityScreen extends Screen {
             return false;
         }
 
-        buttons.forEach(button -> {
-            if(button instanceof EntityWidget) {
-                button.y = (int) (button.y + amount * 10);
+        ((ScreenAccessor) this).getSelectables().forEach(button -> {
+            if(button instanceof EntityWidget widget) {
+                widget.y = (int) (widget.y + amount * 10);
             }
         });
 
@@ -198,7 +204,7 @@ public class IdentityScreen extends Screen {
                             isCurrent
                     );
 
-                    addButton(entityWidget);
+                    addDrawableChild(entityWidget);
                     entityWidgets.add(entityWidget);
                 }
             }

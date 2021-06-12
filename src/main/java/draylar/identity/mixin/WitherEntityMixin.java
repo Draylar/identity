@@ -28,8 +28,8 @@ public abstract class WitherEntityMixin extends HostileEntity {
             at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"),
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private void removeInvalidPlayerTargets(CallbackInfo ci, int j, List<LivingEntity> list, int l) {
-        List<LivingEntity> toRemove = new ArrayList();
+    private void removeInvalidPlayerTargets(CallbackInfo ci, int j, List<LivingEntity> list) {
+        List<LivingEntity> toRemove = new ArrayList<>();
 
         list.forEach(entity -> {
             if(entity instanceof PlayerEntity) {

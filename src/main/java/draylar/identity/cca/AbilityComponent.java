@@ -4,7 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import draylar.identity.registry.Components;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class AbilityComponent implements AutoSyncedComponent, ServerTickingComponent {
 
@@ -18,12 +18,12 @@ public class AbilityComponent implements AutoSyncedComponent, ServerTickingCompo
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         this.cooldown = tag.getInt(ABILITY_COOLDOWN_KEY);
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void writeToNbt(NbtCompound tag) {
         tag.putInt(ABILITY_COOLDOWN_KEY, cooldown);
     }
 

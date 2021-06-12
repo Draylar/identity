@@ -19,9 +19,8 @@ import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.item.AirBlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
@@ -87,11 +86,11 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
         // update flight properties on player depending on identity
         if (Identity.hasFlyingPermissions((ServerPlayerEntity) player)) {
             Identity.ABILITY_SOURCE.grantTo(player, VanillaAbilities.ALLOW_FLYING);
-            player.abilities.flySpeed = Identity.CONFIG.flySpeed;
+            player.getAbilities().flySpeed = Identity.CONFIG.flySpeed;
             player.sendAbilitiesUpdate();
         } else {
             Identity.ABILITY_SOURCE.revokeFrom(player, VanillaAbilities.ALLOW_FLYING);
-            player.abilities.flySpeed = 0.05f;
+            player.getAbilities().flySpeed = 0.05f;
             player.sendAbilitiesUpdate();
         }
 
@@ -223,8 +222,8 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
-        Optional<EntityType<?>> type = EntityType.fromTag(tag);
+    public void readFromNbt(NbtCompound tag) {
+        Optional<EntityType<?>> type = EntityType.fromNbt(tag);
 
         // set identity to null (no identity) if the entity id is "minecraft:empty"
         if (tag.getString("id").equals("minecraft:empty")) {
@@ -234,7 +233,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
 
         // if entity type was valid, deserialize entity data from tag
         else if (type.isPresent()) {
-            CompoundTag entityTag = tag.getCompound("EntityData");
+            NbtCompound entityTag = tag.getCompound("EntityData");
 
             // ensure entity data exists
             if (entityTag != null) {
@@ -245,18 +244,18 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
                     ((DimensionsRefresher) player).identity_refreshDimensions();
                 }
 
-                identity.fromTag(entityTag);
+                identity.readNbt(entityTag);
             }
         }
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
-        CompoundTag entityTag = new CompoundTag();
+    public void writeToNbt(NbtCompound tag) {
+        NbtCompound entityTag = new NbtCompound();
 
         // serialize current identity data to tag if it exists
         if (identity != null) {
-            identity.toTag(entityTag);
+            identity.writeNbt(entityTag);
         }
 
         // put entity type ID under the key "id", or "minecraft:empty" if no identity is equipped (or the identity entity type is invalid)

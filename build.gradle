@@ -1,10 +1,10 @@
 plugins {
-    id 'fabric-loom' version '0.5.9'
+    id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version + "-" + project.minecraft_version
@@ -30,22 +30,23 @@ repositories {
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
+    // Player Ability Lib: https://github.com/Ladysnake/PlayerAbilityLib
     include "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}"
     modImplementation ("io.github.ladysnake:PlayerAbilityLib:${project.pal_version}") {
         exclude group: "net.fabricmc.fabric-api"
     }
 
+    // Cardinal Components: https://github.com/OnyxStudios/Cardinal-Components-API
     modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
     include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
 
     // prevent log spam
-    modCompile 'com.github.Draylar:angerable-patch:1.0.0'
+    modImplementation 'com.github.Draylar:angerable-patch:1.0.0'
     include 'com.github.Draylar:angerable-patch:1.0.0'
 
     // config
@@ -56,13 +57,8 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching('fabric.mod.json') {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 

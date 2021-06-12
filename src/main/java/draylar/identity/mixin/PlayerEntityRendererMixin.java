@@ -40,12 +40,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
     @Shadow
-    protected static BipedEntityModel.ArmPose getArmPose(AbstractClientPlayerEntity abstractClientPlayerEntity, Hand hand) {
+    protected static BipedEntityModel.ArmPose getArmPose(AbstractClientPlayerEntity player, Hand hand) {
         return null;
     }
 
-    private PlayerEntityRendererMixin(EntityRenderDispatcher dispatcher, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowSize) {
-        super(dispatcher, model, shadowSize);
+    private PlayerEntityRendererMixin(EntityRendererFactory.Context ctx, PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
+        super(ctx, model, shadowRadius);
     }
 
     @Redirect(
@@ -76,10 +76,10 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
             // phantoms' pitch is inverse for whatever reason
             if(identity instanceof PhantomEntity) {
-                identity.pitch = -player.pitch;
+                identity.setPitch(-player.getPitch());
                 identity.prevPitch = -player.prevPitch;
             } else {
-                identity.pitch = player.pitch;
+                identity.setPitch(player.getPitch());
                 identity.prevPitch = player.prevPitch;
             }
 
@@ -142,16 +142,16 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         if (identity.isSpectator()) {
             identityBipedModel.setVisible(false);
             identityBipedModel.head.visible = true;
-            identityBipedModel.helmet.visible = true;
+            identityBipedModel.hat.visible = true;
         } else {
             identityBipedModel.setVisible(true);
-            identityBipedModel.helmet.visible = player.isPartVisible(PlayerModelPart.HAT);
+            identityBipedModel.hat.visible = player.isPartVisible(PlayerModelPart.HAT);
             identityBipedModel.sneaking = identity.isInSneakingPose();
 
             BipedEntityModel.ArmPose mainHandPose = getArmPose(player, Hand.MAIN_HAND);
             BipedEntityModel.ArmPose offHandPose = getArmPose(player, Hand.OFF_HAND);
 
-            if (mainHandPose.method_30156()) {
+            if (mainHandPose.isTwoHanded()) {
                 offHandPose = identity.getOffHandStack().isEmpty() ? BipedEntityModel.ArmPose.EMPTY : BipedEntityModel.ArmPose.ITEM;
             }
 

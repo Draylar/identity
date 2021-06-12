@@ -114,12 +114,12 @@ public abstract class LivingEntityMixin extends Entity {
             at = @At(value = "HEAD"),
             cancellable = true
     )
-    private void handleFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Boolean> cir) {
+    private void handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
         if((Object) this instanceof PlayerEntity) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             if (identity != null) {
-                boolean takesFallDamage = identity.handleFallDamage(fallDistance, damageMultiplier);
+                boolean takesFallDamage = identity.handleFallDamage(fallDistance, damageMultiplier, damageSource);
                 int damageAmount = ((LivingEntityAccessor) identity).callComputeFallDamage(fallDistance, damageMultiplier);
 
                 if (takesFallDamage && damageAmount > 0) {

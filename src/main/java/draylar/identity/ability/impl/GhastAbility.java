@@ -20,10 +20,11 @@ public class GhastAbility extends IdentityAbility<GhastEntity> {
                 player,
                 player.getRotationVector().x,
                 player.getRotationVector().y,
-                player.getRotationVector().z
+                player.getRotationVector().z,
+                2
         );
 
-        fireball.refreshPositionAndAngles(fireball.getX(), fireball.getY() + 1.75, fireball.getZ(), fireball.yaw, fireball.pitch);
+        fireball.refreshPositionAndAngles(fireball.getX(), fireball.getY() + 1.75, fireball.getZ(), fireball.getYaw(), fireball.getPitch());
         fireball.updatePosition(fireball.getX(), fireball.getY(), fireball.getZ());
         world.spawnEntity(fireball);
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);

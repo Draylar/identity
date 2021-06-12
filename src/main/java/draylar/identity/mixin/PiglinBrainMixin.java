@@ -6,6 +6,7 @@ import draylar.identity.registry.EntityTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.PiglinBrain;
+import net.minecraft.entity.mob.PiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,11 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PiglinBrainMixin {
 
     @Inject(
-            method = "shouldAttack",
+            method = "isPreferredAttackTarget",
             at = @At("RETURN"),
             cancellable = true
     )
-    private static void shouldAttackIdentity(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+    private static void shouldAttackIdentity(PiglinEntity piglin, LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
         boolean shouldAttack = cir.getReturnValue();
 
         if(shouldAttack && target instanceof PlayerEntity) {

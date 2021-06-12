@@ -95,7 +95,7 @@ public class EntityUpdaters {
             // setting yaw without +180 making tail faces front, for some reason
             if (dragon.latestSegment < 0) {
                 for (int l = 0; l < dragon.segmentCircularBuffer.length; ++l) {
-                    dragon.segmentCircularBuffer[l][0] = (double) player.yaw + 180;
+                    dragon.segmentCircularBuffer[l][0] = (double) player.getYaw() + 180;
                     dragon.segmentCircularBuffer[l][1] = player.getY();
                 }
             }
@@ -104,7 +104,7 @@ public class EntityUpdaters {
                 (dragon).latestSegment = 0;
             }
 
-            dragon.segmentCircularBuffer[dragon.latestSegment][0] = (double) player.yaw + 180;
+            dragon.segmentCircularBuffer[dragon.latestSegment][0] = (double) player.getYaw() + 180;
             dragon.segmentCircularBuffer[dragon.latestSegment][1] = player.getY();
         });
 

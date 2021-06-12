@@ -23,7 +23,7 @@ public class EndermiteAbility extends IdentityAbility<EndermiteEntity> {
         for(int i = 0; i < 16; ++i) {
             // Pick a random location nearby to teleport to.
             double g = player.getX() + (player.getRandom().nextDouble() - 0.5D) * 16.0D;
-            double h = MathHelper.clamp(player.getY() + (double)(player.getRandom().nextInt(16) - 8), 0.0D, world.getDimensionHeight() - 1);
+            double h = MathHelper.clamp(player.getY() + (double)(player.getRandom().nextInt(16) - 8), 0.0D, world.getHeight() - 1);
             double j = player.getZ() + (player.getRandom().nextDouble() - 0.5D) * 16.0D;
 
             // Cancel vehicle/riding mechanics.

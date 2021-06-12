@@ -22,7 +22,7 @@ public class WitherEntityAbility extends IdentityAbility<WitherEntity> {
             Vec3d lookDirection = player.getRotationVector();
             WitherSkullEntity skull = new WitherSkullEntity(world, player, lookDirection.x, lookDirection.y, lookDirection.z);
             skull.setPos(player.getX(), player.getY() + 2, player.getZ());
-            skull.setProperties(player, player.pitch, player.yaw, 0.0F, 1.5F, 1.0F);
+            skull.setProperties(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(skull);
         }
     }

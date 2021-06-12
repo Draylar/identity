@@ -25,7 +25,7 @@ public class WitchAbility extends IdentityAbility<WitchEntity> {
     public void onUse(PlayerEntity player, WitchEntity identity, World world) {
         PotionEntity potionEntity = new PotionEntity(world, player);
         potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), VALID_POTIONS.get(world.random.nextInt(VALID_POTIONS.size()))));
-        potionEntity.pitch -= -20.0F;
+        potionEntity.setPitch(-20.0F);
         Vec3d rotation = player.getRotationVector();
         potionEntity.setVelocity(rotation.getX(), rotation.getY(), rotation.getZ(), 0.75F, 8.0F);
 

@@ -18,8 +18,9 @@ public class PiglinBruteBrainMixin {
 
     /**
      * @author Draylar
-     * method_30249 searches for a nearby player to aggro on.
-     * This mixin modifies the search logic to exclude players digsuised as anything besides a Wither Skeleton or Wither.
+     *
+     * @reason method_30249 searches for a nearby player to aggro on.
+     * This mixin modifies the search logic to exclude players disguised as anything besides a Wither Skeleton or Wither.
      */
     @Overwrite
     private static Optional<? extends LivingEntity> method_30249(AbstractPiglinEntity abstractPiglinEntity, MemoryModuleType<? extends LivingEntity> memoryModuleType) {

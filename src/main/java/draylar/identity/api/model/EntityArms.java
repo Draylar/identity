@@ -3,17 +3,13 @@ package draylar.identity.api.model;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.entity.EvokerEntityRenderer;
 import net.minecraft.client.render.entity.model.*;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.PillagerEntity;
 import net.minecraft.util.Pair;
+import net.minecraft.util.math.Vec3f;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -72,26 +68,26 @@ public class EntityArms {
     public static void init() {
         // specific
         register(LlamaEntityModel.class, (llama, model) -> model.rightFrontLeg, (stack, model) -> {});
-        register(PandaEntityModel.class, (llama, model) -> model.frontRightLeg, (stack, model) -> stack.translate(0, -0.5, 0));
+        register(PandaEntityModel.class, (llama, model) -> model.rightFrontLeg, (stack, model) -> stack.translate(0, -0.5, 0));
         register(BlazeEntityModel.class, (llama, model) -> model.rods[10], (stack, model) -> {
-            stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(45));
-            stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-15));
-            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-25));
+            stack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(45));
+            stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-15));
+            stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-25));
             stack.translate(0, 0, -.25);
         });
         register(OcelotEntityModel.class, (ocelot, model) -> model.rightFrontLeg, (stack, model) -> {});
         register(SpiderEntityModel.class, (spider, model) -> model.rightFrontLeg, (stack, model) -> {
-            stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-15));
-            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(15));
+            stack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-15));
+            stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(15));
             stack.translate(0, 0, 0);
         });
         register(IronGolemEntityModel.class, (golem, model) -> model.getRightArm(), (stack, model) -> {
             stack.translate(0, 0, -.5);
         });
-        register(PigEntityModel.class, (pig, model) -> model.frontRightLeg, (stack, model) -> {
+        register(PigEntityModel.class, (pig, model) -> model.rightFrontLeg, (stack, model) -> {
             stack.translate(0, 0, .6);
         });
-        register(PolarBearEntityModel.class, (bear, model) -> model.frontRightLeg, (stack, model) -> {
+        register(PolarBearEntityModel.class, (bear, model) -> model.rightFrontLeg, (stack, model) -> {
             stack.translate(0, 0, .3);
         });
         register(RavagerEntityModel.class, (bear, model) -> model.rightFrontLeg, (stack, model) -> { });
@@ -100,11 +96,11 @@ public class EntityArms {
         });
 
         // generic
-        register(QuadrupedEntityModel.class, (quad, model) -> model.frontRightLeg, (stack, model) -> {});
+        register(QuadrupedEntityModel.class, (quad, model) -> model.rightFrontLeg, (stack, model) -> {});
 
         // types
-        register(EntityType.PILLAGER, (pillager, model) -> ((IllagerEntityModel) model).rightAttackingArm, (stack, model) -> {
-            stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-10));
+        register(EntityType.PILLAGER, (pillager, model) -> ((IllagerEntityModel) model).rightArm, (stack, model) -> {
+            stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-10));
             stack.translate(0, .5, -.3);
         });
     }

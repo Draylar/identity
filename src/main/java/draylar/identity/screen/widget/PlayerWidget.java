@@ -1,5 +1,6 @@
 package draylar.identity.screen.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import draylar.identity.Identity;
 import draylar.identity.network.ClientNetworking;
 import draylar.identity.screen.IdentityScreen;
@@ -7,14 +8,15 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.widget.AbstractPressableButtonWidget;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.registry.Registry;
 
-public class PlayerWidget extends AbstractPressableButtonWidget {
+public class PlayerWidget extends PressableWidget {
 
     private final IdentityScreen parent;
 
@@ -35,7 +37,7 @@ public class PlayerWidget extends AbstractPressableButtonWidget {
 //        }
 //
 
-        MinecraftClient.getInstance().getTextureManager().bindTexture(Identity.id("textures/gui/player.png"));
+        RenderSystem.setShaderTexture(0, Identity.id("textures/gui/player.png"));
         DrawableHelper.drawTexture(matrices, x, y, 16, 16, 0, 0, 8, 8, 8, 8);
 
         super.render(matrices, mouseX, mouseY, delta);
@@ -52,5 +54,10 @@ public class PlayerWidget extends AbstractPressableButtonWidget {
         packet.writeIdentifier(Registry.ENTITY_TYPE.getId(EntityType.PLAYER));
         ClientSidePacketRegistry.INSTANCE.sendToServer(ClientNetworking.IDENTITY_REQUEST, packet);
         parent.disableAll();
+    }
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+
     }
 }

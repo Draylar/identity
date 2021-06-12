@@ -1,10 +1,7 @@
 package draylar.identity.mixin;
 
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.BipedEntityRenderer;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.*;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.DrownedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -20,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MobEntityRenderer.class)
 public abstract class BipedEntityModelMixin extends LivingEntityRenderer {
 
-    public BipedEntityModelMixin(EntityRenderDispatcher dispatcher, EntityModel model, float shadowRadius) {
-        super(dispatcher, model, shadowRadius);
+    private BipedEntityModelMixin(EntityRendererFactory.Context ctx, EntityModel model, float shadowRadius) {
+        super(ctx, model, shadowRadius);
     }
 
     @Inject(

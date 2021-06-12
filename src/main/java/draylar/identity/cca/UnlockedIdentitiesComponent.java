@@ -3,15 +3,12 @@ package draylar.identity.cca;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import draylar.identity.api.event.UnlockIdentityCallback;
 import draylar.identity.registry.Components;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.util.sync.EntitySyncedComponent;
 import net.fabricmc.fabric.api.util.NbtType;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
@@ -64,11 +61,11 @@ public class UnlockedIdentitiesComponent implements AutoSyncedComponent {
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         unlocked.clear();
 
         // reminder: do not change this tag
-        ListTag idList = tag.getList("UnlockedMorphs", NbtType.STRING);
+        NbtList idList = tag.getList("UnlockedMorphs", NbtType.STRING);
 
         idList.forEach(idTag -> {
             unlocked.add(new Identifier(idTag.asString()));
@@ -76,11 +73,11 @@ public class UnlockedIdentitiesComponent implements AutoSyncedComponent {
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
-        ListTag idList = new ListTag();
+    public void writeToNbt(NbtCompound tag) {
+        NbtList idList = new NbtList();
 
         unlocked.forEach(entityId -> {
-            idList.add(StringTag.of(entityId.toString()));
+            idList.add(NbtString.of(entityId.toString()));
         });
 
         // reminder: do not change this tag

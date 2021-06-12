@@ -22,7 +22,7 @@ public class SnowGolemAbility extends IdentityAbility<SnowGolemEntity> {
             for(int i = 0; i < 10; i++) {
                 SnowballEntity snowballEntity = new SnowballEntity(world, player);
                 snowballEntity.setItem(new ItemStack(Items.SNOWBALL));
-                snowballEntity.setProperties(player, player.pitch + world.random.nextInt(10) - 5, player.yaw + world.random.nextInt(10) - 5, 0.0F, 1.5F, 1.0F);
+                snowballEntity.setProperties(player, player.getPitch() + world.random.nextInt(10) - 5, player.getYaw() + world.random.nextInt(10) - 5, 0.0F, 1.5F, 1.0F);
                 world.spawnEntity(snowballEntity);
             }
         }

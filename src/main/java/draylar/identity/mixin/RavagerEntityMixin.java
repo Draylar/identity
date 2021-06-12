@@ -32,11 +32,11 @@ public abstract class RavagerEntityMixin extends LivingEntity {
                 // Only players should be able to control Ravager
                 if (rider instanceof PlayerEntity) {
                     // Assign rider properties to ravager
-                    this.yaw = rider.yaw;
-                    this.prevYaw = this.yaw;
-                    this.pitch = rider.pitch * 0.5F;
-                    this.setRotation(this.yaw, this.pitch);
-                    this.bodyYaw = this.yaw;
+                    this.setYaw(rider.getYaw());
+                    this.prevYaw = this.getYaw();
+                    this.setPitch(rider.getPitch() * 0.5F);
+                    this.setRotation(this.getYaw(), this.getPitch());
+                    this.bodyYaw = this.getYaw();
                     this.headYaw = this.bodyYaw;
                     float sidewaysSpeed = rider.sidewaysSpeed * 0.5F;
                     float forwardSpeed = rider.forwardSpeed;
@@ -56,7 +56,7 @@ public abstract class RavagerEntityMixin extends LivingEntity {
                     }
 
                     // Limb updates for movement
-                    this.method_29242(this, false);
+                    this.updateLimbs(this, false);
                     return;
                 }
             }

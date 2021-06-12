@@ -23,6 +23,7 @@
     "PlayerManagerMixin",
     "PlayerSwimmingMixin",
     "RavagerEntityMixin",
+    "ScreenAccessor",
     "ServerPlayerEntityMixin",
     "SweetBerryBushBlockMixin",
     "TrackTargetGoalMixin",
@@ -32,13 +33,13 @@
     "WolfEntityMixin"
   ],
   "client": [
-    "PlayerEntityRendererMixin",
-    "ShadowMixin",
-    "StrayOverlayMixin",
     "BipedEntityModelMixin",
     "DrownedOverlayMixin",
     "EntityShadowAccessor",
-    "InGameHudMixin"
+    "InGameHudMixin",
+    "PlayerEntityRendererMixin",
+    "ShadowMixin",
+    "StrayOverlayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

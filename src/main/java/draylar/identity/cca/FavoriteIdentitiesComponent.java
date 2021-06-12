@@ -5,9 +5,9 @@ import draylar.identity.registry.Components;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -53,16 +53,16 @@ public class FavoriteIdentitiesComponent implements AutoSyncedComponent {
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         favorites.clear();
-        ListTag idList = tag.getList("FavoriteIdentities", NbtType.STRING);
+        NbtList idList = tag.getList("FavoriteIdentities", NbtType.STRING);
         idList.forEach(idTag -> favorites.add(new Identifier(idTag.asString())));
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
-        ListTag idList = new ListTag();
-        favorites.forEach(entityId -> idList.add(StringTag.of(entityId.toString())));
+    public void writeToNbt(NbtCompound tag) {
+        NbtList idList = new NbtList();
+        favorites.forEach(entityId -> idList.add(NbtString.of(entityId.toString())));
         tag.put("FavoriteIdentities", idList);
     }
 }

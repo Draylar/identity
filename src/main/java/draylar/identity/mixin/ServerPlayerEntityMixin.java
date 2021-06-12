@@ -53,14 +53,14 @@ public abstract class ServerPlayerEntityMixin {
     }
 
     @Inject(
-            method = "onSpawn",
+            method = "onSpawn()V",
             at = @At("HEAD")
     )
     private void onSpawn(CallbackInfo ci) {
         if(Identity.hasFlyingPermissions((ServerPlayerEntity) (Object) this)) {
             if(!Identity.ABILITY_SOURCE.grants((ServerPlayerEntity) (Object) this, VanillaAbilities.ALLOW_FLYING)) {
                 Identity.ABILITY_SOURCE.grantTo((ServerPlayerEntity) (Object) this, VanillaAbilities.ALLOW_FLYING);
-                ((ServerPlayerEntity) (Object) this).abilities.flySpeed = Identity.CONFIG.flySpeed;
+                ((ServerPlayerEntity) (Object) this).getAbilities().flySpeed = Identity.CONFIG.flySpeed;
                 ((ServerPlayerEntity) (Object) this).sendAbilitiesUpdate();
             }
 

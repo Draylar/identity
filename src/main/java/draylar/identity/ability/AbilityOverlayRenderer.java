@@ -116,47 +116,15 @@ public class AbilityOverlayRenderer {
                 // TODO: cache ability stack?
 //                MinecraftClient.getInstance().getItemRenderer().renderGuiItemIcon(new ItemStack(identityAbility.getIcon()), (int) (width * .95f), (int) (height * .92f));
                 ItemStack stack = new ItemStack(identityAbility.getIcon());
-                BakedModel heldItemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(stack, client.world, player);
-                renderGuiItemModel(matrices, stack, (int) (width * .95f), (int) (height * .92f), heldItemModel);
+//                BakedModel heldItemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(stack, client.world, player);
+//                renderGuiItemModel(matrices, stack, (int) (width * .95f), (int) (height * .92f), heldItemModel);
+                MinecraftClient.getInstance().getItemRenderer()
+                        .renderGuiItemIcon(stack, (int) (width * .95f), (int) (height * .92f));
 
                 RenderSystem.disableScissor();
                 matrices.pop();
             }
         });
-    }
-
-    protected static void renderGuiItemModel(MatrixStack matrices, ItemStack stack, int x, int y, BakedModel model) {
-        RenderSystem.pushMatrix();
-
-        MinecraftClient.getInstance().getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
-        MinecraftClient.getInstance().getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).setFilter(false, false);
-
-        RenderSystem.enableRescaleNormal();
-        RenderSystem.enableAlphaTest();
-        RenderSystem.defaultAlphaFunc();
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.translatef((float) x, (float) y, 100.0F);
-        RenderSystem.translatef(8.0F, 8.0F, 0.0F);
-        RenderSystem.scalef(1.0F, -1.0F, 1.0F);
-        RenderSystem.scalef(16.0F, 16.0F, 16.0F);
-        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-        boolean bl = !model.isSideLit();
-        if (bl) {
-            DiffuseLighting.disableGuiDepthLighting();
-        }
-
-        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GUI, false, matrices, immediate, 15728880, OverlayTexture.DEFAULT_UV, model);
-        immediate.draw();
-        RenderSystem.enableDepthTest();
-        if (bl) {
-            DiffuseLighting.enableGuiDepthLighting();
-        }
-
-        RenderSystem.disableAlphaTest();
-        RenderSystem.disableRescaleNormal();
-        RenderSystem.popMatrix();
     }
 
     private AbilityOverlayRenderer() {

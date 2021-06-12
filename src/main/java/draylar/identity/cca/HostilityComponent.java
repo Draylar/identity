@@ -1,7 +1,7 @@
 package draylar.identity.cca;
 
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class HostilityComponent implements ServerTickingComponent {
 
@@ -12,12 +12,12 @@ public class HostilityComponent implements ServerTickingComponent {
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         this.remainingTime = tag.getInt("RemainingTime");
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void writeToNbt(NbtCompound tag) {
         tag.putInt("RemainingTime", remainingTime);
     }
 
