@@ -45,10 +45,6 @@ dependencies {
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
     include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
 
-    // prevent log spam
-    modImplementation 'com.github.Draylar:angerable-patch:1.0.0'
-    include 'com.github.Draylar:angerable-patch:1.0.0'
-
     // config
     modImplementation 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta'
     include 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta:min'
