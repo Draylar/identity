@@ -13,6 +13,6 @@ public interface EntityAccessor {
     @Accessor
     void setVehicle(Entity vehicle);
 
-    @Invoker
-    void callSetFlag(int index, boolean value);
+    @Invoker("setFlag")
+    void identity_callSetFlag(int index, boolean value);
 }

@@ -135,7 +135,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
                 ((TameableEntity) identity).setSitting(player.isSneaking());
             }
 
-            ((EntityAccessor) identity).callSetFlag(7, player.isFallFlying());
+            ((EntityAccessor) identity).identity_callSetFlag(7, player.isFallFlying());
 
             ((LivingEntityAccessor) identity).callTickActiveItemStack();
             Components.CURRENT_IDENTITY.sync(player);
