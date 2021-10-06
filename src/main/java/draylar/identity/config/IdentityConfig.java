@@ -6,7 +6,9 @@ import draylar.omegaconfig.api.Config;
 import draylar.omegaconfig.api.Syncing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IdentityConfig implements Config {
 
@@ -112,6 +114,21 @@ public class IdentityConfig implements Config {
     public boolean logCommands = true;
 
     public float flySpeed = 0.05f;
+
+    @Comment(value = "If true, the player has to kill a certain number of entities before unlocking an Identity.")
+    public boolean killForIdentity = false;
+
+    @Comment(value = "Number of kills required to unlock an Identity if killsForIdentity is true.")
+    public int requiredKillsForIdentity = 50;
+
+    @Comment(value = "An override map for requiredKillsForIdentity for specific entity types.")
+    public Map<String, Integer> requiredKillsByType = new HashMap<>() {
+        {
+            put("minecraft:ender_dragon", 1);
+            put("minecraft:elder_guardian", 1);
+            put("minecraft:wither", 1);
+        }
+    };
 
     @Override
     public String getName() {

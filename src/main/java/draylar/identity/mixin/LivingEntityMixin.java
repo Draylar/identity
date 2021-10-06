@@ -43,7 +43,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(
             method = "onDeath",
-            at = @At("HEAD")
+            at = @At("RETURN")
     )
     private void onDeath(DamageSource source, CallbackInfo ci) {
         Entity attacker = source.getAttacker();
