@@ -81,8 +81,13 @@ public class EntityWidget extends PressableWidget {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
 
-//        ScreenUtils.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity, 15728880);
-        InventoryScreen.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity);
+        // Some entities (namely Aether mobs) crash when rendered in a GUI.
+        // Unsure as to the cause, but this try/catch should prevent the game from entirely dipping out.
+        try {
+            InventoryScreen.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity);
+        } catch (Exception ignored) {
+
+        }
 
         // Render selected outline
         if(active) {
