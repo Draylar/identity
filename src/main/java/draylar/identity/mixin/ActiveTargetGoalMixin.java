@@ -5,7 +5,7 @@ import draylar.identity.registry.Components;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.FollowTargetGoal;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.Monster;
@@ -17,8 +17,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FollowTargetGoal.class)
-public abstract class FollowTargetGoalMixin extends TrackTargetGoalMixin {
+@Mixin(ActiveTargetGoal.class)
+public abstract class ActiveTargetGoalMixin extends TrackTargetGoalMixin {
 
     @Shadow protected LivingEntity targetEntity;
 

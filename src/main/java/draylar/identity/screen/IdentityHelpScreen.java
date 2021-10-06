@@ -52,7 +52,7 @@ public class IdentityHelpScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        MinecraftClient.getInstance().openScreen(new IdentityScreen());
+        MinecraftClient.getInstance().setScreen(new IdentityScreen());
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 }

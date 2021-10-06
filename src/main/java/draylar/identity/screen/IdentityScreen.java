@@ -123,7 +123,7 @@ public class IdentityScreen extends Screen {
         for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
             if(selectable instanceof PressableWidget button) {
                 if (button.isHovered()) {
-                    button.renderToolTip(matrices, mouseX, mouseY);
+                    button.renderTooltip(matrices, mouseX, mouseY);
                     break;
                 }
             }

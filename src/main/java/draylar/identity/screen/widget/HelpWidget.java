@@ -14,12 +14,12 @@ public class HelpWidget extends ButtonWidget {
 
     public HelpWidget(int x, int y, int width, int height) {
         super(x, y, width, height, new LiteralText("?"), (widget) -> {
-            MinecraftClient.getInstance().openScreen(new IdentityHelpScreen());
+            MinecraftClient.getInstance().setScreen(new IdentityHelpScreen());
         });
     }
 
     @Override
-    public void renderToolTip(MatrixStack matrices, int mouseX, int mouseY) {
+    public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
         Screen currentScreen = MinecraftClient.getInstance().currentScreen;
 
         if(currentScreen != null) {

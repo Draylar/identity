@@ -48,7 +48,7 @@ public class IdentityClient implements ClientModInitializer {
 
             if(MENU_KEY.wasPressed()) {
                 if(Identity.CONFIG.enableClientSwapMenu || client.player.hasPermissionLevel(3)) {
-                    MinecraftClient.getInstance().openScreen(new IdentityScreen());
+                    MinecraftClient.getInstance().setScreen(new IdentityScreen());
                 }
             }
         });

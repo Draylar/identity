@@ -5,9 +5,7 @@ import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.FollowTargetGoal;
-import net.minecraft.entity.mob.AbstractSkeletonEntity;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +27,7 @@ public abstract class WolfEntityMixin extends TameableEntity {
             at = @At("RETURN")
     )
     private void addPlayerTarget(CallbackInfo ci) {
-        this.targetSelector.add(7, new FollowTargetGoal<>(this, PlayerEntity.class, 10, false, false, player -> {
+        this.targetSelector.add(7, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, false, false, player -> {
             // ensure wolves can attack players with an identity similar to their normal prey
             if(!Identity.CONFIG.wolvesAttackIdentityPrey) {
                 return false;

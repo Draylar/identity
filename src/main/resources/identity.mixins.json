@@ -7,7 +7,7 @@
     "EntityAccessor",
     "EntityMixin",
     "EntityTypeTagsAccessor",
-    "FollowTargetGoalMixin",
+    "ActiveTargetGoalMixin",
     "FoxEntityMixin",
     "HoglinBrainMixin",
     "LivingEntityAccessor",
