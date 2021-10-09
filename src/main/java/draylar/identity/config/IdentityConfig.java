@@ -109,7 +109,7 @@ public class IdentityConfig implements Config {
         }
     };
 
-    public Map<String, Integer> abilityCooldownMap = new HashMap<String, Integer>() {
+    public Map<String, Integer> abilityCooldownMap = new HashMap<>() {
         {
             put("minecraft:ghast", 60);
             put("minecraft:blaze", 20);
