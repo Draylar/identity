@@ -1,6 +1,5 @@
 package draylar.identity.ability.impl;
 
-import draylar.identity.Identity;
 import draylar.identity.ability.IdentityAbility;
 import net.minecraft.entity.mob.GhastEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,11 +27,6 @@ public class GhastAbility extends IdentityAbility<GhastEntity> {
         world.spawnEntity(fireball);
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_GHAST_WARN, SoundCategory.HOSTILE, 10.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
-    }
-
-    @Override
-    public int getCooldown() {
-        return Identity.CONFIG.ghastAbilityCooldown;
     }
 
     @Override

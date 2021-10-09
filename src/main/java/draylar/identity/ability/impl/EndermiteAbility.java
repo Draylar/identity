@@ -2,7 +2,6 @@ package draylar.identity.ability.impl;
 
 import draylar.identity.ability.IdentityAbility;
 import net.minecraft.entity.mob.EndermiteEntity;
-import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -39,11 +38,6 @@ public class EndermiteAbility extends IdentityAbility<EndermiteEntity> {
                 break;
             }
         }
-    }
-
-    @Override
-    public int getCooldown() {
-        return 10 * 8;
     }
 
     @Override

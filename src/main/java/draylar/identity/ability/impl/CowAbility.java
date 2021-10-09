@@ -18,11 +18,6 @@ public class CowAbility extends IdentityAbility<CowEntity> {
     }
 
     @Override
-    public int getCooldown() {
-        return 20 * 10;
-    }
-
-    @Override
     public Item getIcon() {
         return Items.MILK_BUCKET;
     }

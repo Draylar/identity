@@ -1,6 +1,5 @@
 package draylar.identity.ability.impl;
 
-import draylar.identity.Identity;
 import draylar.identity.ability.IdentityAbility;
 import net.minecraft.entity.mob.BlazeEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,11 +27,6 @@ public class BlazeAbility extends IdentityAbility<BlazeEntity> {
         smallFireball.setOwner(player);
         world.spawnEntity(smallFireball);
         world.playSoundFromEntity(null, player, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
-    }
-
-    @Override
-    public int getCooldown() {
-        return Identity.CONFIG.blazeAbilityCooldown;
     }
 
     @Override

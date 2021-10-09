@@ -52,7 +52,7 @@ public class AbilityOverlayRenderer {
             double d = client.getWindow().getScaleFactor();
             int cd = Components.ABILITY.get(player).getCooldown();
             float lerpedCooldown = MathHelper.lerp(delta, cd - 1, cd);
-            int max = identityAbility.getCooldown();
+            int max = AbilityRegistry.get(identity.getType()).getCooldown(identity);
             float cooldownScale = 1 - cd / (float) max;
 
             // CD has NOT updated since last tick. It is most likely full.

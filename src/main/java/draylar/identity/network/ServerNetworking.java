@@ -34,7 +34,7 @@ public class ServerNetworking implements NetworkHandler {
                         // Check cooldown
                         if(Components.ABILITY.get(player).canUseAbility()) {
                             AbilityRegistry.get(identityType).onUse(player, identity, player.world);
-                            Components.ABILITY.get(player).setCooldown(AbilityRegistry.get(identityType).getCooldown());
+                            Components.ABILITY.get(player).setCooldown(AbilityRegistry.get(identityType).getCooldown(identity));
                         }
                     }
                 }

@@ -17,12 +17,7 @@ public class EndermanAbility extends IdentityAbility<EndermanEntity> {
     public void onUse(PlayerEntity player, EndermanEntity identity, World world) {
         HitResult lookingAt = player.raycast(Identity.CONFIG.endermanAbilityTeleportDistance, 0, true);
         player.requestTeleport(lookingAt.getPos().x, lookingAt.getPos().y, lookingAt.getPos().z);
-        player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS,1, 1);
-    }
-
-    @Override
-    public int getCooldown() {
-        return Identity.CONFIG.endermanAbilityCooldown;
+        player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
     }
 
     @Override
