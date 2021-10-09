@@ -13,11 +13,13 @@ import io.github.ladysnake.pal.Pal;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.GuardianEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
@@ -70,5 +72,10 @@ public class Identity implements ModInitializer {
 
     public static boolean isAquatic(LivingEntity entity) {
         return entity instanceof WaterCreatureEntity || entity instanceof GuardianEntity;
+    }
+
+    public static int getCooldown(EntityType<?> type) {
+        String id = Registry.ENTITY_TYPE.getId(type).toString();
+        return CONFIG.abilityCooldownMap.getOrDefault(id, 20);
     }
 }

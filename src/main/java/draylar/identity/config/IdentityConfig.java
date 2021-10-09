@@ -76,29 +76,8 @@ public class IdentityConfig implements Config {
     @Comment(value = "If set to false, only operators can switch identities. Used on the server; guaranteed to be authoritative.")
     public boolean enableSwaps = true;
 
-    @Comment(value = "In ticks, how long until the Ghast can shoot a fireball again?")
-    public int ghastAbilityCooldown = 60;
-
-    @Comment(value = "In ticks, how long until the Blaze can shoot a mini fireball again?")
-    public int blazeAbilityCooldown = 20;
-
-    @Comment(value = "In ticks, how long until the Ender Dragon can shoot a dragon fireball again?")
-    public int dragonAbilityCooldown = 20;
-
-    @Comment(value = "In ticks, how long until the Enderman can teleport again?")
-    public int endermanAbilityCooldown = 100;
-
     @Comment(value = "In blocks, how far can the Enderman ability teleport?")
     public int endermanAbilityTeleportDistance = 32;
-
-    @Comment(value = "In ticks, how long until the Creeper can ka-boom again?")
-    public int creeperAbilityCooldown = 100;
-
-    @Comment(value = "In ticks, how long until the Wither can shoot a wither skull again?")
-    public int witherAbilityCooldown = 200;
-
-    @Comment(value = "Tick cooldown time of the Snow Golem ability")
-    public int snowGolemAbilityCooldown = 10;
 
     @Syncing
     @Comment(value = "Should player nametags render above players disguised with an identity? Note that the server is the authority for this config option.")
@@ -127,6 +106,19 @@ public class IdentityConfig implements Config {
             put("minecraft:ender_dragon", 1);
             put("minecraft:elder_guardian", 1);
             put("minecraft:wither", 1);
+        }
+    };
+
+    public Map<String, Integer> abilityCooldownMap = new HashMap<String, Integer>() {
+        {
+            put("minecraft:ghast", 60);
+            put("minecraft:blaze", 20);
+            put("minecraft:ender_dragon", 20);
+            put("minecraft:enderman", 100);
+            put("minecraft:creeper", 100);
+            put("minecraft:wither", 200);
+            put("minecraft:snow_golem", 10);
+            put("minecraft:witch", 200);
         }
     };
 

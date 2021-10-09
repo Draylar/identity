@@ -29,11 +29,6 @@ public class LlamaAbility extends IdentityAbility<LlamaEntity> {
     }
 
     @Override
-    public int getCooldown() {
-        return 10 * 5;
-    }
-
-    @Override
     public Item getIcon() {
         return Items.LEAD;
     }

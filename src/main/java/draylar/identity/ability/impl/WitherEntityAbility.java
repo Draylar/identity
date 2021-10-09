@@ -1,6 +1,5 @@
 package draylar.identity.ability.impl;
 
-import draylar.identity.Identity;
 import draylar.identity.ability.IdentityAbility;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,11 +24,6 @@ public class WitherEntityAbility extends IdentityAbility<WitherEntity> {
             skull.setProperties(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(skull);
         }
-    }
-
-    @Override
-    public int getCooldown() {
-        return Identity.CONFIG.witherAbilityCooldown;
     }
 
     @Override

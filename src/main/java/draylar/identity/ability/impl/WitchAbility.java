@@ -35,11 +35,6 @@ public class WitchAbility extends IdentityAbility<WitchEntity> {
     }
 
     @Override
-    public int getCooldown() {
-        return 20 * 15;
-    }
-
-    @Override
     public Item getIcon() {
         return Items.POTION;
     }

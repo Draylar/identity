@@ -1,6 +1,5 @@
 package draylar.identity.ability.impl;
 
-import draylar.identity.Identity;
 import draylar.identity.ability.IdentityAbility;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,11 +22,6 @@ public class EnderDragonAbility extends IdentityAbility<EnderDragonEntity> {
 
         dragonFireball.setOwner(player);
         world.spawnEntity(dragonFireball);
-    }
-
-    @Override
-    public int getCooldown() {
-        return Identity.CONFIG.dragonAbilityCooldown;
     }
 
     @Override

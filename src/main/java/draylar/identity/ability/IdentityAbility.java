@@ -1,5 +1,6 @@
 package draylar.identity.ability;
 
+import draylar.identity.Identity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -17,7 +18,9 @@ public abstract class IdentityAbility<E extends LivingEntity> {
     /**
      * @return  cooldown of this ability, in ticks, after it is used.
      */
-    abstract public int getCooldown();
+    public int getCooldown(E entity) {
+        return Identity.getCooldown(entity.getType());
+    }
 
     abstract public Item getIcon();
 }
