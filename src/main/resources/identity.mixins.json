@@ -23,6 +23,7 @@
     "PlayerEntityMixin",
     "PlayerManagerMixin",
     "PlayerSwimmingMixin",
+    "RavagerEntityAccessor",
     "RavagerEntityMixin",
     "ScreenAccessor",
     "ServerPlayerEntityMixin",

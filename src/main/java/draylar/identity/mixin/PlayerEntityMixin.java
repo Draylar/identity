@@ -10,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
@@ -302,6 +303,10 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
         if (identity instanceof IronGolemEntity golem) {
             ((IronGolemEntityAccessor) golem).setAttackTicksLeft(10);
         }
+
+        if (identity instanceof RavagerEntity ravager) {
+            ((RavagerEntityAccessor) ravager).setAttackTick(10);
+        }
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
@@ -312,6 +317,18 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
             IronGolemEntityAccessor accessor = (IronGolemEntityAccessor) golem;
             if(accessor.getAttackTicksLeft() > 0) {
                 accessor.setAttackTicksLeft(accessor.getAttackTicksLeft() - 1);
+            }
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tickRavagerAttackTicks(CallbackInfo ci) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (identity instanceof RavagerEntity ravager) {
+            RavagerEntityAccessor accessor = (RavagerEntityAccessor) ravager;
+            if(accessor.getAttackTick() > 0) {
+                accessor.setAttackTick(accessor.getAttackTick() - 1);
             }
         }
     }
