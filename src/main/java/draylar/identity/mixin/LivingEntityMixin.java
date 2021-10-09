@@ -2,7 +2,6 @@ package draylar.identity.mixin;
 
 import draylar.identity.Identity;
 import draylar.identity.api.IdentityGranting;
-import draylar.identity.cca.UnlockedIdentitiesComponent;
 import draylar.identity.registry.Components;
 import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
@@ -16,10 +15,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;

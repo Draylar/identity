@@ -7,14 +7,12 @@ import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.sound.SoundEvent;
@@ -294,6 +292,27 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
         if (identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
             cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "attack", at = @At("HEAD"))
+    protected void identity_tryAttack(Entity target, CallbackInfo ci) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (identity instanceof IronGolemEntity golem) {
+            ((IronGolemEntityAccessor) golem).setAttackTicksLeft(10);
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tickGolemAttackTicks(CallbackInfo ci) {
+        LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
+
+        if (identity instanceof IronGolemEntity golem) {
+            IronGolemEntityAccessor accessor = (IronGolemEntityAccessor) golem;
+            if(accessor.getAttackTicksLeft() > 0) {
+                accessor.setAttackTicksLeft(accessor.getAttackTicksLeft() - 1);
+            }
         }
     }
 }
