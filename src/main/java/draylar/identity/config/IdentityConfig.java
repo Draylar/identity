@@ -78,7 +78,7 @@ public class IdentityConfig implements Config {
 
     @Comment(value = "In blocks, how far can the Enderman ability teleport?")
     public int endermanAbilityTeleportDistance = 32;
-    
+
     @Syncing
     @Comment(value = "Should player nametags render above players disguised with an identity? Note that the server is the authority for this config option.")
     public boolean showPlayerNametag = false;
@@ -103,6 +103,7 @@ public class IdentityConfig implements Config {
             put("minecraft:creeper", 100);
             put("minecraft:wither", 200);
             put("minecraft:snow_golem", 10);
+            put("minecraft:witch", 200);
         }
     };
 
