@@ -157,19 +157,20 @@ public class IdentityScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        float firstPos = entityWidgets.get(0).y;
+        if(entityWidgets.size() > 0) {
+            float firstPos = entityWidgets.get(0).y;
 
-        // Top section should always have mobs, prevent scrolling the entire list down the screen
-        if(amount == 1 && firstPos >= 35) {
-            return false;
-        }
-
-        ((ScreenAccessor) this).getSelectables().forEach(button -> {
-            if(button instanceof EntityWidget widget) {
-                widget.y = (int) (widget.y + amount * 10);
+            // Top section should always have mobs, prevent scrolling the entire list down the screen
+            if(amount == 1 && firstPos >= 35) {
+                return false;
             }
-        });
 
+            ((ScreenAccessor) this).getSelectables().forEach(button -> {
+                if(button instanceof EntityWidget widget) {
+                    widget.y = (int) (widget.y + amount * 10);
+                }
+            });
+        }
 
         return false;
     }
