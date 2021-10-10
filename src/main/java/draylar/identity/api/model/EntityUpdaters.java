@@ -1,6 +1,7 @@
 package draylar.identity.api.model;
 
 import draylar.identity.impl.NearbySongAccessor;
+import draylar.identity.mixin.CreeperEntityAccessor;
 import draylar.identity.mixin.ParrotEntityAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -113,6 +114,14 @@ public class EntityUpdaters {
             if (heldStack.getItem() instanceof BlockItem) {
                 enderman.setCarriedBlock(((BlockItem) heldStack.getItem()).getBlock().getDefaultState());
             }
+        });
+
+        // To prevent Creeper Identities from flickering white, we reset currentFuseTime to 0.
+        // Creepers normally tick their fuse timer in tick(), but:
+        //    1. Identities do not tick
+        //    2. The Creeper ability is instant, so we do not need to re-implement ticking
+        EntityUpdaters.register(EntityType.CREEPER, (player, creeper) -> {
+            ((CreeperEntityAccessor) creeper).setCurrentFuseTime(0);
         });
     }
 }
