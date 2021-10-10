@@ -119,6 +119,7 @@ public class IdentityConfig implements Config {
             put("minecraft:wither", 200);
             put("minecraft:snow_golem", 10);
             put("minecraft:witch", 200);
+            put("minecraft:evoker", 10);
         }
     };
 

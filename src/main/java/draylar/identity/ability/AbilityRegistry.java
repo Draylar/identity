@@ -27,6 +27,7 @@ public class AbilityRegistry {
         register(EntityType.ENDERMITE, new EndermiteAbility());
         register(EntityType.LLAMA, new LlamaAbility());
         register(EntityType.WITCH, new WitchAbility());
+        register(EntityType.EVOKER, new EvokerAbility());
     }
 
     public static IdentityAbility get(EntityType<?> type) {
