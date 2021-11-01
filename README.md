@@ -1,6 +1,25 @@
 # Identity
 
-*Identity* is a mod inspired by [Morph](https://www.curseforge.com/minecraft/mc-mods/morph), built for the Fabric mod loader on 1.15.2.
+*Identity* is a mod inspired by [Morph](https://www.curseforge.com/minecraft/mc-mods/morph), built for the Fabric mod loader (and recently ported to Forge).
+
+**WARNING:** the 1.17.1 Architectury version of Identity (2.0.0+), which supports Forge & Fabric, is in a heavy beta state. Back up your worlds often and expect things to break.
+
+---
+
+**Versions**:
+
+|        | Fabric | Forge |
+| ----------- | ----------- | ----------- |
+| 1.16      | ✅    | ❌   |
+| 1.17   | ✅   | ✅    |
+
+**Required Libraries (1.17.1+):**
+
+Fabric => [Architectury API (Fabric)](https://www.curseforge.com/minecraft/mc-mods/architectury-fabric)
+
+Forge => [Architectury API (Forge)](https://www.curseforge.com/minecraft/mc-mods/architectury-forge)
+
+---
 
 With *Identity*, you can become anything you want, friend or foe, hot or cold, fluffy or rough.
 

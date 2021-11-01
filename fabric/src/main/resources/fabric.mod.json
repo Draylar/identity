@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "identity",
+  "version": "${version}",
+  "name": "Identity",
+  "description": "Play as your favorite entities!",
+  "authors": [
+    "Draylar"
+  ],
+  "contributors": [
+    "James103",
+    "Pyrofab",
+    "AllanChain"
+  ],
+  "license": "MIT",
+  "icon": "assets/identity/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "draylar.identity.fabric.IdentityFabric"
+    ],
+    "client": [
+      "draylar.identity.fabric.IdentityFabricClient"
+    ],
+    "cardinal-components-entity": [
+      "draylar.identity.fabric.registry.Components"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "identity:current_identity",
+      "identity:unlocked_identities",
+      "identity:favorite_identities",
+      "identity:hostility",
+      "identity:ability"
+    ]
+  },
+  "mixins": [
+    "identity.mixins.json",
+    "identity-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.8.7+build.201",
+    "fabric": "*"
+  }
+}

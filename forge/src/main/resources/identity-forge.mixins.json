@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "draylar.identity.forge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "PlayerEntityDataMixin",
+    "PlayerEntityTickMixin",
+    "WitherEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

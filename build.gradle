@@ -1,99 +1,48 @@
 plugins {
-    id 'fabric-loom' version '0.8-SNAPSHOT'
-    id 'maven-publish'
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "0.10.0-SNAPSHOT" apply false
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
-
-archivesBaseName = project.archives_base_name
-version = project.mod_version + "-" + project.minecraft_version
-group = project.maven_group
-
-minecraft {
-    accessWidener "src/main/resources/identity.accesswidener"
+architectury {
+    minecraft = rootProject.minecraft_version
 }
 
-repositories {
-    maven { url 'https://jitpack.io' }
+subprojects {
+    apply plugin: "dev.architectury.loom"
 
-    maven {
-        name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
-        content {
-            includeGroup 'io.github.ladysnake'
-            includeGroupByRegex 'io\\.github\\.onyxstudios.*'
-        }
+    loom {
+        silentMojangMappingsLicense()
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+         mappings "net.fabricmc:yarn:1.17.1+build.63:v2"
     }
 }
 
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
-    // Player Ability Lib: https://github.com/Ladysnake/PlayerAbilityLib
-    include "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}"
-    modImplementation ("io.github.ladysnake:PlayerAbilityLib:${project.pal_version}") {
-        exclude group: "net.fabricmc.fabric-api"
-    }
+    archivesBaseName = rootProject.archives_base_name + "-" + it.name
+    version = rootProject.mod_version + "-" + rootProject.minecraft_version
+    group = rootProject.maven_group
 
-    // Cardinal Components: https://github.com/OnyxStudios/Cardinal-Components-API
-    modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
-    include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
-
-    // config
-    modImplementation 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta'
-    include 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta:min'
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching('fabric.mod.json') {
-        expand "version": project.version
-    }
-}
-
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
-
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
-    from sourceSets.main.allSource
-}
-
-jar {
-    from "LICENSE"
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    // select the repositories you want to publish to
     repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 16
+    }
+
+    java {
+        withSourcesJar()
     }
 }

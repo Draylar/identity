@@ -33,3 +33,4 @@ bin/
 run/
 /server/
 /logs/
+/.architectury-transformer/debug.log

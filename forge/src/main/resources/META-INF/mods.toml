@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[37,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "identity"
+version = "${version}"
+displayName = "Identity"
+authors = "Draylar"
+description = '''
+Play as your favorite entities!
+'''
+#logoFile = ""
+
+[[dependencies.identity]]
+modId = "forge"
+mandatory = true
+versionRange = "[37,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.identity]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.17.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.identity]]
+modId = "architectury"
+mandatory = true
+versionRange = "[2.3.23,)"
+ordering = "AFTER"
+side = "BOTH"

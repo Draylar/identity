@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "draylar.identity.fabric.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "WitherEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
