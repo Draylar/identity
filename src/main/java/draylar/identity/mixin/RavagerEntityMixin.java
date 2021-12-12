@@ -47,7 +47,7 @@ public abstract class RavagerEntityMixin extends LivingEntity {
                     }
 
                     // Update movement/velocity
-                    this.flyingSpeed = this.getMovementSpeed() * 0.1F;
+                    this.airStrafingSpeed = this.getMovementSpeed() * 0.1F;
                     if (this.isLogicalSideForUpdatingMovement()) {
                         this.setMovementSpeed((float) this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
                         super.travel(new Vec3d(sidewaysSpeed, movementInput.y, forwardSpeed));

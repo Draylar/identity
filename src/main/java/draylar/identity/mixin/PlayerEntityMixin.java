@@ -223,15 +223,15 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     }
 
     @Inject(
-            method = "getFallSound",
+            method = "getFallSounds",
             at = @At("HEAD"),
             cancellable = true
     )
-    private void getFallSound(int distance, CallbackInfoReturnable<SoundEvent> cir) {
+    private void getFallSounds(CallbackInfoReturnable<LivingEntity.FallSounds> cir) {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
         if (Identity.CONFIG.useIdentitySounds && identity != null) {
-            cir.setReturnValue(((LivingEntityAccessor) identity).callGetFallSound(distance));
+            cir.setReturnValue(identity.getFallSounds());
         }
     }
 

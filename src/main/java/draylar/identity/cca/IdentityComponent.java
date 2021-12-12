@@ -213,7 +213,7 @@ public class IdentityComponent implements AutoSyncedComponent, ServerTickingComp
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
                 if (EntityTags.HURT_BY_HIGH_TEMPERATURE.contains(type)) {
-                    if (player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ())).getTemperature(new BlockPos(player.getX(), player.getY(), player.getZ())) > 1.0F) {
+                    if (player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ())).computeTemperature(new BlockPos(player.getX(), player.getY(), player.getZ())) > 1.0F) {
                         player.damage(DamageSource.ON_FIRE, 1.0F);
                     }
                 }
