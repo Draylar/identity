@@ -17,3 +17,5 @@ accessible field net/minecraft/client/render/entity/model/SquidEntityModel tenta
 accessible field net/minecraft/entity/player/PlayerAbilities flySpeed F
 
 extendable method net/minecraft/client/gui/screen/Screen init (Lnet/minecraft/client/MinecraftClient;II)V
+
+accessible method net/minecraft/world/biome/Biome computeTemperature (Lnet/minecraft/util/math/BlockPos;)F
