@@ -1,6 +1,8 @@
 package draylar.identity.mixin.player;
 
 import draylar.identity.impl.PlayerDataProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
@@ -15,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.HashMap;
 import java.util.Map;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayerDataCacheMixin {
 

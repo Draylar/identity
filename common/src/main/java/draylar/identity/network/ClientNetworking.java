@@ -106,8 +106,14 @@ public class ClientNetworking implements NetworkHandler {
     }
 
     public static void handleAbilitySyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
+        if(context.getPlayer() == null) {
+            return;
+        }
+
         int cooldown = packet.readInt();
-        ((PlayerDataProvider) context.getPlayer()).setAbilityCooldown(cooldown);
+        context.queue(() -> {
+            ((PlayerDataProvider) context.getPlayer()).setAbilityCooldown(cooldown);
+        });
     }
 
     public static void handleConfigurationSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
