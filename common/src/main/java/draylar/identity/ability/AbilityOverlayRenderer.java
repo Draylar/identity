@@ -2,8 +2,8 @@ package draylar.identity.ability;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.event.events.client.ClientGuiEvent;
-import draylar.identity.api.platform.PlayerAbilities;
-import draylar.identity.api.platform.PlayerIdentity;
+import draylar.identity.api.PlayerAbilities;
+import draylar.identity.api.PlayerIdentity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.network.ClientPlayerEntity;

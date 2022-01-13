@@ -1,11 +1,11 @@
 package draylar.identity.mixin;
 
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.model.ArmRenderingManipulator;
 import draylar.identity.api.model.EntityArms;
 import draylar.identity.api.model.EntityUpdater;
 import draylar.identity.api.model.EntityUpdaters;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
 import draylar.identity.mixin.accessor.EntityAccessor;
 import draylar.identity.mixin.accessor.LivingEntityAccessor;
 import draylar.identity.mixin.accessor.LivingEntityRendererAccessor;

@@ -2,8 +2,8 @@ package draylar.identity.mixin;
 
 import draylar.identity.Identity;
 import draylar.identity.api.IdentityGranting;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
 import draylar.identity.mixin.accessor.LivingEntityAccessor;
 import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;

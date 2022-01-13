@@ -1,6 +1,6 @@
 package draylar.identity.mixin.entity;
 
-import draylar.identity.api.platform.PlayerIdentity;
+import draylar.identity.api.PlayerIdentity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;

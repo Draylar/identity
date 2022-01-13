@@ -1,6 +1,6 @@
 package draylar.identity.mixin;
 
-import draylar.identity.api.platform.PlayerIdentity;
+import draylar.identity.api.PlayerIdentity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.entity.Entity;

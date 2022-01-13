@@ -1,6 +1,6 @@
 package draylar.identity.mixin;
 
-import draylar.identity.api.platform.PlayerIdentity;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.impl.DimensionsRefresher;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;

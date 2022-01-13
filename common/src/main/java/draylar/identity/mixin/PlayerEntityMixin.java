@@ -1,8 +1,8 @@
 package draylar.identity.mixin;
 
 import draylar.identity.Identity;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
 import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.mixin.accessor.*;
 import draylar.identity.registry.EntityTags;

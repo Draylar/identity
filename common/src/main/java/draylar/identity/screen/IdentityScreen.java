@@ -1,9 +1,9 @@
 package draylar.identity.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import draylar.identity.api.platform.PlayerFavorites;
-import draylar.identity.api.platform.PlayerIdentity;
-import draylar.identity.api.platform.PlayerUnlocks;
+import draylar.identity.api.PlayerFavorites;
+import draylar.identity.api.PlayerIdentity;
+import draylar.identity.api.PlayerUnlocks;
 import draylar.identity.mixin.accessor.ScreenAccessor;
 import draylar.identity.screen.widget.EntityWidget;
 import draylar.identity.screen.widget.HelpWidget;
@@ -41,7 +41,6 @@ public class IdentityScreen extends Screen {
         super(new LiteralText(""));
         super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
 
-        System.out.println("1");
         // don't initialize if the player is null
         if(client.player == null) {
             client.setScreen(null);

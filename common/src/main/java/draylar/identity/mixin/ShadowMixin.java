@@ -1,6 +1,6 @@
 package draylar.identity.mixin;
 
-import draylar.identity.api.platform.PlayerIdentity;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.mixin.accessor.EntityShadowAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;

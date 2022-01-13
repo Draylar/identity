@@ -1,6 +1,6 @@
 package draylar.identity.forge.mixin;
 
-import draylar.identity.api.platform.PlayerIdentity;
+import draylar.identity.api.PlayerIdentity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -23,6 +23,7 @@ public abstract class WitherEntityMixin extends HostileEntity {
         super(entityType, world);
     }
 
+    // There's a de-compilation difference between Forge & Fabric which requires a tweaked mixin on both sides.
     @Inject(
             method = "mobTick",
             at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"),

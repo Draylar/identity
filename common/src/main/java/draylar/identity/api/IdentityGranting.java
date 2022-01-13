@@ -1,8 +1,6 @@
 package draylar.identity.api;
 
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
-import draylar.identity.api.platform.PlayerUnlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

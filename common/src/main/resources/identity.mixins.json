@@ -6,6 +6,7 @@
     "ActiveTargetGoalMixin",
     "CreeperEntityMixin",
     "EntityMixin",
+    "EntityTrackerAccessor",
     "FoxEntityMixin",
     "HoglinBrainMixin",
     "LivingEntityFoodMixin",
@@ -20,6 +21,7 @@
     "RavagerEntityMixin",
     "ServerPlayerEntityMixin",
     "SweetBerryBushBlockMixin",
+    "ThreadedAnvilChunkStorageAccessor",
     "TrackTargetGoalMixin",
     "VillagerEntityMixin",
     "VillagerHostilesSensorMixin",
@@ -42,7 +44,13 @@
     "accessor.ScreenAccessor",
     "accessor.SpiderEntityModelAccessor",
     "accessor.SquidEntityModelAccessor",
-    "entity.BowItemMixin"
+    "entity.BowItemMixin",
+    "player.ClientPlayerDataCacheMixin",
+    "player.PlayerEntityDataMixin",
+    "player.PlayerEntityTickMixin",
+    "player.PlayerManagerMixin",
+    "player.PlayerTrackingMixin",
+    "player.RespawnDataCopyMixin"
   ],
   "client": [
     "BipedEntityModelMixin",

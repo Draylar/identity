@@ -2,9 +2,9 @@ package draylar.identity.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
+import draylar.identity.api.PlayerIdentity;
+import draylar.identity.api.PlayerUnlocks;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
-import draylar.identity.api.platform.PlayerUnlocks;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.EntitySummonArgumentType;
 import net.minecraft.command.suggestion.SuggestionProviders;

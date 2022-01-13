@@ -57,7 +57,6 @@ public class EvokerAbility extends IdentityAbility<EvokerEntity> {
                 continue;
             }
 
-            System.out.println("hi");
             break;
         }
     }

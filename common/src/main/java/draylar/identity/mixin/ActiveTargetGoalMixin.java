@@ -1,9 +1,8 @@
 package draylar.identity.mixin;
 
-import draylar.identity.Identity;
+import draylar.identity.api.PlayerHostility;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerHostility;
-import draylar.identity.api.platform.PlayerIdentity;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

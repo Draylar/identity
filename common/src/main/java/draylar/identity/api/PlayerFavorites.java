@@ -1,13 +1,9 @@
-package draylar.identity.api.platform.forge;
+package draylar.identity.api;
 
 import dev.architectury.networking.NetworkManager;
-import draylar.identity.api.Implements;
-import draylar.identity.api.platform.PlayerAbilities;
-import draylar.identity.api.platform.PlayerFavorites;
-import draylar.identity.forge.impl.PlayerDataProvider;
+import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -20,8 +16,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
-@Implements(PlayerFavorites.class)
-public class PlayerFavoritesImpl {
+public class PlayerFavorites {
 
     public static boolean has(PlayerEntity player, EntityType<?> type) {
         Identifier id = Registry.ENTITY_TYPE.getId(type);

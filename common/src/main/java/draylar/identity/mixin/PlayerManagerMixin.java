@@ -1,8 +1,8 @@
 package draylar.identity.mixin;
 
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.event.PlayerJoinCallback;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
 import draylar.identity.impl.DimensionsRefresher;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;

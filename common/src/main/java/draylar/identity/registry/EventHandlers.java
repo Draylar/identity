@@ -2,9 +2,9 @@ package draylar.identity.registry;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
+import draylar.identity.api.PlayerHostility;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerHostility;
-import draylar.identity.api.platform.PlayerIdentity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.RavagerEntity;
 

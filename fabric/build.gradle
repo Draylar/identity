@@ -49,12 +49,6 @@ dependencies {
         exclude group: "net.fabricmc.fabric-api"
     }
 
-    // Cardinal Components: https://github.com/OnyxStudios/Cardinal-Components-API
-    modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
-    include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
-
     // config
     modImplementation 'com.github.Draylar.omega-config:omega-config-base:1.0.8-1.17'
     include 'com.github.Draylar.omega-config:omega-config-base:1.0.8-1.17'

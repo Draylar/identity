@@ -1,7 +1,7 @@
-package draylar.identity.forge.mixin;
+package draylar.identity.mixin.player;
 
-import draylar.identity.api.platform.PlayerAbilities;
-import draylar.identity.forge.impl.PlayerDataProvider;
+import draylar.identity.api.PlayerAbilities;
+import draylar.identity.impl.PlayerDataProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

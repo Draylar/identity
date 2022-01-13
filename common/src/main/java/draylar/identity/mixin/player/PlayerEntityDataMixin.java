@@ -1,15 +1,18 @@
-package draylar.identity.forge.mixin;
+package draylar.identity.mixin.player;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.utils.NbtType;
 import draylar.identity.Identity;
+import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.event.IdentitySwapCallback;
 import draylar.identity.api.platform.FlightHelper;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.api.platform.PlayerIdentity;
 import draylar.identity.impl.DimensionsRefresher;
-import draylar.identity.forge.impl.PlayerDataProvider;
+import draylar.identity.impl.PlayerDataProvider;
+import draylar.identity.mixin.EntityTrackerAccessor;
+import draylar.identity.mixin.ThreadedAnvilChunkStorageAccessor;
 import draylar.identity.registry.EntityTags;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -19,11 +22,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,6 +41,8 @@ import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityDataMixin extends LivingEntity implements PlayerDataProvider {
+
+    @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
 
     @Unique private static final String ABILITY_COOLDOWN_KEY = "AbilityCooldown";
     @Unique private final List<Identifier> unlocked = new ArrayList<>();
@@ -148,10 +156,22 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         return unlocked;
     }
 
+    @Override
+    public void setUnlocked(List<Identifier> unlocked) {
+        this.unlocked.clear();
+        this.unlocked.addAll(unlocked);
+    }
+
     @Unique
     @Override
     public List<Identifier> getFavorites() {
         return favorites;
+    }
+
+    @Override
+    public void setFavorites(List<Identifier> favorites) {
+        this.favorites.clear();
+        this.favorites.addAll(favorites);
     }
 
     @Unique
@@ -235,6 +255,12 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         // sync with client
         if(!player.world.isClient) {
             PlayerIdentity.sync((ServerPlayerEntity) player);
+
+            Int2ObjectMap<Object> trackers = ((ThreadedAnvilChunkStorageAccessor) ((ServerWorld) player.world).getChunkManager().threadedAnvilChunkStorage).getEntityTrackers();
+            Object tracking = trackers.get(player.getId());
+            ((EntityTrackerAccessor) tracking).getListeners().forEach(listener -> {
+                PlayerIdentity.sync((ServerPlayerEntity) player, listener.getPlayer());
+            });
         }
 
         return true;

@@ -1,12 +1,9 @@
-package draylar.identity.api.platform.forge;
+package draylar.identity.api;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.networking.NetworkManager;
-import draylar.identity.api.Implements;
 import draylar.identity.api.event.UnlockIdentityCallback;
-import draylar.identity.api.platform.PlayerAbilities;
-import draylar.identity.api.platform.PlayerUnlocks;
-import draylar.identity.forge.impl.PlayerDataProvider;
+import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
@@ -20,8 +17,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-@Implements(PlayerUnlocks.class)
-public class PlayerUnlocksImpl {
+public class PlayerUnlocks {
 
     public static boolean unlock(ServerPlayerEntity player, EntityType<?> granted) {
         PlayerDataProvider provider = (PlayerDataProvider) player;
