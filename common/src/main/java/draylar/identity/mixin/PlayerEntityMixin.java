@@ -35,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntityMixin implements NearbySongAccessor {
+public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
     @Shadow
     public abstract boolean isSpectator();
@@ -60,15 +60,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
         if(entity != null) {
             cir.setReturnValue(entity.getDimensions(pose));
-        }
-    }
-
-    @Override
-    protected void identity_canBreatheInWater(CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity entity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(entity != null) {
-            cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || EntityTags.UNDROWNABLE.contains(entity.getType()));
         }
     }
 
@@ -116,30 +107,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
         }
     }
 
-    // todo: separate into other mixin?
-    private boolean nearbySongPlaying = false;
-
-    @Environment(EnvType.CLIENT)
-    @Override
-    protected void identity_setNearbySongPlaying(BlockPos songPosition, boolean playing, CallbackInfo ci) {
-        nearbySongPlaying = playing;
-    }
-
-    @Override
-    public boolean identity_isNearbySongPlaying() {
-        return nearbySongPlaying;
-    }
-
-    @Override
-    protected void identity_isUndead(CallbackInfoReturnable<Boolean> cir) {
-        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(identity != null) {
-            cir.setReturnValue(identity.isUndead());
-        }
-    }
-
     @Inject(method = "getActiveEyeHeight", at = @At("HEAD"), cancellable = true)
     private void identity_getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
@@ -166,16 +133,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
             return identity.getEyeHeight(pose);
         } else {
             return this.getEyeHeight(pose, this.getDimensions(pose));
-        }
-    }
-
-    @Override
-    protected void identity_allowSpiderClimbing(CallbackInfoReturnable<Boolean> cir) {
-        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(identity instanceof SpiderEntity) {
-            cir.setReturnValue(this.horizontalCollision);
         }
     }
 
@@ -251,15 +208,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
         if(IdentityConfig.getInstance().useIdentitySounds() && identity != null) {
             cir.setReturnValue(((LivingEntityAccessor) identity).callGetFallSound(distance));
-        }
-    }
-
-    @Override
-    protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
-            cir.setReturnValue(true);
         }
     }
 
