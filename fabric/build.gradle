@@ -50,8 +50,7 @@ dependencies {
     }
 
     // config
-    modImplementation 'com.github.Draylar.omega-config:omega-config-base:1.0.8-1.17'
-    include 'com.github.Draylar.omega-config:omega-config-base:1.0.8-1.17'
+    modImplementation(include("com.github.Draylar.omega-config:omega-config-base:1.2.3-1.18.1"))
 }
 
 processResources {

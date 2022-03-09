@@ -125,7 +125,8 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
                 int damageAmount = ((LivingEntityAccessor) identity).callComputeFallDamage(fallDistance, damageMultiplier);
 
                 if (takesFallDamage && damageAmount > 0) {
-                    this.playSound(((LivingEntityAccessor) identity).callGetFallSound(damageAmount), 1.0F, 1.0F);
+                    LivingEntity.FallSounds fallSounds = identity.getFallSounds();
+                    this.playSound(damageAmount > 4 ? fallSounds.big() : fallSounds.small(), 1.0F, 1.0F);
                     ((LivingEntityAccessor) identity).callPlayBlockFallSound();
                     this.damage(DamageSource.FALL, (float) damageAmount);
                     cir.setReturnValue(true);
