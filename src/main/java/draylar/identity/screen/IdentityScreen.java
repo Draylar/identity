@@ -271,7 +271,6 @@ public class IdentityScreen extends Screen {
         entityWidgets.forEach(button -> button.setActive(false));
     }
 
-    @Override
     public boolean isPauseScreen() {
         return false;
     }

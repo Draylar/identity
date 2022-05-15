@@ -44,7 +44,7 @@ public class Identity implements ModInitializer {
     public static boolean hasFlyingPermissions(ServerPlayerEntity player) {
         LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
-        if(identity != null && Identity.CONFIG.enableFlight && EntityTags.FLYING.contains(identity.getType())) {
+        if(identity != null && Identity.CONFIG.enableFlight && identity.getType().isIn(EntityTags.FLYING)) {
             List<String> requiredAdvancements = CONFIG.advancementsRequiredForFlight;
 
             // requires at least 1 advancement, check if player has them

@@ -64,7 +64,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
             // foxes can target players if their identity is in the fox_prey tag, or if they are an entity that extends FishEntity
             // todo: add baby turtle targeting
             LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
-            return identity != null && EntityTags.FOX_PREY.contains(identity.getType()) || identity instanceof FishEntity;
+            return identity != null && identity.getType().isIn(EntityTags.FOX_PREY) || identity instanceof FishEntity;
         }));
     }
 }

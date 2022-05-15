@@ -27,7 +27,7 @@ public class EventHandlers {
             if(entity instanceof RavagerEntity) {
                 LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
-                if(EntityTags.RAVAGER_RIDING.contains(identity.getType())) {
+                if(identity.getType().isIn(EntityTags.RAVAGER_RIDING)) {
                     player.startRiding(entity);
                 }
             }

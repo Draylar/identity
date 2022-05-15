@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,20 +20,21 @@ public abstract class InGameHudMixin {
 
     @Shadow protected abstract PlayerEntity getCameraPlayer();
 
-    @ModifyArg(
+    // Causes an error. No idea how to fix this.
+    /*@ModifyArg(
             method = "renderStatusBars",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSubmergedIn(Lnet/minecraft/tag/Tag;)Z")
     )
-    private Tag<Fluid> shouldRenderBreath(Tag<Fluid> tag) {
+    private TagKey<Fluid> shouldRenderBreath(TagKey<Fluid> tag) {
         PlayerEntity player = this.getCameraPlayer();
         LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
         if(identity != null) {
-            if((Identity.isAquatic(identity) || EntityTags.UNDROWNABLE.contains(identity.getType())) && player.isSubmergedIn(FluidTags.WATER)) {
+            if((Identity.isAquatic(identity) || identity.getType().isIn(EntityTags.UNDROWNABLE)) && player.isSubmergedIn(FluidTags.WATER)) {
                 return FluidTags.LAVA;    // will cause isSubmergedIn to return false, preventing air render
             }
         }
 
         return tag;
-    }
+    }*/
 }

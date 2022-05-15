@@ -20,10 +20,6 @@ repositories {
     maven {
         name = 'Ladysnake Mods'
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
-        content {
-            includeGroup 'io.github.ladysnake'
-            includeGroupByRegex 'io\\.github\\.onyxstudios.*'
-        }
     }
 }
 
@@ -40,10 +36,10 @@ dependencies {
     }
 
     // Cardinal Components: https://github.com/OnyxStudios/Cardinal-Components-API
-    modImplementation "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
-    include "io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
-    include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"
 
     // config
     modImplementation 'com.github.Draylar.omega-config:omega-config-base:1.0.4-beta'

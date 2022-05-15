@@ -20,6 +20,7 @@ import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -88,7 +89,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
             LivingEntity identity = Components.CURRENT_IDENTITY.get(this).getIdentity();
 
             if (identity != null) {
-                if (!this.isSneaking() && EntityTags.SLOW_FALLING.contains(identity.getType())) {
+                if (!this.isSneaking() && identity.getType().isIn(EntityTags.SLOW_FALLING)) {
                     return true;
                 }
             }
@@ -207,7 +208,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
             LivingEntity entity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
             if (entity != null) {
-                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || EntityTags.UNDROWNABLE.contains(entity.getType()));
+                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || entity.getType().isIn(EntityTags.UNDROWNABLE));
             }
         }
     }
@@ -240,11 +241,11 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
     }
 
     @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
-    protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+    protected void identity_canWalkOnFluid(FluidState fluid, CallbackInfoReturnable<Boolean> cir) {
         if((LivingEntity) (Object) this instanceof PlayerEntity player) {
             LivingEntity identity = Components.CURRENT_IDENTITY.get(player).getIdentity();
 
-            if (identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
+            if (identity != null && identity.getType().isIn(EntityTags.LAVA_WALKING) && fluid.isIn(FluidTags.LAVA)) {
                 cir.setReturnValue(true);
             }
         }

@@ -30,7 +30,7 @@ public class PiglinBrainMixin {
 
             if(identity != null) {
                 // Piglins should not attack Piglins or Piglin Brutes, unless they have hostility
-                if (EntityTags.PIGLIN_FRIENDLY.contains(identity.getType())) {
+                if (identity.getType().isIn(EntityTags.PIGLIN_FRIENDLY)) {
                     cir.setReturnValue(false);
                 }
 

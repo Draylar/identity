@@ -45,7 +45,6 @@ public class IdentityHelpScreen extends Screen {
         super.render(matrices, mouseX, mouseY, delta);
     }
 
-    @Override
     public boolean isPauseScreen() {
         return false;
     }
