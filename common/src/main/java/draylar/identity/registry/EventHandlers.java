@@ -5,6 +5,7 @@ import dev.architectury.event.events.common.InteractionEvent;
 import draylar.identity.api.PlayerHostility;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.RavagerEntity;
 
@@ -25,8 +26,11 @@ public class EventHandlers {
     public static void registerRavagerRidingHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
             if(entity instanceof RavagerEntity) {
-                if(PlayerIdentity.getIdentity(player).getType().isIn(EntityTags.RAVAGER_RIDING)) {
-                    player.startRiding(entity);
+                LivingEntity identity = PlayerIdentity.getIdentity(player);
+                if(identity != null) {
+                    if(identity.getType().isIn(EntityTags.RAVAGER_RIDING)) {
+                        player.startRiding(entity);
+                    }
                 }
             }
 
