@@ -63,7 +63,7 @@ public class Identity {
     public static boolean hasFlyingPermissions(ServerPlayerEntity player) {
         LivingEntity identity = PlayerIdentity.getIdentity(player);
 
-        if(identity != null && IdentityConfig.getInstance().enableFlight() && EntityTags.FLYING.contains(identity.getType())) {
+        if(identity != null && IdentityConfig.getInstance().enableFlight() && identity.getType().isIn(EntityTags.FLYING)) {
             List<String> requiredAdvancements = IdentityConfig.getInstance().advancementsRequiredForFlight();
 
             // requires at least 1 advancement, check if player has them

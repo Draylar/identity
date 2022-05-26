@@ -42,7 +42,7 @@ public abstract class WolfEntityMixin extends TameableEntity {
                 return false;
             }
 
-            return identity != null && EntityTags.WOLF_PREY.contains(identity.getType());
+            return identity != null && identity.getType().isIn(EntityTags.WOLF_PREY);
         }));
     }
 }

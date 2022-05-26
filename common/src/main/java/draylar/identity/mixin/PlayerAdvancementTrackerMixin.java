@@ -1,7 +1,7 @@
 package draylar.identity.mixin;
 
 import draylar.identity.Identity;
-import draylar.identity.api.platform.FlightHelper;
+import draylar.identity.api.FlightHelper;
 import draylar.identity.api.platform.IdentityConfig;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.PlayerAdvancementTracker;

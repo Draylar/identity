@@ -25,7 +25,7 @@ public class EventHandlers {
     public static void registerRavagerRidingHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
             if(entity instanceof RavagerEntity) {
-                if(EntityTags.RAVAGER_RIDING.contains(PlayerIdentity.getIdentity(player).getType())) {
+                if(PlayerIdentity.getIdentity(player).getType().isIn(EntityTags.RAVAGER_RIDING)) {
                     player.startRiding(entity);
                 }
             }

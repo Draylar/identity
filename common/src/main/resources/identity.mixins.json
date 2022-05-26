@@ -30,7 +30,6 @@
     "accessor.BiomeAccessor",
     "accessor.CreeperEntityAccessor",
     "accessor.EntityAccessor",
-    "accessor.EntityTypeTagsAccessor",
     "accessor.IronGolemEntityAccessor",
     "accessor.LivingEntityAccessor",
     "accessor.MobEntityAccessor",

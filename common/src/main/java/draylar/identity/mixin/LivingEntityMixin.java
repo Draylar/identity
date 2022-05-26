@@ -20,9 +20,11 @@ import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.lwjgl.system.CallbackI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -88,7 +90,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
             LivingEntity identity = PlayerIdentity.getIdentity(player);
 
             if (identity != null) {
-                if (!this.isSneaking() && EntityTags.SLOW_FALLING.contains(identity.getType())) {
+                if (!this.isSneaking() && identity.getType().isIn(EntityTags.SLOW_FALLING)) {
                     return true;
                 }
             }
@@ -222,7 +224,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
             LivingEntity entity = PlayerIdentity.getIdentity(player);
 
             if (entity != null) {
-                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || EntityTags.UNDROWNABLE.contains(entity.getType()));
+                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || entity.getType().isIn(EntityTags.UNDROWNABLE));
             }
         }
     }
@@ -255,11 +257,11 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
     }
 
     @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
-    protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
+    protected void identity_canWalkOnFluid(FluidState state, CallbackInfoReturnable<Boolean> cir) {
         if((LivingEntity) (Object) this instanceof PlayerEntity player) {
             LivingEntity identity = PlayerIdentity.getIdentity(player);
 
-            if (identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
+            if (identity != null && identity.getType().isIn(EntityTags.LAVA_WALKING) && state.isIn(FluidTags.LAVA)) {
                 cir.setReturnValue(true);
             }
         }

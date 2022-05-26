@@ -25,6 +25,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
@@ -260,7 +261,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 EntityType<?> type = identity.getType();
 
                 // check if the player's current identity burns in sunlight
-                if(EntityTags.BURNS_IN_DAYLIGHT.contains(type)) {
+                if(type.isIn(EntityTags.BURNS_IN_DAYLIGHT)) {
                     boolean bl = this.isInDaylight();
                     if(bl) {
 
@@ -323,9 +324,9 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 EntityType<?> type = identity.getType();
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
-                if(EntityTags.HURT_BY_HIGH_TEMPERATURE.contains(type)) {
-                    Biome biome = player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ()));
-                    float temp = ((BiomeAccessor) (Object) biome).callComputeTemperature(new BlockPos(player.getX(), player.getY(), player.getZ()));
+                if(type.isIn(EntityTags.HURT_BY_HIGH_TEMPERATURE)) {
+                    RegistryEntry<Biome> biome = player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ()));
+                    float temp = ((BiomeAccessor) (Object) biome.getKeyOrValue().right().get()).callComputeTemperature(new BlockPos(player.getX(), player.getY(), player.getZ()));
                     if(temp > 1.0F) {
                         player.damage(DamageSource.ON_FIRE, 1.0F);
                     }

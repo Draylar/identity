@@ -17,35 +17,21 @@ configurations {
 
 repositories {
     maven { url 'https://jitpack.io' }
-
-    maven {
-        name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
-        content {
-            includeGroup 'io.github.ladysnake'
-            includeGroupByRegex 'io\\.github\\.onyxstudios.*'
-        }
-    }
 }
 
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
 
-    // Player Ability Lib: https://github.com/Ladysnake/PlayerAbilityLib
-    include "io.github.ladysnake:PlayerAbilityLib:${project.pal_version}"
-    modImplementation ("io.github.ladysnake:PlayerAbilityLib:${project.pal_version}") {
+    // config
+    modImplementation include ("com.github.Draylar.omega-config:omega-config-base:1.2.3-1.18.1") {
         exclude group: "net.fabricmc.fabric-api"
     }
-
-    // config
-    modImplementation(include("com.github.Draylar.omega-config:omega-config-base:1.2.3-1.18.1"))
 }
 
 processResources {

@@ -1,11 +1,8 @@
-package draylar.identity.api.platform.forge;
+package draylar.identity.api;
 
-import draylar.identity.api.Implements;
-import draylar.identity.api.platform.FlightHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-@Implements(FlightHelper.class)
-public class FlightHelperImpl {
+public class FlightHelper {
 
     public static void grantFlightTo(ServerPlayerEntity player) {
         player.getAbilities().allowFlying = true;
@@ -16,7 +13,10 @@ public class FlightHelperImpl {
     }
 
     public static void revokeFlight(ServerPlayerEntity player) {
-        player.getAbilities().allowFlying = false;
+        if(player.interactionManager.isSurvivalLike()) {
+            player.getAbilities().allowFlying = false;
+        }
+
         player.getAbilities().flying = false;
     }
 }

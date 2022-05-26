@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import draylar.identity.Identity;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.PlayerUnlocks;
-import draylar.identity.api.platform.FlightHelper;
+import draylar.identity.api.FlightHelper;
 import draylar.identity.api.platform.IdentityConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
