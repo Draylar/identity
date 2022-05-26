@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.0.0"
+    id "com.github.johnrengelman.shadow" version "7.1.0"
 }
 
 loom {
@@ -19,34 +19,27 @@ configurations {
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
-    dev
-}
-
-artifacts {
-    dev(jar)
 }
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
-
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
-    common(project(path: ":common", configuration: "dev")) { transitive false }
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
 
 processResources {
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
+    inputs.property "version", project.version.toString()
 
-    inputs.property "META-INF/mods.toml", project.version
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version.toString()
+    }
 }
 
 shadowJar {
     exclude "fabric.mod.json"
-    exclude "identity.accesswidener"
-
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
@@ -54,7 +47,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+    classifier "forge"
 }
 
 jar {
@@ -62,17 +55,10 @@ jar {
 }
 
 sourcesJar {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-    afterEvaluate {
-        [":common"].forEach {
-            def depSources = project(it).sourcesJar
-            dependsOn depSources
-            from(depSources.archiveFile.map { zipTree(it) }) {
-                exclude "identity.accesswidener"
-            }
-        }
-    }
+    duplicatesStrategy 'exclude'
+    def commonSources = project(":common").sourcesJar
+    dependsOn commonSources
+    from commonSources.archiveFile.map { zipTree(it) }
 }
 
 components.java {

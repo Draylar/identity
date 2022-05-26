@@ -1,5 +1,6 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "draylar.identity.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
@@ -26,6 +27,7 @@
     "VillagerEntityMixin",
     "VillagerHostilesSensorMixin",
     "WolfEntityMixin",
+    "accessor.BiomeAccessor",
     "accessor.CreeperEntityAccessor",
     "accessor.EntityAccessor",
     "accessor.EntityTypeTagsAccessor",
@@ -48,18 +50,18 @@
     "PlayerEntityRendererMixin",
     "ShadowMixin",
     "StrayOverlayMixin",
+    "accessor.BlazeEntityModelAccessor",
     "accessor.EntityShadowAccessor",
-    "player.ClientPlayerDataCacheMixin",
+    "accessor.IllagerEntityModelAccessor",
+    "accessor.LivingEntityRendererAccessor",
+    "accessor.LlamaEntityModelAccessor",
+    "accessor.OcelotEntityModelAccessor",
+    "accessor.QuadrupedEntityModelAccessor",
     "accessor.RavagerEntityModelAccessor",
     "accessor.ScreenAccessor",
     "accessor.SpiderEntityModelAccessor",
-    "accessor.QuadrupedEntityModelAccessor",
-    "accessor.OcelotEntityModelAccessor",
-    "accessor.LivingEntityRendererAccessor",
-    "accessor.LlamaEntityModelAccessor",
-    "accessor.IllagerEntityModelAccessor",
     "accessor.SquidEntityModelAccessor",
-    "accessor.BlazeEntityModelAccessor"
+    "player.ClientPlayerDataCacheMixin"
   ],
   "injectors": {
     "defaultRequire": 1

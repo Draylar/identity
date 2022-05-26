@@ -26,6 +26,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntityMixin implements NearbySongAccessor {
+public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
     @Shadow
     public abstract boolean isSpectator();
@@ -60,15 +61,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
         if(entity != null) {
             cir.setReturnValue(entity.getDimensions(pose));
-        }
-    }
-
-    @Override
-    protected void identity_canBreatheInWater(CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity entity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(entity != null) {
-            cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || EntityTags.UNDROWNABLE.contains(entity.getType()));
         }
     }
 
@@ -116,30 +108,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
         }
     }
 
-    // todo: separate into other mixin?
-    private boolean nearbySongPlaying = false;
-
-    @Environment(EnvType.CLIENT)
-    @Override
-    protected void identity_setNearbySongPlaying(BlockPos songPosition, boolean playing, CallbackInfo ci) {
-        nearbySongPlaying = playing;
-    }
-
-    @Override
-    public boolean identity_isNearbySongPlaying() {
-        return nearbySongPlaying;
-    }
-
-    @Override
-    protected void identity_isUndead(CallbackInfoReturnable<Boolean> cir) {
-        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(identity != null) {
-            cir.setReturnValue(identity.isUndead());
-        }
-    }
-
     @Inject(method = "getActiveEyeHeight", at = @At("HEAD"), cancellable = true)
     private void identity_getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         PlayerEntity playerEntity = (PlayerEntity) (Object) this;
@@ -166,16 +134,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
             return identity.getEyeHeight(pose);
         } else {
             return this.getEyeHeight(pose, this.getDimensions(pose));
-        }
-    }
-
-    @Override
-    protected void identity_allowSpiderClimbing(CallbackInfoReturnable<Boolean> cir) {
-        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
-        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(identity instanceof SpiderEntity) {
-            cir.setReturnValue(this.horizontalCollision);
         }
     }
 
@@ -242,24 +200,15 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
     }
 
     @Inject(
-            method = "getFallSound",
+            method = "getFallSounds",
             at = @At("HEAD"),
             cancellable = true
     )
-    private void getFallSound(int distance, CallbackInfoReturnable<SoundEvent> cir) {
+    private void getFallSounds(CallbackInfoReturnable<LivingEntity.FallSounds> cir) {
         LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
 
         if(IdentityConfig.getInstance().useIdentitySounds() && identity != null) {
-            cir.setReturnValue(((LivingEntityAccessor) identity).callGetFallSound(distance));
-        }
-    }
-
-    @Override
-    protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
-        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
-
-        if(identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
-            cir.setReturnValue(true);
+            cir.setReturnValue(identity.getFallSounds());
         }
     }
 
@@ -375,7 +324,9 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin implements Nea
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
                 if(EntityTags.HURT_BY_HIGH_TEMPERATURE.contains(type)) {
-                    if(player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ())).getTemperature(new BlockPos(player.getX(), player.getY(), player.getZ())) > 1.0F) {
+                    Biome biome = player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ()));
+                    float temp = ((BiomeAccessor) (Object) biome).callComputeTemperature(new BlockPos(player.getX(), player.getY(), player.getZ()));
+                    if(temp > 1.0F) {
                         player.damage(DamageSource.ON_FIRE, 1.0F);
                     }
                 }

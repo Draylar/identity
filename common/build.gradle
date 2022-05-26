@@ -11,11 +11,11 @@ architectury {
     common()
 }
 
-afterEvaluate {
-    remapJar {
-        remapAccessWidener = false
-    }
-}
+//afterEvaluate {
+//    remapJar {
+//        remapAccessWidener = false
+//    }
+//}
 
 configurations {
     dev

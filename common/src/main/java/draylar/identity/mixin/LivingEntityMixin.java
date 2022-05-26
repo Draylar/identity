@@ -4,6 +4,7 @@ import draylar.identity.Identity;
 import draylar.identity.api.IdentityGranting;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
+import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.mixin.accessor.LivingEntityAccessor;
 import draylar.identity.registry.EntityTags;
 import net.fabricmc.api.EnvType;
@@ -13,14 +14,18 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.SpiderEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.BatEntity;
+import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -29,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity {
+public abstract class LivingEntityMixin extends Entity implements NearbySongAccessor {
 
     @Shadow
     protected abstract int getNextAirOnLand(int air);
@@ -120,7 +125,8 @@ public abstract class LivingEntityMixin extends Entity {
                 int damageAmount = ((LivingEntityAccessor) identity).callComputeFallDamage(fallDistance, damageMultiplier);
 
                 if (takesFallDamage && damageAmount > 0) {
-                    this.playSound(((LivingEntityAccessor) identity).callGetFallSound(damageAmount), 1.0F, 1.0F);
+                    LivingEntity.FallSounds fallSounds = identity.getFallSounds();
+                    this.playSound(damageAmount > 4 ? fallSounds.big() : fallSounds.small(), 1.0F, 1.0F);
                     ((LivingEntityAccessor) identity).callPlayBlockFallSound();
                     this.damage(DamageSource.FALL, (float) damageAmount);
                     cir.setReturnValue(true);
@@ -184,17 +190,6 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    @Inject(method = "hurtByWater", at = @At("HEAD"), cancellable = true)
-    protected void identity_hurtByWater(CallbackInfoReturnable<Boolean> cir) {
-        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
-            LivingEntity entity = PlayerIdentity.getIdentity(player);
-
-            if(entity != null) {
-                cir.setReturnValue(entity.hurtByWater());
-            }
-        }
-    }
-
     @Inject(at = @At("HEAD"), method = "getEyeHeight", cancellable = true)
     public void getEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         if((LivingEntity) (Object) this instanceof PlayerEntity player) {
@@ -206,32 +201,68 @@ public abstract class LivingEntityMixin extends Entity {
                 if(identity != null) {
                     cir.setReturnValue(((LivingEntityAccessor) identity).callGetEyeHeight(pose, dimensions));
                 }
+            } catch (Exception ignored) {}
+        }
+    }
 
-            } catch (Exception ignored) {
+    @Inject(method = "hurtByWater", at = @At("HEAD"), cancellable = true)
+    protected void identity_hurtByWater(CallbackInfoReturnable<Boolean> cir) {
+        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
+            LivingEntity entity = PlayerIdentity.getIdentity(player);
 
+            if (entity != null) {
+                cir.setReturnValue(entity.hurtByWater());
             }
         }
     }
 
     @Inject(method = "canBreatheInWater", at = @At("HEAD"), cancellable = true)
     protected void identity_canBreatheInWater(CallbackInfoReturnable<Boolean> cir) {
-        // NO-OP
+        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
+            LivingEntity entity = PlayerIdentity.getIdentity(player);
+
+            if (entity != null) {
+                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || EntityTags.UNDROWNABLE.contains(entity.getType()));
+            }
+        }
     }
+
+    @Unique
+    private boolean nearbySongPlaying = false;
 
     @Environment(EnvType.CLIENT)
     @Inject(method = "setNearbySongPlaying", at = @At("RETURN"))
     protected void identity_setNearbySongPlaying(BlockPos songPosition, boolean playing, CallbackInfo ci) {
-        // NO-OP
+        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
+            nearbySongPlaying = playing;
+        }
+    }
+
+    @Override
+    public boolean identity_isNearbySongPlaying() {
+        return nearbySongPlaying;
     }
 
     @Inject(method = "isUndead", at = @At("HEAD"), cancellable = true)
     protected void identity_isUndead(CallbackInfoReturnable<Boolean> cir) {
-        // NO-OP
+        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
+            LivingEntity identity = PlayerIdentity.getIdentity(player);
+
+            if (identity != null) {
+                cir.setReturnValue(identity.isUndead());
+            }
+        }
     }
 
     @Inject(method = "canWalkOnFluid", at = @At("HEAD"), cancellable = true)
     protected void identity_canWalkOnFluid(Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
-        // NO-OP
+        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
+            LivingEntity identity = PlayerIdentity.getIdentity(player);
+
+            if (identity != null && EntityTags.LAVA_WALKING.contains(identity.getType()) && fluid.isIn(FluidTags.LAVA)) {
+                cir.setReturnValue(true);
+            }
+        }
     }
 
     @Inject(
@@ -240,6 +271,12 @@ public abstract class LivingEntityMixin extends Entity {
             cancellable = true
     )
     protected void identity_allowSpiderClimbing(CallbackInfoReturnable<Boolean> cir) {
-        // NO-OP
+        if((LivingEntity) (Object) this instanceof PlayerEntity player) {
+            LivingEntity identity = PlayerIdentity.getIdentity(player);
+
+            if (identity instanceof SpiderEntity) {
+                cir.setReturnValue(this.horizontalCollision);
+            }
+        }
     }
 }
