@@ -3,8 +3,10 @@ package draylar.identity.api;
 import dev.architectury.event.EventResult;
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.api.event.UnlockIdentityCallback;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.network.NetworkHandler;
+import draylar.identity.network.impl.UnlockPackets;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,13 +21,12 @@ import net.minecraft.util.registry.Registry;
 
 public class PlayerUnlocks {
 
-    public static boolean unlock(ServerPlayerEntity player, EntityType<?> granted) {
+    public static boolean unlock(ServerPlayerEntity player, IdentityType granted) {
         PlayerDataProvider provider = (PlayerDataProvider) player;
-        Identifier id = Registry.ENTITY_TYPE.getId(granted);
-        EventResult unlock = UnlockIdentityCallback.EVENT.invoker().unlock(player, id);
+        EventResult unlock = UnlockIdentityCallback.EVENT.invoker().unlock(player, granted);
 
-        if(unlock.asMinecraft() != ActionResult.FAIL && !provider.getUnlocked().contains(id)) {
-            provider.getUnlocked().add(id);
+        if(unlock.asMinecraft() != ActionResult.FAIL && !provider.getUnlocked().contains(granted)) {
+            provider.getUnlocked().add(granted);
             sync(player);
             PlayerAbilities.sync(player); // TODO: ???
             return true;
@@ -34,33 +35,21 @@ public class PlayerUnlocks {
         }
     }
 
-    public static boolean has(PlayerEntity player, EntityType<?> type) {
-        Identifier id = Registry.ENTITY_TYPE.getId(type);
-        return type.equals(EntityType.PLAYER) || (((PlayerDataProvider) player)).getUnlocked().contains(id);
+    public static boolean has(PlayerEntity player, IdentityType type) {
+        return type.getEntityType().equals(EntityType.PLAYER) || (((PlayerDataProvider) player)).getUnlocked().contains(type);
     }
 
-    public static void revoke(ServerPlayerEntity player, EntityType<?> type) {
+    public static void revoke(ServerPlayerEntity player, IdentityType type) {
         PlayerDataProvider provider = (PlayerDataProvider) player;
 
-        Identifier id = Registry.ENTITY_TYPE.getId(type);
-        if(provider.getUnlocked().contains(id)) {
-            provider.getUnlocked().remove(id);
+        if(provider.getUnlocked().contains(type)) {
+            provider.getUnlocked().remove(type);
             sync(player);
             PlayerAbilities.sync(player); // TODO: ???
         }
     }
 
     public static void sync(ServerPlayerEntity player) {
-        PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-
-        // Serialize unlocked to tag
-        NbtCompound compound = new NbtCompound();
-        NbtList idList = new NbtList();
-        ((PlayerDataProvider) player).getUnlocked().forEach(entityId -> idList.add(NbtString.of(entityId.toString())));
-        compound.put("UnlockedMorphs", idList);
-        packet.writeNbt(compound);
-
-        // Send to client
-        NetworkManager.sendToPlayer(player, NetworkHandler.UNLOCK_SYNC, packet);
+        UnlockPackets.sendSyncPacket(player);
     }
 }

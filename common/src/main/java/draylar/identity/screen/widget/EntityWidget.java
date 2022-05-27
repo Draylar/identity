@@ -1,11 +1,11 @@
 package draylar.identity.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.architectury.networking.NetworkManager;
 import draylar.identity.Identity;
-import draylar.identity.network.ClientNetworking;
+import draylar.identity.api.variant.IdentityType;
+import draylar.identity.network.impl.FavoritePackets;
+import draylar.identity.network.impl.SwapPackets;
 import draylar.identity.screen.IdentityScreen;
-import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
@@ -14,23 +14,23 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.text.Text;
 
 import java.util.Collections;
 
-public class EntityWidget extends PressableWidget {
+public class EntityWidget<T extends LivingEntity> extends PressableWidget {
 
-    private final LivingEntity entity;
+    private final IdentityType<T> type;
+    private final T entity;
     private final int size;
     private boolean active;
     private boolean starred;
     private final IdentityScreen parent;
 
-    public EntityWidget(float x, float y, float width, float height, LivingEntity entity, IdentityScreen parent, boolean starred, boolean current) {
+    public EntityWidget(float x, float y, float width, float height, IdentityType<T> type, T entity, IdentityScreen parent, boolean starred, boolean current) {
         super((int) x, (int) y, (int) width, (int) height, new LiteralText("")); // int x, int y, int width, int height, message
+        this.type = type;
         this.entity = entity;
         size = (int) (25 * (1 / (Math.max(entity.getHeight(), entity.getWidth()))));
         entity.setGlowing(true);
@@ -46,9 +46,7 @@ public class EntityWidget extends PressableWidget {
         if(bl) {
             // Update current Identity
             if(button == 0) {
-                PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-                packet.writeIdentifier(Registry.ENTITY_TYPE.getId(entity.getType()));
-                NetworkManager.sendToServer(ClientNetworking.IDENTITY_REQUEST, packet);
+                SwapPackets.sendSwapRequest(type);
                 parent.disableAll();
                 active = true;
             }
@@ -65,10 +63,7 @@ public class EntityWidget extends PressableWidget {
                 }
 
                 // Update server with information on favorite
-                PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-                packet.writeIdentifier(Registry.ENTITY_TYPE.getId(entity.getType()));
-                packet.writeBoolean(favorite);
-                NetworkManager.sendToServer(ClientNetworking.FAVORITE_UPDATE, packet);
+                FavoritePackets.sendFavoriteRequest(type, favorite);
 
                 // TODO: re-sort screen?
             }
@@ -132,7 +127,7 @@ public class EntityWidget extends PressableWidget {
         Screen currentScreen = MinecraftClient.getInstance().currentScreen;
 
         if(currentScreen != null) {
-            currentScreen.renderTooltip(matrices, Collections.singletonList(new TranslatableText(entity.getType().getTranslationKey())), mouseX, mouseY);
+            currentScreen.renderTooltip(matrices, Collections.singletonList(type.createTooltipText(entity)), mouseX, mouseY);
         }
     }
 

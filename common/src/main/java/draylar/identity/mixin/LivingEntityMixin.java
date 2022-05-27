@@ -3,10 +3,10 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.api.IdentityGranting;
 import draylar.identity.api.PlayerIdentity;
-import draylar.identity.api.platform.IdentityConfig;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.mixin.accessor.LivingEntityAccessor;
-import draylar.identity.registry.EntityTags;
+import draylar.identity.registry.IdentityEntityTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.*;
@@ -19,12 +19,11 @@ import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.lwjgl.system.CallbackI;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -54,10 +53,10 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
     )
     private void onDeath(DamageSource source, CallbackInfo ci) {
         Entity attacker = source.getAttacker();
-        EntityType<?> thisType = this.getType();
+        @Nullable IdentityType<?> thisType = IdentityType.from((LivingEntity) (Object) this);
 
         // check if attacker is a player to grant identity
-        if (attacker instanceof PlayerEntity) {
+        if (attacker instanceof PlayerEntity && thisType != null) {
             IdentityGranting.grantByAttack((PlayerEntity) attacker, thisType);
         }
     }
@@ -90,7 +89,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
             LivingEntity identity = PlayerIdentity.getIdentity(player);
 
             if (identity != null) {
-                if (!this.isSneaking() && identity.getType().isIn(EntityTags.SLOW_FALLING)) {
+                if (!this.isSneaking() && identity.getType().isIn(IdentityEntityTags.SLOW_FALLING)) {
                     return true;
                 }
             }
@@ -207,7 +206,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
             LivingEntity entity = PlayerIdentity.getIdentity(player);
 
             if (entity != null) {
-                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || entity.getType().isIn(EntityTags.UNDROWNABLE));
+                cir.setReturnValue(entity.canBreatheInWater() || entity instanceof DolphinEntity || entity.getType().isIn(IdentityEntityTags.UNDROWNABLE));
             }
         }
     }
@@ -244,7 +243,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
         if((LivingEntity) (Object) this instanceof PlayerEntity player) {
             LivingEntity identity = PlayerIdentity.getIdentity(player);
 
-            if (identity != null && identity.getType().isIn(EntityTags.LAVA_WALKING) && state.isIn(FluidTags.LAVA)) {
+            if (identity != null && identity.getType().isIn(IdentityEntityTags.LAVA_WALKING) && state.isIn(FluidTags.LAVA)) {
                 cir.setReturnValue(true);
             }
         }

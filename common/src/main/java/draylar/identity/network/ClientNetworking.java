@@ -7,6 +7,8 @@ import draylar.identity.api.ApplicablePacket;
 import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.impl.PlayerDataProvider;
+import draylar.identity.network.impl.FavoritePackets;
+import draylar.identity.network.impl.UnlockPackets;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
@@ -28,9 +30,9 @@ public class ClientNetworking implements NetworkHandler {
 
     public static void registerPacketHandlers() {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.IDENTITY_SYNC, ClientNetworking::handleIdentitySyncPacket);
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.FAVORITE_SYNC, ClientNetworking::handleFavoriteSyncPacket);
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.FAVORITE_SYNC, FavoritePackets::handleFavoriteSyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.ABILITY_SYNC, ClientNetworking::handleAbilitySyncPacket);
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.UNLOCK_SYNC, ClientNetworking::handleUnlockSyncPacket);
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.UNLOCK_SYNC, UnlockPackets::handleUnlockSyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.CONFIG_SYNC, ClientNetworking::handleConfigurationSyncPacket);
     }
 
@@ -44,18 +46,6 @@ public class ClientNetworking implements NetworkHandler {
 
     public static void sendAbilityRequest() {
         NetworkManager.sendToServer(USE_ABILITY, new PacketByteBuf(Unpooled.buffer()));
-    }
-
-    public static void handleUnlockSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
-        NbtCompound nbt = packet.readNbt();
-        NbtList list = nbt.getList("UnlockedMorphs", NbtElement.STRING_TYPE);
-
-        runOrQueue(context, player -> {
-            ((PlayerDataProvider) player).getUnlocked().clear();
-            list.forEach(idTag -> {
-                ((PlayerDataProvider) player).getUnlocked().add(new Identifier(idTag.asString()));
-            });
-        });
     }
 
     public static void handleIdentitySyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
@@ -98,17 +88,6 @@ public class ClientNetworking implements NetworkHandler {
                     }
                 }
             }
-        });
-    }
-
-    public static void handleFavoriteSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
-        NbtCompound tag = packet.readNbt();
-
-        runOrQueue(context, player -> {
-            PlayerDataProvider data = (PlayerDataProvider) player;
-            data.getFavorites().clear();
-            NbtList idList = tag.getList("FavoriteIdentities", NbtElement.STRING_TYPE);
-            idList.forEach(idTag -> data.getFavorites().add(new Identifier(idTag.asString())));
         });
     }
 

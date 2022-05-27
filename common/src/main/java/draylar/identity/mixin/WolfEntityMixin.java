@@ -2,7 +2,7 @@ package draylar.identity.mixin;
 
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.registry.EntityTags;
+import draylar.identity.registry.IdentityEntityTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -42,7 +42,7 @@ public abstract class WolfEntityMixin extends TameableEntity {
                 return false;
             }
 
-            return identity != null && identity.getType().isIn(EntityTags.WOLF_PREY);
+            return identity != null && identity.getType().isIn(IdentityEntityTags.WOLF_PREY);
         }));
     }
 }

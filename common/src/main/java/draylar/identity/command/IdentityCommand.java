@@ -5,6 +5,7 @@ import dev.architectury.event.events.common.CommandRegistrationEvent;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.PlayerUnlocks;
 import draylar.identity.api.platform.IdentityConfig;
+import draylar.identity.api.variant.IdentityType;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.EntitySummonArgumentType;
 import net.minecraft.command.suggestion.SuggestionProviders;
@@ -17,6 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
 
 public class IdentityCommand {
 
@@ -36,11 +38,11 @@ public class IdentityCommand {
                             .then(CommandManager.literal("everything")
                                     .executes(context -> {
                                         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-                                        Registry.ENTITY_TYPE.forEach(type -> {
+                                        for (IdentityType<?> type : IdentityType.getAllTypes(player.world)) {
                                             if(!PlayerUnlocks.has(player, type)) {
                                                 PlayerUnlocks.unlock(player, type);
                                             }
-                                        });
+                                        }
 
                                         return 1;
                                     })
@@ -50,7 +52,7 @@ public class IdentityCommand {
                                         grant(
                                                 context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "identity")
+                                                new IdentityType(Registry.ENTITY_TYPE.get(EntitySummonArgumentType.getEntitySummon(context, "identity")))
                                         );
                                         return 1;
                                     })
@@ -64,11 +66,11 @@ public class IdentityCommand {
                             .then(CommandManager.literal("everything")
                                     .executes(context -> {
                                         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-                                        Registry.ENTITY_TYPE.forEach(type -> {
-                                            if(PlayerUnlocks.has(player, type)) {
+                                        for (IdentityType<?> type : IdentityType.getAllTypes(player.world)) {
+                                            if(!PlayerUnlocks.has(player, type)) {
                                                 PlayerUnlocks.revoke(player, type);
                                             }
-                                        });
+                                        }
 
                                         return 1;
                                     })
@@ -78,7 +80,7 @@ public class IdentityCommand {
                                         revoke(
                                                 context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "identity")
+                                                new IdentityType(Registry.ENTITY_TYPE.get(EntitySummonArgumentType.getEntitySummon(context, "identity")))
                                         );
                                         return 1;
                                     })
@@ -187,56 +189,54 @@ public class IdentityCommand {
         return 0;
     }
 
-    private static void grant(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity) {
-        EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
-
-        if(!PlayerUnlocks.has(player, entity)) {
-            boolean result = PlayerUnlocks.unlock(player, entity);
+    private static void grant(ServerPlayerEntity source, ServerPlayerEntity player, IdentityType<?> type) {
+        if(!PlayerUnlocks.has(player, type)) {
+            boolean result = PlayerUnlocks.unlock(player, type);
 
             if(result && IdentityConfig.getInstance().logCommands()) {
-                player.sendMessage(new TranslatableText("identity.unlock_entity", new TranslatableText(entity.getTranslationKey())), true);
-                source.sendMessage(new TranslatableText("identity.grant_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+                player.sendMessage(new TranslatableText("identity.unlock_entity", new TranslatableText(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(new TranslatableText("identity.grant_success", new TranslatableText(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
             }
         } else {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.already_has", player.getDisplayName(), new TranslatableText(entity.getTranslationKey())), true);
+                source.sendMessage(new TranslatableText("identity.already_has", player.getDisplayName(), new TranslatableText(type.getEntityType().getTranslationKey())), true);
             }
         }
     }
 
-    private static void revoke(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity) {
-        EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
-
-        if(PlayerUnlocks.has(player, entity)) {
-            PlayerUnlocks.revoke(player, entity);
+    private static void revoke(ServerPlayerEntity source, ServerPlayerEntity player, IdentityType<?> type) {
+        if(PlayerUnlocks.has(player, type)) {
+            PlayerUnlocks.revoke(player, type);
 
             if(IdentityConfig.getInstance().logCommands()) {
-                player.sendMessage(new TranslatableText("identity.revoke_entity", new TranslatableText(entity.getTranslationKey())), true);
-                source.sendMessage(new TranslatableText("identity.revoke_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+                player.sendMessage(new TranslatableText("identity.revoke_entity", new TranslatableText(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(new TranslatableText("identity.revoke_success", new TranslatableText(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
             }
         } else {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.does_not_have", player.getDisplayName(), new TranslatableText(entity.getTranslationKey())), true);
+                source.sendMessage(new TranslatableText("identity.does_not_have", player.getDisplayName(), new TranslatableText(type.getEntityType().getTranslationKey())), true);
             }
         }
     }
 
     private static void equip(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity) {
         EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
-
         Entity createdEntity = entity.create(player.world);
 
-        if(createdEntity instanceof LivingEntity) {
-            boolean result = PlayerIdentity.updateIdentity(player, (LivingEntity) createdEntity);
+        if(createdEntity instanceof LivingEntity living) {
+            @Nullable IdentityType<?> defaultType = IdentityType.from(living);
 
-            if(result && IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+            if(defaultType != null) {
+                boolean result = PlayerIdentity.updateIdentity(player, defaultType, (LivingEntity) createdEntity);
+                if(result && IdentityConfig.getInstance().logCommands()) {
+                    source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+                }
             }
         }
     }
 
     private static void unequip(ServerPlayerEntity source, ServerPlayerEntity player) {
-        boolean result = PlayerIdentity.updateIdentity(player, null);
+        boolean result = PlayerIdentity.updateIdentity(player, null, null);
 
         if(result && IdentityConfig.getInstance().logCommands()) {
             source.sendMessage(new TranslatableText("identity.unequip_success", player.getDisplayName()), false);

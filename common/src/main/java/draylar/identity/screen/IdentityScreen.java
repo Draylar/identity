@@ -1,9 +1,11 @@
 package draylar.identity.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import draylar.identity.Identity;
 import draylar.identity.api.PlayerFavorites;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.PlayerUnlocks;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.mixin.accessor.ScreenAccessor;
 import draylar.identity.screen.widget.EntityWidget;
 import draylar.identity.screen.widget.HelpWidget;
@@ -23,14 +25,13 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class IdentityScreen extends Screen {
 
-    private final List<LivingEntity> unlocked = new ArrayList<>();
-    private final List<LivingEntity> renderEntities = new ArrayList<>();
+    private final List<IdentityType<?>> unlocked = new ArrayList<>();
+    private final Map<IdentityType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
     private final SearchWidget searchBar = createSearchBar();
     private final PlayerWidget playerButton = createPlayerButton();
@@ -60,7 +61,7 @@ public class IdentityScreen extends Screen {
         try {
             // sort unlocked based on favorites
             unlocked.sort((first, second) -> {
-                if(PlayerFavorites.has(client.player, first.getType())) {
+                if(PlayerFavorites.has(client.player, first)) {
                     return -1;
                 }
 
@@ -83,9 +84,9 @@ public class IdentityScreen extends Screen {
                 children().removeIf(button -> button instanceof EntityWidget);
                 entityWidgets.clear();
 
-                List<LivingEntity> filtered = unlocked
+                List<IdentityType<?>> filtered = unlocked
                         .stream()
-                        .filter(livingEntity -> text.isEmpty() || livingEntity.getType().getTranslationKey().contains(text))
+                        .filter(type -> text.isEmpty() || type.getEntityType().getTranslationKey().contains(text))
                         .collect(Collectors.toList());
 
                 populateEntityWidgets(client.player, filtered);
@@ -168,22 +169,25 @@ public class IdentityScreen extends Screen {
         return false;
     }
 
-    private void populateEntityWidgets(ClientPlayerEntity player, List<LivingEntity> unlocked) {
+    private void populateEntityWidgets(ClientPlayerEntity player, List<IdentityType<?>> unlocked) {
         // add widget for each unlocked entity
         int x = 15;
         int y = 35;
         int rows = (int) Math.ceil(unlocked.size() / 7f);
+
+        IdentityType<LivingEntity> currentType = IdentityType.from(PlayerIdentity.getIdentity(player));
 
         for (int yIndex = 0; yIndex <= rows; yIndex++) {
             for (int xIndex = 0; xIndex < 7; xIndex++) {
                 int listIndex = yIndex * 7 + xIndex;
 
                 if(listIndex < unlocked.size()) {
-                    LivingEntity livingEntity = unlocked.get(listIndex);
+                    IdentityType<?> type = unlocked.get(listIndex);
 
+                    // TODO: only render selected type, this will show all eg. sheep
                     // Determine whether this widget should start with the selection outline
                     boolean isCurrent = false;
-                    if(PlayerIdentity.getIdentity(player) != null && livingEntity.getType().equals(PlayerIdentity.getIdentity(player).getType())) {
+                    if(currentType != null && currentType.equals(type)) {
                         isCurrent = true;
                     }
 
@@ -192,9 +196,10 @@ public class IdentityScreen extends Screen {
                             getWindow().getScaledHeight() / 5f * yIndex + y,
                             (getWindow().getScaledWidth() - 27) / 7f,
                             getWindow().getScaledHeight() / 5f,
-                            livingEntity,
+                            type,
+                            renderEntities.get(type),
                             this,
-                            PlayerFavorites.has(player, livingEntity.getType()),
+                            PlayerFavorites.has(player, type),
                             isCurrent
                     );
 
@@ -207,24 +212,25 @@ public class IdentityScreen extends Screen {
 
     private void populateRenderEntities() {
         if(renderEntities.isEmpty()) {
-            Registry.ENTITY_TYPE.forEach(type -> {
+            List<IdentityType<?>> types = IdentityType.getAllTypes(MinecraftClient.getInstance().world);
+            for (IdentityType<?> type : types) {
                 Entity entity = type.create(MinecraftClient.getInstance().world);
-
-                // only add living entities to cache
-                if(entity instanceof LivingEntity) {
-                    renderEntities.add((LivingEntity) entity);
+                if(entity instanceof LivingEntity living) {
+                    renderEntities.put(type, living);
                 }
-            });
+            }
+
+            Identity.LOGGER.info(String.format("Loaded %d entities for rendering", types.size()));
         }
     }
 
-    private List<LivingEntity> collectUnlockedEntities(ClientPlayerEntity player) {
-        List<LivingEntity> unlocked = new ArrayList<>();
+    private List<IdentityType<?>> collectUnlockedEntities(ClientPlayerEntity player) {
+        List<IdentityType<?>> unlocked = new ArrayList<>();
 
         // collect current unlocked identities (or allow all for creative users)
-        renderEntities.forEach(entity -> {
-            if(PlayerUnlocks.has(player, entity.getType()) || player.isCreative()) {
-                unlocked.add(entity);
+        renderEntities.forEach((type, instance) -> {
+            if(PlayerUnlocks.has(player, type) || player.isCreative()) {
+                unlocked.add(type);
             }
         });
 

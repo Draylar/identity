@@ -48,8 +48,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             // revoke the identity current equipped by the player
             if(entity != null) {
                 EntityType<?> type = entity.getType();
-                PlayerIdentity.updateIdentity((ServerPlayerEntity) (Object) this, null);
-                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this, type);
+                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this, PlayerIdentity.getIdentityType(this));
+                PlayerIdentity.updateIdentity((ServerPlayerEntity) (Object) this, null,null);
 
                 // todo: this option might be server-only given that this method isn't[?] called on the client
                 // send revoke message to player if they aren't in creative and the config option is on

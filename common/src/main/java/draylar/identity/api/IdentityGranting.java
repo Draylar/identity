@@ -1,6 +1,7 @@
 package draylar.identity.api;
 
 import draylar.identity.api.platform.IdentityConfig;
+import draylar.identity.api.variant.IdentityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -8,17 +9,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class IdentityGranting {
 
-    public static void grantByAttack(PlayerEntity player, EntityType<?> granted) {
+    public static void grantByAttack(PlayerEntity player, IdentityType<?> granted) {
         if(player instanceof ServerPlayerEntity serverPlayerEntity) {
-            int amountKilled = serverPlayerEntity.getStatHandler().getStat(Stats.KILLED, granted);
+            int amountKilled = serverPlayerEntity.getStatHandler().getStat(Stats.KILLED, granted.getEntityType());
 
             // If the player has to kill a certain number of mobs before unlocking an Identity, check their statistic for the specific type.
             if(IdentityConfig.getInstance().requiresKillsForIdentity()) {
-                String id = Registry.ENTITY_TYPE.getId(granted).toString();
+                String id = Registry.ENTITY_TYPE.getId(granted.getEntityType()).toString();
 
                 // Check against a specific count requirement or the default count.
                 int required = IdentityConfig.getInstance().getRequiredKillsForIdentity();
@@ -44,7 +46,7 @@ public class IdentityGranting {
                     player.sendMessage(
                             new TranslatableText(
                                     "identity.unlock_entity",
-                                    new TranslatableText(granted.getTranslationKey())
+                                    new TranslatableText(granted.getEntityType().getTranslationKey())
                             ), true
                     );
                 }
@@ -56,9 +58,9 @@ public class IdentityGranting {
             Entity instanced = granted.create(player.world);
             if(instanced instanceof LivingEntity) {
                 if(IdentityConfig.getInstance().forceChangeNew() && isNew) {
-                    PlayerIdentity.updateIdentity(serverPlayerEntity, (LivingEntity) instanced);
+                    PlayerIdentity.updateIdentity(serverPlayerEntity, granted, (LivingEntity) instanced);
                 } else if(IdentityConfig.getInstance().forceChangeAlways()) {
-                    PlayerIdentity.updateIdentity(serverPlayerEntity, (LivingEntity) instanced);
+                    PlayerIdentity.updateIdentity(serverPlayerEntity, granted, (LivingEntity) instanced);
                 }
             }
         }

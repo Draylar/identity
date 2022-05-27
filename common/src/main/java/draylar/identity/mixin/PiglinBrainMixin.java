@@ -3,7 +3,7 @@ package draylar.identity.mixin;
 import draylar.identity.api.PlayerHostility;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.registry.EntityTags;
+import draylar.identity.registry.IdentityEntityTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.PiglinBrain;
@@ -31,7 +31,7 @@ public class PiglinBrainMixin {
 
             if(identity != null) {
                 // Piglins should not attack Piglins or Piglin Brutes, unless they have hostility
-                if (identity.getType().isIn(EntityTags.PIGLIN_FRIENDLY)) {
+                if (identity.getType().isIn(IdentityEntityTags.PIGLIN_FRIENDLY)) {
                     cir.setReturnValue(false);
                 }
 

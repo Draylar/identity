@@ -2,7 +2,7 @@ package draylar.identity.mixin;
 
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.registry.EntityTags;
+import draylar.identity.registry.IdentityEntityTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -64,7 +64,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
             // foxes can target players if their identity is in the fox_prey tag, or if they are an entity that extends FishEntity
             // todo: add baby turtle targeting
             LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) player);
-            return identity != null && identity.getType().isIn(EntityTags.FOX_PREY) || identity instanceof FishEntity;
+            return identity != null && identity.getType().isIn(IdentityEntityTags.FOX_PREY) || identity instanceof FishEntity;
         }));
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.RavagerEntity;
 
-public class EventHandlers {
+public class IdentityEventHandlers {
 
     public static void registerHostilityUpdateHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
@@ -28,7 +28,7 @@ public class EventHandlers {
             if(entity instanceof RavagerEntity) {
                 LivingEntity identity = PlayerIdentity.getIdentity(player);
                 if(identity != null) {
-                    if(identity.getType().isIn(EntityTags.RAVAGER_RIDING)) {
+                    if(identity.getType().isIn(IdentityEntityTags.RAVAGER_RIDING)) {
                         player.startRiding(entity);
                     }
                 }

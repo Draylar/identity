@@ -3,9 +3,8 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
-import draylar.identity.impl.NearbySongAccessor;
 import draylar.identity.mixin.accessor.*;
-import draylar.identity.registry.EntityTags;
+import draylar.identity.registry.IdentityEntityTags;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -13,17 +12,13 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.RavagerEntity;
-import net.minecraft.entity.mob.SpiderEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.World;
@@ -261,7 +256,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 EntityType<?> type = identity.getType();
 
                 // check if the player's current identity burns in sunlight
-                if(type.isIn(EntityTags.BURNS_IN_DAYLIGHT)) {
+                if(type.isIn(IdentityEntityTags.BURNS_IN_DAYLIGHT)) {
                     boolean bl = this.isInDaylight();
                     if(bl) {
 
@@ -324,7 +319,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 EntityType<?> type = identity.getType();
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
-                if(type.isIn(EntityTags.HURT_BY_HIGH_TEMPERATURE)) {
+                if(type.isIn(IdentityEntityTags.HURT_BY_HIGH_TEMPERATURE)) {
                     RegistryEntry<Biome> biome = player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ()));
                     float temp = ((BiomeAccessor) (Object) biome.getKeyOrValue().right().get()).callComputeTemperature(new BlockPos(player.getX(), player.getY(), player.getZ()));
                     if(temp > 1.0F) {

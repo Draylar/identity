@@ -2,10 +2,11 @@ package draylar.identity.network;
 
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.ability.AbilityRegistry;
-import draylar.identity.api.PlayerFavorites;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.api.PlayerAbilities;
+import draylar.identity.network.impl.FavoritePackets;
+import draylar.identity.network.impl.SwapPackets;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +15,11 @@ import net.minecraft.util.registry.Registry;
 
 public class ServerNetworking implements NetworkHandler {
 
+    public static void initialize() {
+        FavoritePackets.registerFavoriteRequestHandler();
+        SwapPackets.registerIdentityRequestPacketHandler();
+        SwapPackets.registerIdentityRequestPacketHandler();
+    }
 
     public static void registerUseAbilityPacketHandler() {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, USE_ABILITY, (buf, context) -> {
@@ -35,42 +41,6 @@ public class ServerNetworking implements NetworkHandler {
                             PlayerAbilities.sync((ServerPlayerEntity) player);
                         }
                     }
-                }
-            });
-        });
-    }
-
-    public static void registerIdentityRequestPacketHandler() {
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, IDENTITY_REQUEST, (buf, context) -> {
-            EntityType<?> type = Registry.ENTITY_TYPE.get(buf.readIdentifier());
-
-            context.getPlayer().getServer().execute(() -> {
-                // Ensure player has permission to switch identities
-                if(IdentityConfig.getInstance().enableSwaps() || context.getPlayer().hasPermissionLevel(3)) {
-                    if(type.equals(EntityType.PLAYER)) {
-                        PlayerIdentity.updateIdentity((ServerPlayerEntity) context.getPlayer(), null);
-                    } else {
-                        PlayerIdentity.updateIdentity((ServerPlayerEntity) context.getPlayer(), (LivingEntity) type.create(context.getPlayer().world));
-                    }
-
-                    // Refresh player dimensions
-                    context.getPlayer().calculateDimensions();
-                }
-            });
-        });
-    }
-
-    public static void registerFavoritePacketHandler() {
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, FAVORITE_UPDATE, (buf, context) -> {
-            EntityType<?> type = Registry.ENTITY_TYPE.get(buf.readIdentifier());
-            boolean favorite = buf.readBoolean();
-            ServerPlayerEntity player = (ServerPlayerEntity) context.getPlayer();
-
-            context.getPlayer().getServer().execute(() -> {
-                if(favorite) {
-                    PlayerFavorites.favorite(player, type);
-                } else {
-                    PlayerFavorites.unfavorite(player, type);
                 }
             });
         });

@@ -1,17 +1,17 @@
 package draylar.identity.mixin.player;
 
 import dev.architectury.event.EventResult;
-import dev.architectury.utils.NbtType;
 import draylar.identity.Identity;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.event.IdentitySwapCallback;
 import draylar.identity.api.FlightHelper;
 import draylar.identity.api.platform.IdentityConfig;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.mixin.EntityTrackerAccessor;
 import draylar.identity.mixin.ThreadedAnvilChunkStorageAccessor;
-import draylar.identity.registry.EntityTags;
+import draylar.identity.registry.IdentityEntityTags;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -19,11 +19,10 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -36,20 +35,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityDataMixin extends LivingEntity implements PlayerDataProvider {
 
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
     @Unique private static final String ABILITY_COOLDOWN_KEY = "AbilityCooldown";
-    @Unique private final List<Identifier> unlocked = new ArrayList<>();
-    @Unique private final List<Identifier> favorites = new ArrayList<>();
+    @Unique private final Set<IdentityType<?>> unlocked = new HashSet<>();
+    @Unique private final Set<IdentityType<?>> favorites = new HashSet<>();
     @Unique private int remainingTime = 0;
     @Unique private int abilityCooldown = 0;
     @Unique private LivingEntity identity = null;
+    @Unique private IdentityType<?> identityType = null;
 
     private PlayerEntityDataMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
@@ -57,14 +55,55 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void readNbt(NbtCompound tag, CallbackInfo info) {
-        // Read 'Unlocked' Identity data
-        NbtList unlockedIdList = tag.getList("UnlockedMorphs", NbtType.STRING);
-        unlockedIdList.forEach(idTag -> unlocked.add(new Identifier(idTag.asString())));
+        unlocked.clear();
 
-        // Favorites
+        // This tag might exist - it contains old save data for pre-variant Identities.
+        // Each entry will be a string with an entity registry ID value.
+        NbtList unlockedIdList = tag.getList("UnlockedMorphs", NbtElement.STRING_TYPE);
+        unlockedIdList.forEach(entityRegistryID -> {
+            Identifier id = new Identifier(entityRegistryID.asString());
+            if(Registry.ENTITY_TYPE.containsId(id)) {
+                EntityType<?> type = Registry.ENTITY_TYPE.get(id);
+
+                // The variant added from the UnlockedMorphs list will default to the fallback value if needed (eg. Sheep => White)
+                // This value will be re-serialize in UnlockedIdentities list, so this is 100% for old save conversions
+                unlocked.add(new IdentityType(type));
+            } else {
+                // TODO: log reading error here
+            }
+        });
+
+        // This is the new tag for saving Identity unlock information.
+        // It includes metadata for variants.
+        NbtList unlockedIdentityList = tag.getList("UnlockedIdentities", NbtElement.COMPOUND_TYPE);
+        unlockedIdentityList.forEach(compound -> {
+            IdentityType<?> type = IdentityType.from((NbtCompound) compound);
+            if(type != null) {
+                unlocked.add(type);
+            } else {
+                // TODO: log reading error here
+            }
+        });
+
+        // Favorites - OLD TAG containing String IDs
         favorites.clear();
-        NbtList favoriteIdList = tag.getList("FavoriteIdentities", NbtType.STRING);
-        favoriteIdList.forEach(idTag -> favorites.add(new Identifier(idTag.asString())));
+        NbtList favoriteIdList = tag.getList("FavoriteIdentities", NbtElement.STRING_TYPE);
+        favoriteIdList.forEach(registryID -> {
+            Identifier id = new Identifier(registryID.asString());
+            if(Registry.ENTITY_TYPE.containsId(id)) {
+                EntityType<?> type = Registry.ENTITY_TYPE.get(id);
+                favorites.add(new IdentityType(type));
+            }
+        });
+
+        // Favorites - NEW TAG for updated variant compound data
+        NbtList favoriteTypeList = tag.getList("FavoriteIdentitiesV2", NbtElement.STRING_TYPE);
+        favoriteTypeList.forEach(compound -> {
+            IdentityType<?> type = IdentityType.from((NbtCompound) compound);
+            if(type != null) {
+                favorites.add(type);
+            }
+        });
 
         // Abilities
         abilityCooldown = tag.getInt(ABILITY_COOLDOWN_KEY);
@@ -78,23 +117,20 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     private void writeNbt(NbtCompound tag, CallbackInfo info) {
-        // Read 'Unlocked' Identity data
+        // Write 'Unlocked' Identity data
         {
             NbtList idList = new NbtList();
+            unlocked.forEach(identity -> idList.add(identity.writeCompound()));
 
-            unlocked.forEach(entityId -> {
-                idList.add(NbtString.of(entityId.toString()));
-            });
-
-            // reminder: do not change this tag
-            tag.put("UnlockedMorphs", idList);
+            // This was "UnlockedMorphs" in previous versions, but it has been changed with the introduction of variants.
+            tag.put("UnlockedIdentities", idList);
         }
 
         // Favorites
         {
             NbtList idList = new NbtList();
-            favorites.forEach(entityId -> idList.add(NbtString.of(entityId.toString())));
-            tag.put("FavoriteIdentities", idList);
+            favorites.forEach(entityId -> idList.add(entityId.writeCompound()));
+            tag.put("FavoriteIdentitiesV2", idList);
         }
 
         // Abilities
@@ -114,6 +150,9 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         // serialize current identity data to tag if it exists
         if(identity != null) {
             identity.writeNbt(entityTag);
+            if(identityType != null) {
+                identityType.writeEntityNbt(entityTag);
+            }
         }
 
         // put entity type ID under the key "id", or "minecraft:empty" if no identity is equipped (or the identity entity type is invalid)
@@ -146,30 +185,31 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
                 }
 
                 identity.readNbt(entityTag);
+                identityType = IdentityType.fromEntityNbt(tag);
             }
         }
     }
 
     @Unique
     @Override
-    public List<Identifier> getUnlocked() {
+    public Set<IdentityType<?>> getUnlocked() {
         return unlocked;
     }
 
     @Override
-    public void setUnlocked(List<Identifier> unlocked) {
+    public void setUnlocked(Set<IdentityType<?>> unlocked) {
         this.unlocked.clear();
         this.unlocked.addAll(unlocked);
     }
 
     @Unique
     @Override
-    public List<Identifier> getFavorites() {
+    public Set<IdentityType<?>> getFavorites() {
         return favorites;
     }
 
     @Override
-    public void setFavorites(List<Identifier> favorites) {
+    public void setFavorites(Set<IdentityType<?>> favorites) {
         this.favorites.clear();
         this.favorites.addAll(favorites);
     }
@@ -202,6 +242,11 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     @Override
     public LivingEntity getIdentity() {
         return identity;
+    }
+
+    @Override
+    public IdentityType<?> getIdentityType() {
+        return identityType;
     }
 
     @Unique
@@ -251,7 +296,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         }
 
         // If the player is riding a Ravager and changes into an Identity that cannot ride Ravagers, kick them off.
-        if(player.getVehicle() instanceof RavagerEntity && (identity == null || !identity.getType().isIn(EntityTags.RAVAGER_RIDING))) {
+        if(player.getVehicle() instanceof RavagerEntity && (identity == null || !identity.getType().isIn(IdentityEntityTags.RAVAGER_RIDING))) {
             player.stopRiding();
         }
 

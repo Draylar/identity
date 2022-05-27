@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.Identity;
 import draylar.identity.network.ClientNetworking;
+import draylar.identity.network.impl.SwapPackets;
 import draylar.identity.screen.IdentityScreen;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.gui.DrawableHelper;
@@ -49,9 +50,7 @@ public class PlayerWidget extends PressableWidget {
 
     @Override
     public void onPress() {
-        PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-        packet.writeIdentifier(Registry.ENTITY_TYPE.getId(EntityType.PLAYER));
-        NetworkManager.sendToServer(ClientNetworking.IDENTITY_REQUEST, packet);
+        SwapPackets.sendSwapRequest(null);
         parent.disableAll();
     }
 

@@ -1,5 +1,6 @@
 package draylar.identity;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.ability.AbilityRegistry;
@@ -9,9 +10,9 @@ import draylar.identity.api.PlayerUnlocks;
 import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.network.NetworkHandler;
 import draylar.identity.network.ServerNetworking;
-import draylar.identity.registry.Commands;
-import draylar.identity.registry.EntityTags;
-import draylar.identity.registry.EventHandlers;
+import draylar.identity.registry.IdentityCommands;
+import draylar.identity.registry.IdentityEntityTags;
+import draylar.identity.registry.IdentityEventHandlers;
 import io.netty.buffer.Unpooled;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementProgress;
@@ -23,19 +24,22 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class Identity {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(Identity.class);
+
     public void initialize() {
-        EntityTags.init();
+        IdentityEntityTags.init();
         AbilityRegistry.init();
-        EventHandlers.registerHostilityUpdateHandler();
-        EventHandlers.registerRavagerRidingHandler();
-        Commands.init();
-        ServerNetworking.registerIdentityRequestPacketHandler();
-        ServerNetworking.registerFavoritePacketHandler();
+        IdentityEventHandlers.registerHostilityUpdateHandler();
+        IdentityEventHandlers.registerRavagerRidingHandler();
+        IdentityCommands.init();
+        ServerNetworking.initialize();
         ServerNetworking.registerUseAbilityPacketHandler();
         registerJoinSyncPacket();
     }
@@ -63,7 +67,7 @@ public class Identity {
     public static boolean hasFlyingPermissions(ServerPlayerEntity player) {
         LivingEntity identity = PlayerIdentity.getIdentity(player);
 
-        if(identity != null && IdentityConfig.getInstance().enableFlight() && identity.getType().isIn(EntityTags.FLYING)) {
+        if(identity != null && IdentityConfig.getInstance().enableFlight() && identity.getType().isIn(IdentityEntityTags.FLYING)) {
             List<String> requiredAdvancements = IdentityConfig.getInstance().advancementsRequiredForFlight();
 
             // requires at least 1 advancement, check if player has them

@@ -1,6 +1,7 @@
 package draylar.identity.api;
 
 import dev.architectury.networking.NetworkManager;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
@@ -24,6 +25,10 @@ public class PlayerIdentity {
         return ((PlayerDataProvider) player).getIdentity();
     }
 
+    public static IdentityType<?> getIdentityType(PlayerEntity player) {
+        return ((PlayerDataProvider) player).getIdentityType();
+    }
+
     /**
      * Sets the identity of the specified player.
      *
@@ -32,7 +37,7 @@ public class PlayerIdentity {
      *
      * @param entity {@link LivingEntity} new identity for this component, or null to clear
      */
-    public static boolean updateIdentity(ServerPlayerEntity player, LivingEntity entity) {
+    public static boolean updateIdentity(ServerPlayerEntity player, IdentityType<?> type, LivingEntity entity) {
         return ((PlayerDataProvider) player).updateIdentity(entity);
     }
 

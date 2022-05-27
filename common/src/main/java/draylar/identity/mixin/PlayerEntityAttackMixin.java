@@ -2,6 +2,7 @@ package draylar.identity.mixin;
 
 import draylar.identity.api.IdentityGranting;
 import draylar.identity.api.PlayerIdentity;
+import draylar.identity.api.variant.IdentityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -32,8 +33,8 @@ public abstract class PlayerEntityAttackMixin extends LivingEntity {
                     ci.cancel();
 
                     // If the target died, grant identity
-                    if(!target.isAlive()) {
-                        IdentityGranting.grantByAttack((PlayerEntity) (Object) this, target.getType());
+                    if(!target.isAlive() && target instanceof LivingEntity living) {
+                        IdentityGranting.grantByAttack((PlayerEntity) (Object) this, IdentityType.from(living));
                     }
                 } catch (Exception e) {
                     // FALL BACK TO DEFAULT BEHAVIOR.

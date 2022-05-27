@@ -1,8 +1,10 @@
 package draylar.identity.api;
 
 import dev.architectury.networking.NetworkManager;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.network.NetworkHandler;
+import draylar.identity.network.impl.FavoritePackets;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,46 +17,37 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.List;
+import java.util.Set;
 
 public class PlayerFavorites {
 
-    public static boolean has(PlayerEntity player, EntityType<?> type) {
-        Identifier id = Registry.ENTITY_TYPE.getId(type);
-        return type.equals(EntityType.PLAYER) || getFavorites(player).contains(id);
+    public static boolean has(PlayerEntity player, IdentityType type) {
+        return type.getEntityType().equals(EntityType.PLAYER) || getFavorites(player).contains(type);
     }
 
-    public static void favorite(ServerPlayerEntity player, EntityType<?> type) {
-        Identifier id = Registry.ENTITY_TYPE.getId(type);
-        if(!getFavorites(player).contains(id)) {
-            getFavorites(player).add(id);
+    public static void favorite(ServerPlayerEntity player, IdentityType type) {
+        if(!getFavorites(player).contains(type)) {
+            getFavorites(player).add(type);
             PlayerAbilities.sync(player);
         }
 
         sync(player);
     }
 
-    public static void unfavorite(ServerPlayerEntity player, EntityType<?> type) {
-        Identifier id = Registry.ENTITY_TYPE.getId(type);
-        if(getFavorites(player).contains(id)) {
-            getFavorites(player).remove(id);
+    public static void unfavorite(ServerPlayerEntity player, IdentityType type) {
+        if(getFavorites(player).contains(type)) {
+            getFavorites(player).remove(type);
             PlayerAbilities.sync(player);
         }
 
         sync(player);
     }
 
-    public static List<Identifier> getFavorites(PlayerEntity player) {
+    public static Set<IdentityType<?>> getFavorites(PlayerEntity player) {
         return ((PlayerDataProvider) player).getFavorites();
     }
 
     public static void sync(ServerPlayerEntity player) {
-        PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-        List<Identifier> favorites = ((PlayerDataProvider) player).getFavorites();
-        NbtCompound tag = new NbtCompound();
-        NbtList idList = new NbtList();
-        favorites.forEach(entityId -> idList.add(NbtString.of(entityId.toString())));
-        tag.put("FavoriteIdentities", idList);
-        packet.writeNbt(tag);
-        NetworkManager.sendToPlayer(player, NetworkHandler.FAVORITE_SYNC, packet);
+        FavoritePackets.sendFavoriteSync(player);
     }
 }

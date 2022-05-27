@@ -2,13 +2,13 @@ package draylar.identity.registry;
 
 import draylar.identity.command.IdentityCommand;
 
-public class Commands {
+public class IdentityCommands {
 
     public static void init() {
         IdentityCommand.register();
     }
 
-    private Commands() {
+    private IdentityCommands() {
 
     }
 }
