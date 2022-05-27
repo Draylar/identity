@@ -23,6 +23,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -43,7 +44,6 @@ import java.util.Optional;
 public abstract class PlayerEntityDataMixin extends LivingEntity implements PlayerDataProvider {
 
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
-
     @Unique private static final String ABILITY_COOLDOWN_KEY = "AbilityCooldown";
     @Unique private final List<Identifier> unlocked = new ArrayList<>();
     @Unique private final List<Identifier> favorites = new ArrayList<>();
@@ -233,6 +233,9 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         // If the identity is null (going back to player), set the player's base health value to 20 (default) to clear old changes.
         if(identity == null) {
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20);
+
+            // Clear health value if needed
+            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
         }
 
         // update flight properties on player depending on identity

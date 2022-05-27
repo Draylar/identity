@@ -175,23 +175,6 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
         }
     }
 
-    @Inject(
-            method = "getMaxHealth",
-            at = @At("HEAD"),
-            cancellable = true
-    )
-    private void modifyMaxHealth(CallbackInfoReturnable<Float> cir) {
-        if (IdentityConfig.getInstance().scalingHealth()) {
-            if ((Object) this instanceof PlayerEntity player) {
-                LivingEntity identity = PlayerIdentity.getIdentity(player);
-
-                if (identity != null) {
-                    cir.setReturnValue(identity.getMaxHealth());
-                }
-            }
-        }
-    }
-
     @Inject(at = @At("HEAD"), method = "getEyeHeight", cancellable = true)
     public void getEyeHeight(EntityPose pose, EntityDimensions dimensions, CallbackInfoReturnable<Float> cir) {
         if((LivingEntity) (Object) this instanceof PlayerEntity player) {
