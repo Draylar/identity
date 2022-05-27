@@ -2,6 +2,8 @@ package draylar.identity.network;
 
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.utils.NbtType;
+import draylar.identity.IdentityClient;
+import draylar.identity.api.ApplicablePacket;
 import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.impl.PlayerDataProvider;
@@ -11,7 +13,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtTypes;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -30,21 +34,24 @@ public class ClientNetworking implements NetworkHandler {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.CONFIG_SYNC, ClientNetworking::handleConfigurationSyncPacket);
     }
 
+    public static void runOrQueue(NetworkManager.PacketContext context, ApplicablePacket packet) {
+        if(context.getPlayer() == null) {
+            IdentityClient.getSyncPacketQueue().add(packet);
+        } else {
+            context.queue(() -> packet.apply(context.getPlayer()));
+        }
+    }
+
     public static void sendAbilityRequest() {
         NetworkManager.sendToServer(USE_ABILITY, new PacketByteBuf(Unpooled.buffer()));
     }
 
     public static void handleUnlockSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
-        if(context.getPlayer() == null) {
-            return;
-        }
-
-        PlayerEntity player = context.getPlayer();
-        ((PlayerDataProvider) player).getUnlocked().clear();
         NbtCompound nbt = packet.readNbt();
-        NbtList list = nbt.getList("UnlockedMorphs", NbtType.STRING);
+        NbtList list = nbt.getList("UnlockedMorphs", NbtElement.STRING_TYPE);
 
-        MinecraftClient.getInstance().execute(() -> {
+        runOrQueue(context, player -> {
+            ((PlayerDataProvider) player).getUnlocked().clear();
             list.forEach(idTag -> {
                 ((PlayerDataProvider) player).getUnlocked().add(new Identifier(idTag.asString()));
             });
@@ -56,8 +63,8 @@ public class ClientNetworking implements NetworkHandler {
         final String id = packet.readString();
         final NbtCompound entityNbt = packet.readNbt();
 
-        MinecraftClient.getInstance().execute(() -> {
-            @Nullable PlayerEntity syncTarget = context.getPlayer().getEntityWorld().getPlayerByUuid(uuid);
+        runOrQueue(context, player -> {
+            @Nullable PlayerEntity syncTarget = player.getEntityWorld().getPlayerByUuid(uuid);
 
             if(syncTarget != null) {
                 PlayerDataProvider data = (PlayerDataProvider) syncTarget;
@@ -97,23 +104,17 @@ public class ClientNetworking implements NetworkHandler {
     public static void handleFavoriteSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
         NbtCompound tag = packet.readNbt();
 
-        MinecraftClient.getInstance().execute(() -> {
-            PlayerDataProvider data = (PlayerDataProvider) context.getPlayer();
+        runOrQueue(context, player -> {
+            PlayerDataProvider data = (PlayerDataProvider) player;
             data.getFavorites().clear();
-            NbtList idList = tag.getList("FavoriteIdentities", NbtType.STRING);
+            NbtList idList = tag.getList("FavoriteIdentities", NbtElement.STRING_TYPE);
             idList.forEach(idTag -> data.getFavorites().add(new Identifier(idTag.asString())));
         });
     }
 
     public static void handleAbilitySyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
-        if(context.getPlayer() == null) {
-            return;
-        }
-
         int cooldown = packet.readInt();
-        context.queue(() -> {
-            ((PlayerDataProvider) context.getPlayer()).setAbilityCooldown(cooldown);
-        });
+        runOrQueue(context, player -> ((PlayerDataProvider) player).setAbilityCooldown(cooldown));
     }
 
     public static void handleConfigurationSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
