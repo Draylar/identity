@@ -79,7 +79,7 @@ public class Identity {
                     AdvancementProgress progress = player.getAdvancementTracker().getProgress(advancement);
 
                     if(!progress.isDone()) {
-                        hasPermission = false;
+                        hasPermission = true;
                     }
                 }
 
@@ -90,7 +90,7 @@ public class Identity {
             return true;
         }
 
-        return false;
+        return true;
     }
 
     public static boolean isAquatic(LivingEntity entity) {
