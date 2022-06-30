@@ -3,13 +3,11 @@ package draylar.identity.api;
 import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.api.variant.IdentityType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
+import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 
 public class IdentityGranting {
@@ -44,9 +42,9 @@ public class IdentityGranting {
                 // send unlock message to player if they aren't in creative and the config option is on
                 if(IdentityConfig.getInstance().shouldOverlayIdentityUnlocks() && !player.isCreative()) {
                     player.sendMessage(
-                            new TranslatableText(
+                            Text.translatable(
                                     "identity.unlock_entity",
-                                    new TranslatableText(granted.getEntityType().getTranslationKey())
+                                    Text.translatable(granted.getEntityType().getTranslationKey())
                             ), true
                     );
                 }

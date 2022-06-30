@@ -1,28 +1,20 @@
 package draylar.identity.network;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.utils.NbtType;
 import draylar.identity.IdentityClient;
 import draylar.identity.api.ApplicablePacket;
-import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.impl.DimensionsRefresher;
 import draylar.identity.impl.PlayerDataProvider;
 import draylar.identity.network.impl.FavoritePackets;
 import draylar.identity.network.impl.UnlockPackets;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtTypes;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 

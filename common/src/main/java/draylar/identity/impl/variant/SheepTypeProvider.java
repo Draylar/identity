@@ -3,9 +3,8 @@ package draylar.identity.impl.variant;
 import draylar.identity.api.variant.TypeProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
@@ -34,7 +33,7 @@ public class SheepTypeProvider extends TypeProvider<SheepEntity> {
     }
 
     @Override
-    public Text modifyText(SheepEntity sheep, TranslatableText text) {
-        return new LiteralText(formatTypePrefix(DyeColor.byId(getVariantData(sheep)).getName()) + " ").append(text);
+    public Text modifyText(SheepEntity sheep, MutableText text) {
+        return Text.literal(formatTypePrefix(DyeColor.byId(getVariantData(sheep)).getName()) + " ").append(text);
     }
 }

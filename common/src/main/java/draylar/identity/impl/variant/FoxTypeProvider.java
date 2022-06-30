@@ -4,9 +4,8 @@ import draylar.identity.api.variant.TypeProvider;
 import draylar.identity.mixin.accessor.FoxEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 public class FoxTypeProvider extends TypeProvider<FoxEntity> {
@@ -34,7 +33,7 @@ public class FoxTypeProvider extends TypeProvider<FoxEntity> {
     }
 
     @Override
-    public Text modifyText(FoxEntity entity, TranslatableText text) {
-        return new LiteralText(formatTypePrefix(FoxEntity.Type.fromId(getVariantData(entity)).getKey()) + " ").append(text);
+    public Text modifyText(FoxEntity entity, MutableText text) {
+        return Text.literal(formatTypePrefix(FoxEntity.Type.fromId(getVariantData(entity)).getKey()) + " ").append(text);
     }
 }

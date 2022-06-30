@@ -4,10 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import draylar.identity.api.variant.TypeProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.ParrotEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
 
 public class ParrotTypeProvider extends TypeProvider<ParrotEntity> {
@@ -44,8 +42,8 @@ public class ParrotTypeProvider extends TypeProvider<ParrotEntity> {
     }
 
     @Override
-    public Text modifyText(ParrotEntity parrot, TranslatableText text) {
+    public Text modifyText(ParrotEntity parrot, MutableText text) {
         int variant = getVariantData(parrot);
-        return new LiteralText(PREFIX_BY_ID.containsKey(variant) ? PREFIX_BY_ID.get(variant) + " " : "").append(text);
+        return Text.literal(PREFIX_BY_ID.containsKey(variant) ? PREFIX_BY_ID.get(variant) + " " : "").append(text);
     }
 }

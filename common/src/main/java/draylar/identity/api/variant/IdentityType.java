@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -156,9 +155,9 @@ public class IdentityType<T extends LivingEntity> {
     public Text createTooltipText(T entity) {
         TypeProvider<T> provider = (TypeProvider<T>) VARIANT_BY_TYPE.get(type);
         if(provider != null) {
-            return provider.modifyText(entity, new TranslatableText(type.getTranslationKey()));
+            return provider.modifyText(entity, Text.translatable(type.getTranslationKey()));
         }
 
-        return new TranslatableText(type.getTranslationKey());
+        return Text.translatable(type.getTranslationKey());
     }
 }

@@ -1,27 +1,21 @@
 package draylar.identity.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import dev.architectury.networking.NetworkManager;
 import draylar.identity.Identity;
-import draylar.identity.network.ClientNetworking;
 import draylar.identity.network.impl.SwapPackets;
 import draylar.identity.screen.IdentityScreen;
-import io.netty.buffer.Unpooled;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralText;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.text.Text;
 
 public class PlayerWidget extends PressableWidget {
 
     private final IdentityScreen parent;
 
     public PlayerWidget(float x, float y, float width, float height, IdentityScreen parent) {
-        super((int) x, (int) y, (int) width, (int) height, new LiteralText("")); // int x, int y, int width, int height, message
+        super((int) x, (int) y, (int) width, (int) height, Text.of("")); // int x, int y, int width, int height, message
         this.parent = parent;
     }
 

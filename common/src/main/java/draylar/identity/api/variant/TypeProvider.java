@@ -2,8 +2,8 @@ package draylar.identity.api.variant;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 import java.util.Locale;
@@ -22,7 +22,7 @@ public abstract class TypeProvider<T extends LivingEntity> {
 
     public abstract int getRange();
 
-    public abstract Text modifyText(T entity, TranslatableText text);
+    public abstract Text modifyText(T entity, MutableText text);
 
     public final String formatTypePrefix(String prefix) {
         return String.valueOf(prefix.charAt(0)).toUpperCase(Locale.ROOT) + prefix.substring(1);

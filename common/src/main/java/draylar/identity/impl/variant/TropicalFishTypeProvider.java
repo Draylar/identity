@@ -1,12 +1,10 @@
 package draylar.identity.impl.variant;
 
 import draylar.identity.api.variant.TypeProvider;
-import draylar.identity.mixin.accessor.AxolotlEntityAccessor;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AxolotlEntity;
 import net.minecraft.entity.passive.TropicalFishEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 // TODO: do we want to add this? There will be a boat-load of fish...
@@ -35,7 +33,7 @@ public class TropicalFishTypeProvider extends TypeProvider<TropicalFishEntity> {
     }
 
     @Override
-    public Text modifyText(TropicalFishEntity entity, TranslatableText text) {
+    public Text modifyText(TropicalFishEntity entity, MutableText text) {
         return null;
     }
 }

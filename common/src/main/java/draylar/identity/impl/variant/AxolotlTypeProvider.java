@@ -3,11 +3,9 @@ package draylar.identity.impl.variant;
 import draylar.identity.api.variant.TypeProvider;
 import draylar.identity.mixin.accessor.AxolotlEntityAccessor;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AxolotlEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 public class AxolotlTypeProvider extends TypeProvider<AxolotlEntity> {
@@ -35,7 +33,7 @@ public class AxolotlTypeProvider extends TypeProvider<AxolotlEntity> {
     }
 
     @Override
-    public Text modifyText(AxolotlEntity entity, TranslatableText text) {
-        return new LiteralText(formatTypePrefix(AxolotlEntity.Variant.values()[getVariantData(entity)].getName()) + " ").append(text);
+    public Text modifyText(AxolotlEntity entity, MutableText text) {
+        return Text.literal(formatTypePrefix(AxolotlEntity.Variant.values()[getVariantData(entity)].getName()) + " ").append(text);
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.RavagerEntity;
+import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -216,6 +217,10 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             ((IronGolemEntityAccessor) golem).setAttackTicksLeft(10);
         }
 
+        if(identity instanceof WardenEntity warden) {
+            warden.attackingAnimationState.start(age);
+        }
+
         if(identity instanceof RavagerEntity ravager) {
             ((RavagerEntityAccessor) ravager).setAttackTick(10);
         }
@@ -241,6 +246,21 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             RavagerEntityAccessor accessor = (RavagerEntityAccessor) ravager;
             if(accessor.getAttackTick() > 0) {
                 accessor.setAttackTick(accessor.getAttackTick() - 1);
+            }
+        }
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void tickWardenSneakingAnimation(CallbackInfo ci) {
+        LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
+
+        if(identity instanceof WardenEntity warden) {
+            if(isSneaking()) {
+                if(!warden.sniffingAnimationState.isRunning()) {
+                    warden.sniffingAnimationState.start(age);
+                }
+            } else {
+                warden.sniffingAnimationState.stop();
             }
         }
     }

@@ -15,7 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
@@ -158,14 +158,14 @@ public class IdentityCommand {
 
         if(PlayerIdentity.getIdentity(player) != null && PlayerIdentity.getIdentity(player).getType().equals(type)) {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.test_positive", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.test_positive", player.getDisplayName(), Text.translatable(type.getTranslationKey())), true);
             }
 
             return 1;
         }
 
         if(IdentityConfig.getInstance().logCommands()) {
-            source.sendMessage(new TranslatableText("identity.test_failed", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+            source.sendMessage(Text.translatable("identity.test_failed", player.getDisplayName(), Text.translatable(type.getTranslationKey())), true);
         }
 
         return 0;
@@ -176,14 +176,14 @@ public class IdentityCommand {
 
         if(PlayerIdentity.getIdentity(player) != null && !PlayerIdentity.getIdentity(player).getType().equals(type)) {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.test_failed", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.test_failed", player.getDisplayName(), Text.translatable(type.getTranslationKey())), true);
             }
 
             return 1;
         }
 
         if(IdentityConfig.getInstance().logCommands()) {
-            source.sendMessage(new TranslatableText("identity.test_positive", player.getDisplayName(), new TranslatableText(type.getTranslationKey())), true);
+            source.sendMessage(Text.translatable("identity.test_positive", player.getDisplayName(), Text.translatable(type.getTranslationKey())), true);
         }
 
         return 0;
@@ -194,12 +194,12 @@ public class IdentityCommand {
             boolean result = PlayerUnlocks.unlock(player, type);
 
             if(result && IdentityConfig.getInstance().logCommands()) {
-                player.sendMessage(new TranslatableText("identity.unlock_entity", new TranslatableText(type.getEntityType().getTranslationKey())), true);
-                source.sendMessage(new TranslatableText("identity.grant_success", new TranslatableText(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
+                player.sendMessage(Text.translatable("identity.unlock_entity", Text.translatable(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.grant_success", Text.translatable(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
             }
         } else {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.already_has", player.getDisplayName(), new TranslatableText(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.already_has", player.getDisplayName(), Text.translatable(type.getEntityType().getTranslationKey())), true);
             }
         }
     }
@@ -209,12 +209,12 @@ public class IdentityCommand {
             PlayerUnlocks.revoke(player, type);
 
             if(IdentityConfig.getInstance().logCommands()) {
-                player.sendMessage(new TranslatableText("identity.revoke_entity", new TranslatableText(type.getEntityType().getTranslationKey())), true);
-                source.sendMessage(new TranslatableText("identity.revoke_success", new TranslatableText(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
+                player.sendMessage(Text.translatable("identity.revoke_entity", Text.translatable(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.revoke_success", Text.translatable(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
             }
         } else {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(new TranslatableText("identity.does_not_have", player.getDisplayName(), new TranslatableText(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.does_not_have", player.getDisplayName(), Text.translatable(type.getEntityType().getTranslationKey())), true);
             }
         }
     }
@@ -229,7 +229,7 @@ public class IdentityCommand {
             if(defaultType != null) {
                 boolean result = PlayerIdentity.updateIdentity(player, defaultType, (LivingEntity) createdEntity);
                 if(result && IdentityConfig.getInstance().logCommands()) {
-                    source.sendMessage(new TranslatableText("identity.equip_success", new TranslatableText(entity.getTranslationKey()), player.getDisplayName()), true);
+                    source.sendMessage(Text.translatable("identity.equip_success", Text.translatable(entity.getTranslationKey()), player.getDisplayName()), true);
                 }
             }
         }
@@ -239,7 +239,7 @@ public class IdentityCommand {
         boolean result = PlayerIdentity.updateIdentity(player, null, null);
 
         if(result && IdentityConfig.getInstance().logCommands()) {
-            source.sendMessage(new TranslatableText("identity.unequip_success", player.getDisplayName()), false);
+            source.sendMessage(Text.translatable("identity.unequip_success", player.getDisplayName()), false);
         }
     }
 }

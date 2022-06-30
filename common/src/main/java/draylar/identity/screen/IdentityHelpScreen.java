@@ -3,14 +3,13 @@ package draylar.identity.screen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class IdentityHelpScreen extends Screen {
 
     public IdentityHelpScreen() {
-        super(new LiteralText(""));
+        super(Text.literal(""));
         super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
     }
 
@@ -20,25 +19,25 @@ public class IdentityHelpScreen extends Screen {
 
         matrices.push();
         matrices.scale(0.75f, 0.75f, 0.75f);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.welcome"), 15, 15, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits"), 15, 30, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.welcome"), 15, 15, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.credits"), 15, 30, 0xffffff);
 
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.support_label").formatted(Formatting.BOLD), 15, 60, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.support_description"), 15, 75, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.support_label").formatted(Formatting.BOLD), 15, 60, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.support_description"), 15, 75, 0xffffff);
 
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.ability_label").formatted(Formatting.BOLD), 15, 100, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.ability_description_1"), 15, 115, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.ability_description_2"), 15, 130, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.ability_description_3"), 15, 145, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.ability_label").formatted(Formatting.BOLD), 15, 100, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.ability_description_1"), 15, 115, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.ability_description_2"), 15, 130, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.ability_description_3"), 15, 145, 0xffffff);
 
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.config_label").formatted(Formatting.BOLD), 15, 175, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.config_description"), 15, 190, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.config_label").formatted(Formatting.BOLD), 15, 175, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.config_description"), 15, 190, 0xffffff);
 
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits_label").formatted(Formatting.BOLD), 15, 220, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits_general"), 15, 235, 0xffffff);
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.credits_translators"), 15, 250, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.credits_label").formatted(Formatting.BOLD), 15, 220, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.credits_general"), 15, 235, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.credits_translators"), 15, 250, 0xffffff);
 
-        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, new TranslatableText("identity.help.return").formatted(Formatting.ITALIC), 15, height + 60, 0xffffff);
+        MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, Text.translatable("identity.help.return").formatted(Formatting.ITALIC), 15, height + 60, 0xffffff);
 
         matrices.pop();
 

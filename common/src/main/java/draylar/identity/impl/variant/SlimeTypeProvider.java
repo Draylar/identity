@@ -4,10 +4,8 @@ import draylar.identity.api.variant.TypeProvider;
 import draylar.identity.mixin.accessor.SlimeEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.SlimeEntity;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 public class SlimeTypeProvider extends TypeProvider<SlimeEntity> {
@@ -35,7 +33,7 @@ public class SlimeTypeProvider extends TypeProvider<SlimeEntity> {
     }
 
     @Override
-    public Text modifyText(SlimeEntity entity, TranslatableText text) {
-        return new LiteralText(String.format("Size %d ", entity.getSize())).append(text);
+    public Text modifyText(SlimeEntity entity, MutableText text) {
+        return Text.literal(String.format("Size %d ", entity.getSize())).append(text);
     }
 }

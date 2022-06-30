@@ -2,15 +2,11 @@ package draylar.identity.impl.variant;
 
 import com.google.common.collect.ImmutableMap;
 import draylar.identity.api.variant.TypeProvider;
-import draylar.identity.mixin.accessor.AxolotlEntityAccessor;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.AxolotlEntity;
 import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.DyeColor;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -34,13 +30,13 @@ public class CatTypeProvider extends TypeProvider<CatEntity> {
 
     @Override
     public int getVariantData(CatEntity entity) {
-        return entity.getCatType();
+        return Registry.CAT_VARIANT.getRawId(entity.getVariant());
     }
 
     @Override
     public CatEntity create(EntityType<CatEntity> type, World world, int data) {
         CatEntity cat = new CatEntity(type, world);
-        cat.setCatType(data);
+        cat.setVariant(Registry.CAT_VARIANT.get(data));
         return cat;
     }
 
@@ -55,8 +51,8 @@ public class CatTypeProvider extends TypeProvider<CatEntity> {
     }
 
     @Override
-    public Text modifyText(CatEntity cat, TranslatableText text) {
+    public Text modifyText(CatEntity cat, MutableText text) {
         int variant = getVariantData(cat);
-        return new LiteralText(PREFIX_BY_ID.containsKey(variant) ? PREFIX_BY_ID.get(variant) + " " : "").append(text);
+        return Text.literal(PREFIX_BY_ID.containsKey(variant) ? PREFIX_BY_ID.get(variant) + " " : "").append(text);
     }
 }

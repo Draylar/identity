@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 import java.util.Collections;
@@ -29,7 +28,7 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     private final IdentityScreen parent;
 
     public EntityWidget(float x, float y, float width, float height, IdentityType<T> type, T entity, IdentityScreen parent, boolean starred, boolean current) {
-        super((int) x, (int) y, (int) width, (int) height, new LiteralText("")); // int x, int y, int width, int height, message
+        super((int) x, (int) y, (int) width, (int) height, Text.of("")); // int x, int y, int width, int height, message
         this.type = type;
         this.entity = entity;
         size = (int) (25 * (1 / (Math.max(entity.getHeight(), entity.getWidth()))));

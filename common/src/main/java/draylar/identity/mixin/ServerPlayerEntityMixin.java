@@ -10,11 +10,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.encryption.PlayerPublicKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,17 +25,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
-    @Shadow
-    public abstract boolean isCreative();
+    @Shadow public abstract boolean isCreative();
+    @Shadow public abstract boolean isSpectator();
+    @Shadow public abstract void sendMessage(Text message, boolean actionBar);
 
-    @Shadow
-    public abstract boolean isSpectator();
-
-    @Shadow
-    public abstract void sendMessage(Text message, boolean actionBar);
-
-    public ServerPlayerEntityMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
-        super(world, blockPos, f, gameProfile);
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
+        super(world, pos, yaw, gameProfile, publicKey);
     }
 
     @Inject(
@@ -55,9 +51,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 // send revoke message to player if they aren't in creative and the config option is on
                 if(IdentityConfig.getInstance().overlayIdentityRevokes()) {
                     sendMessage(
-                            new TranslatableText(
+                            Text.translatable(
                                     "identity.revoke_entity",
-                                    new TranslatableText(type.getTranslationKey()).asString()
+                                    type.getTranslationKey()
                             ), true
                     );
                 }
