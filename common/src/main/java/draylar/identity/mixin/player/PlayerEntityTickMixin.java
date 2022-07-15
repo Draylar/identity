@@ -29,8 +29,10 @@ public abstract class PlayerEntityTickMixin extends LivingEntity {
         // Tick IdentityTickHandlers on the client & server.
         @Nullable LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
         if(identity != null) {
-            IdentityTickHandler handler = IdentityTickHandlers.getHandlers().get(identity.getType());
-            handler.tick((PlayerEntity) (Object) this, identity);
+            @Nullable IdentityTickHandler handler = IdentityTickHandlers.getHandlers().get(identity.getType());
+            if(handler != null) {
+                handler.tick((PlayerEntity) (Object) this, identity);
+            }
         }
 
         // Update misc. server-side entity properties for the player.
