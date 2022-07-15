@@ -19,6 +19,13 @@ public class FrogTickHandler implements IdentityTickHandler<FrogEntity> {
                 frog.walkingAnimationState.stop();
             }
 
+            // Jumping
+            if(!player.isOnGround() && !swim && !walk && !player.isInsideWaterOrBubbleColumn()) {
+                frog.longJumpingAnimationState.startIfNotRunning(frog.age);
+            } else {
+                frog.longJumpingAnimationState.stop();
+            }
+
             // Swimming
             if (swim) {
                 frog.idlingInWaterAnimationState.stop();
