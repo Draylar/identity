@@ -340,10 +340,9 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
                 if(type.isIn(IdentityEntityTags.HURT_BY_HIGH_TEMPERATURE)) {
-                    RegistryEntry<Biome> biome = player.world.getBiome(new BlockPos(player.getX(), 0, player.getZ()));
-                    float temp = ((BiomeAccessor) (Object) biome.getKeyOrValue().right().get()).callComputeTemperature(new BlockPos(player.getX(), player.getY(), player.getZ()));
-                    if(temp > 1.0F) {
-                        player.damage(DamageSource.ON_FIRE, 1.0F);
+                    Biome biome = world.getBiome(getBlockPos()).value();
+                    if (biome.isHot(getBlockPos())) {
+                        player.damage(DamageSource.ON_FIRE, 1.0f);
                     }
                 }
             }
