@@ -27,6 +27,7 @@ public class IdentityType<T extends LivingEntity> {
         VARIANT_BY_TYPE.put(EntityType.FOX, new FoxTypeProvider());
         VARIANT_BY_TYPE.put(EntityType.CAT, new CatTypeProvider());
         VARIANT_BY_TYPE.put(EntityType.SLIME, new SlimeTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.FROG, new FrogTypeProvider());
     }
 
     public IdentityType(EntityType<T> type) {
