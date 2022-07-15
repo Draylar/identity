@@ -28,6 +28,7 @@ public class AbilityRegistry {
         register(EntityType.LLAMA, new LlamaAbility());
         register(EntityType.WITCH, new WitchAbility());
         register(EntityType.EVOKER, new EvokerAbility());
+        register(EntityType.WARDEN, new WardenAbility());
     }
 
     public static IdentityAbility get(EntityType<?> type) {

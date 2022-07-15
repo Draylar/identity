@@ -11,6 +11,11 @@ import net.minecraft.entity.mob.RavagerEntity;
 
 public class IdentityEventHandlers {
 
+    public static void initialize() {
+        IdentityEventHandlers.registerHostilityUpdateHandler();
+        IdentityEventHandlers.registerRavagerRidingHandler();
+    }
+
     public static void registerHostilityUpdateHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
             if(!player.world.isClient && entity instanceof HostileEntity) {

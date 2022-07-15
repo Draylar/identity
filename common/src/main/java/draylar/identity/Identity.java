@@ -1,6 +1,5 @@
 package draylar.identity;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.ability.AbilityRegistry;
@@ -36,8 +35,7 @@ public class Identity {
     public void initialize() {
         IdentityEntityTags.init();
         AbilityRegistry.init();
-        IdentityEventHandlers.registerHostilityUpdateHandler();
-        IdentityEventHandlers.registerRavagerRidingHandler();
+        IdentityEventHandlers.initialize();
         IdentityCommands.init();
         ServerNetworking.initialize();
         ServerNetworking.registerUseAbilityPacketHandler();
