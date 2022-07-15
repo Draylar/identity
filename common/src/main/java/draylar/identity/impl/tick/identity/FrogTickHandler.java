@@ -42,6 +42,13 @@ public class FrogTickHandler implements IdentityTickHandler<FrogEntity> {
             if(player.world.random.nextDouble() <= 0.001) {
                 frog.croakingAnimationState.start(player.age);
             }
+
+            // Tongue
+            if(player.handSwinging) {
+                frog.usingTongueAnimationState.startIfNotRunning(player.age);
+            } else {
+                frog.usingTongueAnimationState.stop();
+            }
         }
     }
 }
