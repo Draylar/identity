@@ -73,4 +73,8 @@ public abstract class IdentityConfig {
     public abstract boolean enableSwaps();
 
     public abstract int hostilityTime();
+
+    public abstract boolean wardenIsBlinded();
+
+    public abstract boolean wardenBlindsNearby();
 }

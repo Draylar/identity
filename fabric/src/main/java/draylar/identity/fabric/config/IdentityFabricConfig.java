@@ -101,6 +101,12 @@ public class IdentityFabricConfig extends IdentityConfig implements Config {
     @Comment(value = "Number of kills required to unlock an Identity if killsForIdentity is true.")
     public int requiredKillsForIdentity = 50;
 
+    @Comment(value = "If true, players with the Warden Identity will have a shorter view range with the darkness effect.")
+    public boolean wardenIsBlinded = true;
+
+    @Comment(value = "If true, players with the Warden Identity will blind other nearby players.")
+    public boolean wardenBlindsNearby = true;
+
     @Comment(value = "An override map for requiredKillsForIdentity for specific entity types.")
     public Map<String, Integer> requiredKillsByType = new HashMap<>() {
         {
@@ -287,5 +293,15 @@ public class IdentityFabricConfig extends IdentityConfig implements Config {
     @Override
     public int hostilityTime() {
         return hostilityTime;
+    }
+
+    @Override
+    public boolean wardenIsBlinded() {
+        return wardenIsBlinded;
+    }
+
+    @Override
+    public boolean wardenBlindsNearby() {
+        return wardenBlindsNearby;
     }
 }

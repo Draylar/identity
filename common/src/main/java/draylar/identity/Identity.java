@@ -3,6 +3,7 @@ package draylar.identity;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.ability.AbilityRegistry;
+import draylar.identity.api.IdentityTickHandlers;
 import draylar.identity.api.PlayerFavorites;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.PlayerUnlocks;
@@ -40,6 +41,7 @@ public class Identity {
         ServerNetworking.initialize();
         ServerNetworking.registerUseAbilityPacketHandler();
         registerJoinSyncPacket();
+        IdentityTickHandlers.initialize();
     }
 
     public static void registerJoinSyncPacket() {

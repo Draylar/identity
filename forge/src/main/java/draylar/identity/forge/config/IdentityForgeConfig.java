@@ -40,6 +40,8 @@ public class IdentityForgeConfig extends IdentityConfig {
     public float flySpeed = 0.05f;
     public boolean killForIdentity = false;
     public int requiredKillsForIdentity = 50;
+    public boolean wardenIsBlinded = true;
+    public boolean wardenBlindsNearby = true;
 
     public Map<String, Integer> requiredKillsByType = new HashMap<>() {
         {
@@ -220,5 +222,15 @@ public class IdentityForgeConfig extends IdentityConfig {
     @Override
     public int hostilityTime() {
         return hostilityTime;
+    }
+
+    @Override
+    public boolean wardenIsBlinded() {
+        return wardenIsBlinded;
+    }
+
+    @Override
+    public boolean wardenBlindsNearby() {
+        return wardenBlindsNearby;
     }
 }
