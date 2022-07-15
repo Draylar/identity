@@ -1,6 +1,8 @@
 package draylar.identity.impl.tick.identity;
 
 import draylar.identity.api.IdentityTickHandler;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.FrogEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -49,6 +51,9 @@ public class FrogTickHandler implements IdentityTickHandler<FrogEntity> {
             } else {
                 frog.usingTongueAnimationState.stop();
             }
+        } else {
+            // Buffs - jump boost
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 20 * 2, 2, true, false));
         }
     }
 }
