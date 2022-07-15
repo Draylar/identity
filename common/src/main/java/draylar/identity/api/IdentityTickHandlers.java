@@ -1,5 +1,6 @@
 package draylar.identity.api;
 
+import draylar.identity.impl.tick.identity.FrogTickHandler;
 import draylar.identity.impl.tick.identity.WardenTickHandler;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +14,7 @@ public class IdentityTickHandlers {
 
     public static void initialize() {
         register(EntityType.WARDEN, new WardenTickHandler());
+        register(EntityType.FROG, new FrogTickHandler());
     }
 
     public static <T extends LivingEntity> void register(EntityType<T> type, IdentityTickHandler<T> handler) {
