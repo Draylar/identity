@@ -60,6 +60,20 @@ public class IdentityCommand {
                                         );
                                         return 1;
                                     })
+                                    .then(CommandManager.argument("nbt", NbtCompoundArgumentType.nbtCompound())
+                                            .executes(context -> {
+                                                NbtCompound nbt = NbtCompoundArgumentType.getNbtCompound(context, "nbt");
+
+                                                grant(
+                                                        context.getSource().getPlayer(),
+                                                        EntityArgumentType.getPlayer(context, "player"),
+                                                        EntitySummonArgumentType.getEntitySummon(context, "identity"),
+                                                        nbt
+                                                );
+
+                                                return 1;
+                                            })
+                                    )
                             )
                     )
                     .build();

@@ -19,7 +19,7 @@ public class FoxTypeProvider extends TypeProvider<FoxEntity> {
     public FoxEntity create(EntityType<FoxEntity> type, World world, int data) {
         FoxEntity fox = new FoxEntity(type, world);
         ((FoxEntityAccessor) fox).callSetType(FoxEntity.Type.fromId(data));
-        return null;
+        return fox;
     }
 
     @Override
