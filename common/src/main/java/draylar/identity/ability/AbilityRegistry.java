@@ -25,7 +25,8 @@ public class AbilityRegistry {
         register(EntityType.WITHER, new WitherEntityAbility());
         register(EntityType.COW, new CowAbility());
         register(EntityType.ENDERMITE, new EndermiteAbility());
-        register(EntityType.LLAMA, new LlamaAbility());
+        register(EntityType.LLAMA, new LlamaAbility<>());
+        register(EntityType.TRADER_LLAMA, new LlamaAbility<>());
         register(EntityType.WITCH, new WitchAbility());
         register(EntityType.EVOKER, new EvokerAbility());
         register(EntityType.WARDEN, new WardenAbility());

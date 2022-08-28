@@ -11,7 +11,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class LlamaAbility extends IdentityAbility<LlamaEntity> {
+public class LlamaAbility <T extends LlamaEntity> extends IdentityAbility<T> {
 
     @Override
     public void onUse(PlayerEntity player, LlamaEntity identity, World world) {
