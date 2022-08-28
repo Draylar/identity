@@ -23,7 +23,7 @@ public class PiglinBruteBrainMixin {
      * This mixin modifies the search logic to exclude players disguised as anything besides a Wither Skeleton or Wither.
      */
     @Overwrite
-    private static Optional<? extends LivingEntity> method_30249(AbstractPiglinEntity abstractPiglinEntity, MemoryModuleType<? extends LivingEntity> memoryModuleType) {
+    private static Optional<? extends LivingEntity> getTargetIfInRange(AbstractPiglinEntity abstractPiglinEntity, MemoryModuleType<? extends LivingEntity> memoryModuleType) {
         return abstractPiglinEntity.getBrain().getOptionalMemory(memoryModuleType).filter((livingEntity) -> {
             if(livingEntity instanceof PlayerEntity player) {
                 LivingEntity identity = PlayerIdentity.getIdentity(player);

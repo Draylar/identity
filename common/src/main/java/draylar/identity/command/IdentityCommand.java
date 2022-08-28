@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class IdentityCommand {
 
     public static void register() {
-        CommandRegistrationEvent.EVENT.register((dispatcher, b) -> {
+        CommandRegistrationEvent.EVENT.register((dispatcher, ctx, b) -> {
             LiteralCommandNode<ServerCommandSource> rootNode = CommandManager
                     .literal("identity")
                     .requires(source -> source.hasPermissionLevel(2))
