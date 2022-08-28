@@ -71,7 +71,7 @@ public class IdentityCommand {
                                     .executes(context -> {
                                         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
                                         for (IdentityType<?> type : IdentityType.getAllTypes(player.world)) {
-                                            if(!PlayerUnlocks.has(player, type)) {
+                                            if(PlayerUnlocks.has(player, type)) {
                                                 PlayerUnlocks.revoke(player, type);
                                             }
                                         }
