@@ -98,10 +98,25 @@ public class IdentityCommand {
                                         revoke(
                                                 context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                new IdentityType(Registry.ENTITY_TYPE.get(EntitySummonArgumentType.getEntitySummon(context, "identity")))
+                                                EntitySummonArgumentType.getEntitySummon(context, "identity"),
+                                                null
                                         );
                                         return 1;
                                     })
+                                    .then(CommandManager.argument("nbt", NbtCompoundArgumentType.nbtCompound())
+                                            .executes(context -> {
+                                                NbtCompound nbt = NbtCompoundArgumentType.getNbtCompound(context, "nbt");
+
+                                                revoke(
+                                                        context.getSource().getPlayer(),
+                                                        EntityArgumentType.getPlayer(context, "player"),
+                                                        EntitySummonArgumentType.getEntitySummon(context, "identity"),
+                                                        nbt
+                                                );
+
+                                                return 1;
+                                            })
+                                    )
                             )
                     )
                     .build();
@@ -249,17 +264,32 @@ public class IdentityCommand {
         }
     }
 
-    private static void revoke(ServerPlayerEntity source, ServerPlayerEntity player, IdentityType<?> type) {
+    private static void revoke(ServerPlayerEntity source, ServerPlayerEntity player, Identifier id, @Nullable NbtCompound nbt) {
+        IdentityType<LivingEntity> type = new IdentityType(Registry.ENTITY_TYPE.get(id));
+        Text name = Text.translatable(type.getEntityType().getTranslationKey());
+
+        // If the specified granting NBT is not null, change the IdentityType to reflect potential variants.
+        if(nbt != null) {
+            NbtCompound copy = nbt.copy();
+            copy.putString("id", id.toString());
+            ServerWorld serverWorld = source.getWorld();
+            Entity loaded = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
+            if(loaded instanceof LivingEntity living) {
+                type = new IdentityType<>(living);
+                name = type.createTooltipText(living);
+            }
+        }
+
         if(PlayerUnlocks.has(player, type)) {
             PlayerUnlocks.revoke(player, type);
 
             if(IdentityConfig.getInstance().logCommands()) {
-                player.sendMessage(Text.translatable("identity.revoke_entity", Text.translatable(type.getEntityType().getTranslationKey())), true);
-                source.sendMessage(Text.translatable("identity.revoke_success", Text.translatable(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
+                player.sendMessage(Text.translatable("identity.revoke_entity", name), true);
+                source.sendMessage(Text.translatable("identity.revoke_success", name, player.getDisplayName()), true);
             }
         } else {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(Text.translatable("identity.does_not_have", player.getDisplayName(), Text.translatable(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.does_not_have", player.getDisplayName(), name), true);
             }
         }
     }
