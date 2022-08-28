@@ -32,17 +32,32 @@ public class IdentityType<T extends LivingEntity> {
 
     public IdentityType(EntityType<T> type) {
         this.type = type;
+        variantData = getDefaultVariantData(type);
+    }
 
+    private int getDefaultVariantData(EntityType<T> type) {
         if(VARIANT_BY_TYPE.containsKey(type)) {
-            variantData = VARIANT_BY_TYPE.get(type).getFallbackData();
+            return VARIANT_BY_TYPE.get(type).getFallbackData();
         } else {
-            variantData = -1;
+            return -1;
         }
     }
 
     public IdentityType(EntityType<T> type, int variantData) {
         this.type = type;
         this.variantData = variantData;
+    }
+
+    public IdentityType(T entity) {
+        this.type = (EntityType<T>) entity.getType();
+
+        // Discover variant data based on entity NBT data.
+        @Nullable TypeProvider<T> provider = (TypeProvider<T>) VARIANT_BY_TYPE.get(type);
+        if(provider != null) {
+            variantData = provider.getVariantData(entity);
+        } else {
+            variantData = getDefaultVariantData(type);
+        }
     }
 
     @Nullable

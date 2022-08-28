@@ -8,13 +8,16 @@ import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.api.variant.IdentityType;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.EntitySummonArgumentType;
+import net.minecraft.command.argument.NbtCompoundArgumentType;
 import net.minecraft.command.suggestion.SuggestionProviders;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -52,7 +55,8 @@ public class IdentityCommand {
                                         grant(
                                                 context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                new IdentityType(Registry.ENTITY_TYPE.get(EntitySummonArgumentType.getEntitySummon(context, "identity")))
+                                                EntitySummonArgumentType.getEntitySummon(context, "identity"),
+                                                null
                                         );
                                         return 1;
                                     })
@@ -93,13 +97,25 @@ public class IdentityCommand {
                     .then(CommandManager.argument("player", EntityArgumentType.players())
                             .then(CommandManager.argument("identity", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
-                                        equip(
-                                                context.getSource().getPlayer(),
+                                        equip(context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "identity")
-                                        );
+                                                EntitySummonArgumentType.getEntitySummon(context, "identity"),
+                                                null);
+
                                         return 1;
                                     })
+                                    .then(CommandManager.argument("nbt", NbtCompoundArgumentType.nbtCompound())
+                                            .executes(context -> {
+                                                NbtCompound nbt = NbtCompoundArgumentType.getNbtCompound(context, "nbt");
+
+                                                equip(context.getSource().getPlayer(),
+                                                        EntityArgumentType.getPlayer(context, "player"),
+                                                        EntitySummonArgumentType.getEntitySummon(context, "identity"),
+                                                        nbt);
+
+                                                return 1;
+                                            })
+                                    )
                             )
                     )
                     .build();
@@ -189,17 +205,32 @@ public class IdentityCommand {
         return 0;
     }
 
-    private static void grant(ServerPlayerEntity source, ServerPlayerEntity player, IdentityType<?> type) {
+    private static void grant(ServerPlayerEntity source, ServerPlayerEntity player, Identifier id, @Nullable NbtCompound nbt) {
+        IdentityType<LivingEntity> type = new IdentityType(Registry.ENTITY_TYPE.get(id));
+        Text name = Text.translatable(type.getEntityType().getTranslationKey());
+
+        // If the specified granting NBT is not null, change the IdentityType to reflect potential variants.
+        if(nbt != null) {
+            NbtCompound copy = nbt.copy();
+            copy.putString("id", id.toString());
+            ServerWorld serverWorld = source.getWorld();
+            Entity loaded = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
+            if(loaded instanceof LivingEntity living) {
+                type = new IdentityType<>(living);
+                name = type.createTooltipText(living);
+            }
+        }
+
         if(!PlayerUnlocks.has(player, type)) {
             boolean result = PlayerUnlocks.unlock(player, type);
 
             if(result && IdentityConfig.getInstance().logCommands()) {
-                player.sendMessage(Text.translatable("identity.unlock_entity", Text.translatable(type.getEntityType().getTranslationKey())), true);
-                source.sendMessage(Text.translatable("identity.grant_success", Text.translatable(type.getEntityType().getTranslationKey()), player.getDisplayName()), true);
+                player.sendMessage(Text.translatable("identity.unlock_entity", name), true);
+                source.sendMessage(Text.translatable("identity.grant_success", name, player.getDisplayName()), true);
             }
         } else {
             if(IdentityConfig.getInstance().logCommands()) {
-                source.sendMessage(Text.translatable("identity.already_has", player.getDisplayName(), Text.translatable(type.getEntityType().getTranslationKey())), true);
+                source.sendMessage(Text.translatable("identity.already_has", player.getDisplayName(), name), true);
             }
         }
     }
@@ -219,17 +250,26 @@ public class IdentityCommand {
         }
     }
 
-    private static void equip(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity) {
-        EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
-        Entity createdEntity = entity.create(player.world);
+    private static void equip(ServerPlayerEntity source, ServerPlayerEntity player, Identifier identity, @Nullable NbtCompound nbt) {
+        Entity created;
 
-        if(createdEntity instanceof LivingEntity living) {
+        if(nbt != null) {
+            NbtCompound copy = nbt.copy();
+            copy.putString("id", identity.toString());
+            ServerWorld serverWorld = source.getWorld();
+            created = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
+        } else {
+            EntityType<?> entity = Registry.ENTITY_TYPE.get(identity);
+            created = entity.create(player.world);
+        }
+
+        if(created instanceof LivingEntity living) {
             @Nullable IdentityType<?> defaultType = IdentityType.from(living);
 
             if(defaultType != null) {
-                boolean result = PlayerIdentity.updateIdentity(player, defaultType, (LivingEntity) createdEntity);
+                boolean result = PlayerIdentity.updateIdentity(player, defaultType, (LivingEntity) created);
                 if(result && IdentityConfig.getInstance().logCommands()) {
-                    source.sendMessage(Text.translatable("identity.equip_success", Text.translatable(entity.getTranslationKey()), player.getDisplayName()), true);
+                    source.sendMessage(Text.translatable("identity.equip_success", Text.translatable(created.getType().getTranslationKey()), player.getDisplayName()), true);
                 }
             }
         }
