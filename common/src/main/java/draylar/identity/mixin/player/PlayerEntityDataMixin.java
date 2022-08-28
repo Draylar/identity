@@ -277,7 +277,9 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
         // If the identity is null (going back to player), set the player's base health value to 20 (default) to clear old changes.
         if(identity == null) {
-            player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20);
+            if(IdentityConfig.getInstance().scalingHealth()) {
+                player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20);
+            }
 
             // Clear health value if needed
             player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
