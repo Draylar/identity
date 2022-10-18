@@ -11,4 +11,4 @@ assignees: ''
 *A description of what you expected to happen and what actually happened.*
 
 **Game log:**
-*Upload your game log through [hastebin](https://hastebin.com/) and provide the link. Do not paste the link directly into the submission box or comments.*
+*Upload your game log through [GitHub Gist](https://gist.github.com/) and provide the link. Do not paste the file or its contents directly into the submission box or comments.*
