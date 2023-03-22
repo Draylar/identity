@@ -12,6 +12,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
+import net.minecraft.client.render.DiffuseLighting;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
@@ -26,6 +29,7 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     private boolean active;
     private boolean starred;
     private final IdentityScreen parent;
+    private boolean crashed;
 
     public EntityWidget(float x, float y, float width, float height, IdentityType<T> type, T entity, IdentityScreen parent, boolean starred, boolean current) {
         super((int) x, (int) y, (int) width, (int) height, Text.of("")); // int x, int y, int width, int height, message
@@ -75,12 +79,20 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
 
-        // Some entities (namely Aether mobs) crash when rendered in a GUI.
-        // Unsure as to the cause, but this try/catch should prevent the game from entirely dipping out.
-        try {
-            InventoryScreen.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity);
-        } catch (Exception ignored) {
-
+        if(!crashed) {
+            // Some entities (namely Aether mobs) crash when rendered in a GUI.
+            // Unsure as to the cause, but this try/catch should prevent the game from entirely dipping out.
+            try {
+                InventoryScreen.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity);
+            } catch (Exception ignored) {
+                crashed = true;
+                VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+                immediate.draw();
+                EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
+                entityRenderDispatcher.setRenderShadows(true);
+                RenderSystem.getModelViewStack().pop();
+                DiffuseLighting.enableGuiDepthLighting();
+            }
         }
 
         // Render selected outline
