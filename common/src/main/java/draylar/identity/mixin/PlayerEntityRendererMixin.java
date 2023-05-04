@@ -113,6 +113,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             ((LivingEntityAccessor) identity).callSetLivingFlag(1, player.isUsingItem());
             identity.getItemUseTime();
             ((LivingEntityAccessor) identity).callTickActiveItemStack();
+            identity.hurtTime = player.hurtTime; // FIX: https://github.com/Draylar/identity/issues/424
 
             // update identity specific properties
             EntityUpdater entityUpdater = EntityUpdaters.getUpdater((EntityType<? extends LivingEntity>) identity.getType());
