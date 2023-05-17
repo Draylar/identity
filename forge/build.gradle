@@ -4,7 +4,7 @@ plugins {
 
 loom {
     forge {
-        mixinConfigs = [ "identity-forge.mixins.json", "identity.mixins.json" ]
+        mixinConfigs = [ "walkers-forge.mixins.json", "walkers.mixins.json" ]
     }
 }
 

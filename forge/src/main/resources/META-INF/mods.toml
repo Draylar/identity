@@ -4,30 +4,30 @@ loaderVersion = "[37,)"
 license = "MIT"
 
 [[mods]]
-modId = "identity"
+modId = "walkers"
 version = "${version}"
-displayName = "Identity"
-authors = "Draylar"
+displayName = "Walkers"
+authors = "To_Craft"
 description = '''
-Play as your favorite entities!
+Become a Woodwalker/animagus!
 '''
 #logoFile = ""
 
-[[dependencies.identity]]
+[[dependencies.walkers]]
 modId = "forge"
 mandatory = true
 versionRange = "[37,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.identity]]
+[[dependencies.walkers]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.17.1,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.identity]]
+[[dependencies.walkers]]
 modId = "architectury"
 mandatory = true
 versionRange = "[2.3.23,)"

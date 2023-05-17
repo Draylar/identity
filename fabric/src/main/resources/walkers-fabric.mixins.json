@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "tocraft.walkers.fabric.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "WitherEntityMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

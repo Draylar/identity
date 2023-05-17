@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "identity",
+  "id": "walkers",
   "version": "${version}",
-  "name": "Identity",
+  "name": "Walkers",
   "description": "Play as your favorite entities!",
   "authors": [
-    "Draylar"
+    "Draylar",
+    "To_Craft"
   ],
   "contributors": [
     "James103",
@@ -13,19 +14,19 @@
     "AllanChain"
   ],
   "license": "MIT",
-  "icon": "assets/identity/icon.png",
+  "icon": "assets/walkers/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "draylar.identity.fabric.IdentityFabric"
+      "tocraft.walkers.fabric.WalkersFabric"
     ],
     "client": [
-      "draylar.identity.fabric.IdentityFabricClient"
+      "tocraft.walkers.fabric.WalkersFabricClient"
     ]
   },
   "mixins": [
-    "identity.mixins.json",
-    "identity-fabric.mixins.json"
+    "walkers.mixins.json",
+    "walkers-fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.8.7+build.201",
