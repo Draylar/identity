@@ -20,7 +20,7 @@ import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.tag.FluidTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -129,7 +129,7 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
                     LivingEntity.FallSounds fallSounds = identity.getFallSounds();
                     this.playSound(damageAmount > 4 ? fallSounds.big() : fallSounds.small(), 1.0F, 1.0F);
                     ((LivingEntityAccessor) identity).callPlayBlockFallSound();
-                    this.damage(DamageSource.FALL, (float) damageAmount);
+                    this.damage(world.getDamageSources().fall(), (float) damageAmount);
                     cir.setReturnValue(true);
                 } else {
                     cir.setReturnValue(false);

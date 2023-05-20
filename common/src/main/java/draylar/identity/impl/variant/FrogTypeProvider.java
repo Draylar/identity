@@ -3,11 +3,10 @@ package draylar.identity.impl.variant;
 import com.google.common.collect.ImmutableMap;
 import draylar.identity.api.variant.TypeProvider;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.FrogEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -23,13 +22,13 @@ public class FrogTypeProvider extends TypeProvider<FrogEntity> {
 
     @Override
     public int getVariantData(FrogEntity entity) {
-        return Registry.FROG_VARIANT.getRawId(entity.getVariant());
+        return Registries.FROG_VARIANT.getRawId(entity.getVariant());
     }
 
     @Override
     public FrogEntity create(EntityType<FrogEntity> type, World world, int data) {
         FrogEntity frog = new FrogEntity(type, world);
-        frog.setVariant(Registry.FROG_VARIANT.get(data));
+        frog.setVariant(Registries.FROG_VARIANT.get(data));
         return frog;
     }
 

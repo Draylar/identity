@@ -14,6 +14,7 @@ import draylar.identity.screen.widget.SearchWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -25,6 +26,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +117,7 @@ public class IdentityScreen extends Screen {
             MinecraftClient.getInstance().textRenderer.draw(matrices, message, xPosition, yPosition, 0xFFFFFF);
         }
 
+        /*
         // tooltips
         for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
             if(selectable instanceof PressableWidget button) {
@@ -123,7 +126,7 @@ public class IdentityScreen extends Screen {
                     break;
                 }
             }
-        }
+        }*/
 
         searchBar.render(matrices, mouseX, mouseY, delta);
         playerButton.render(matrices, mouseX, mouseY, delta);
@@ -154,7 +157,7 @@ public class IdentityScreen extends Screen {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if(entityWidgets.size() > 0) {
-            float firstPos = entityWidgets.get(0).y;
+            float firstPos = entityWidgets.get(0).getY();
 
             // Top section should always have mobs, prevent scrolling the entire list down the screen
             if(amount == 1 && firstPos >= 35) {
@@ -163,7 +166,7 @@ public class IdentityScreen extends Screen {
 
             ((ScreenAccessor) this).getSelectables().forEach(button -> {
                 if(button instanceof EntityWidget widget) {
-                    widget.y = (int) (widget.y + amount * 10);
+                    widget.setPosition(widget.getX(), (int) (widget.getY() + amount * 10));
                 }
             });
         }
@@ -204,6 +207,7 @@ public class IdentityScreen extends Screen {
                             PlayerFavorites.has(player, type),
                             isCurrent
                     );
+                    entityWidget.setTooltip(Tooltip.of(Text.translatable(renderEntities.get(type).getType().getTranslationKey())));
 
                     addDrawableChild(entityWidget);
                     entityWidgets.add(entityWidget);
@@ -257,11 +261,13 @@ public class IdentityScreen extends Screen {
     }
 
     private ButtonWidget createHelpButton() {
-        return new HelpWidget(
-                (int) (getWindow().getScaledWidth() / 2f - (getWindow().getScaledWidth() / 4f / 2) - 5) - 30,
-                5,
-                20,
-                20);
+        HelpWidget helpWidget = new HelpWidget(
+            (int) (getWindow().getScaledWidth() / 2f - (getWindow().getScaledWidth() / 4f / 2) - 5) - 30,
+            5,
+            20,
+            20);
+        helpWidget.setTooltip(Tooltip.of(Text.translatable("identity.help")));
+        return helpWidget;
     }
 
     public Window getWindow() {

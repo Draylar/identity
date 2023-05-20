@@ -9,6 +9,7 @@ import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.mixin.accessor.EntityAccessor;
 import draylar.identity.mixin.accessor.LivingEntityAccessor;
 import draylar.identity.mixin.accessor.LivingEntityRendererAccessor;
+import draylar.identity.mixin.accessor.LimbAnimatorAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -22,6 +23,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PhantomEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -59,9 +62,9 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
         // sync player data to identity identity
         if(identity != null) {
-            identity.lastLimbDistance = player.lastLimbDistance;
-            identity.limbDistance = player.limbDistance;
-            identity.limbAngle = player.limbAngle;
+            ((LimbAnimatorAccessor)identity.limbAnimator).setPrevSpeed(((LimbAnimatorAccessor)player.limbAnimator).getPrevSpeed());
+            identity.limbAnimator.setSpeed(player.limbAnimator.getSpeed());
+            ((LimbAnimatorAccessor)identity.limbAnimator).setPos(player.limbAnimator.getPos());
             identity.handSwinging = player.handSwinging;
             identity.handSwingTicks = player.handSwingTicks;
             identity.lastHandSwingProgress = player.lastHandSwingProgress;
@@ -113,6 +116,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             ((LivingEntityAccessor) identity).callSetLivingFlag(1, player.isUsingItem());
             identity.getItemUseTime();
             ((LivingEntityAccessor) identity).callTickActiveItemStack();
+            identity.hurtTime = player.hurtTime;
 
             // update identity specific properties
             EntityUpdater entityUpdater = EntityUpdaters.getUpdater((EntityType<? extends LivingEntity>) identity.getType());

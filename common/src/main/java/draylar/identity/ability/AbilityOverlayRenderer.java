@@ -111,7 +111,7 @@ public class AbilityOverlayRenderer {
 //                BakedModel heldItemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(stack, client.world, player);
 //                renderGuiItemModel(matrices, stack, (int) (width * .95f), (int) (height * .92f), heldItemModel);
                 MinecraftClient.getInstance().getItemRenderer()
-                        .renderGuiItemIcon(stack, (int) (width * .95f), (int) (height * .92f));
+                        .renderGuiItemIcon(matrices, stack, (int) (width * .95f), (int) (height * .92f));
 
                 RenderSystem.disableScissor();
                 matrices.pop();

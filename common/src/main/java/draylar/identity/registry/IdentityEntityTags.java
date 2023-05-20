@@ -2,8 +2,8 @@ package draylar.identity.registry;
 
 import draylar.identity.Identity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.RegistryKeys;
 
 public class IdentityEntityTags {
 
@@ -26,6 +26,6 @@ public class IdentityEntityTags {
     }
 
     private static TagKey<EntityType<?>> register(String id) {
-        return TagKey.of(Registry.ENTITY_TYPE_KEY, Identity.id(id));
+        return TagKey.of(RegistryKeys.ENTITY_TYPE, Identity.id(id));
     }
 }
