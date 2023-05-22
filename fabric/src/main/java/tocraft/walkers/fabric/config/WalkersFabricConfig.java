@@ -107,6 +107,9 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Comment(value = "If true, players with the Warden Walkers will blind other nearby players.")
     public boolean wardenBlindsNearby = true;
 
+    @Comment(value = "automatically allows players to choose one shape")
+    public boolean autoUnlockShapes = true;
+
     @Comment(value = "An override map for requiredKillsForWalkers for specific entity types.")
     public Map<String, Integer> requiredKillsByType = new HashMap<>() {
         {
@@ -303,5 +306,10 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Override
     public boolean wardenBlindsNearby() {
         return wardenBlindsNearby;
+    }
+
+    @Override
+    public boolean autoUnlockShapes() {
+        return autoUnlockShapes;
     }
 }

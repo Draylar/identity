@@ -1,6 +1,7 @@
 package tocraft.walkers.network.impl;
 
 import dev.architectury.networking.NetworkManager;
+import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.WalkersType;
@@ -9,7 +10,6 @@ import tocraft.walkers.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.registry.Registry;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public class SwapPackets {
 
     public static void registerWalkersRequestPacketHandler() {
-        NetworkManager.registerReceiver(NetworkManager.Side.C2S, NetworkHandler.IDENTITY_REQUEST, (buf, context) -> {
+        NetworkManager.registerReceiver(NetworkManager.Side.C2S, NetworkHandler.WALKERS_REQUEST, (buf, context) -> {
             boolean validType = buf.readBoolean();
             if(validType) {
                 EntityType<?> entityType = Registry.ENTITY_TYPE.get(buf.readIdentifier());
@@ -33,10 +33,13 @@ public class SwapPackets {
                         } else {
                             @Nullable WalkersType<LivingEntity> type = WalkersType.from(entityType, variant);
                             if(type != null) {
+                                // unlock walker
+                                if (WalkersConfig.getInstance().autoUnlockShapes()) PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
+                                // update Player
                                 PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
                             }
                         }
-
+                        
                         // Refresh player dimensions
                         context.getPlayer().calculateDimensions();
                     }
@@ -63,6 +66,6 @@ public class SwapPackets {
             packet.writeInt(type.getVariantData());
         }
 
-        NetworkManager.sendToServer(ClientNetworking.IDENTITY_REQUEST, packet);
+        NetworkManager.sendToServer(ClientNetworking.WALKERS_REQUEST, packet);
     }
 }

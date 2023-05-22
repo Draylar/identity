@@ -27,5 +27,6 @@
   "walkers.help.return": "Press any key to return to the Walkers menu.",
   "key.categories.walkers": "Walkers",
   "key.walkers": "Open Walkers Menu",
-  "key.walkers_ability": "Use an Walkers Ability"
+  "key.walkers_ability": "Use an Walkers Ability",
+  "key.walkers_transform": "Transform to your first favorite shape"
 }

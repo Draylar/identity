@@ -10,6 +10,7 @@ import tocraft.walkers.api.model.EntityUpdaters;
 import tocraft.walkers.impl.join.ClientPlayerJoinHandler;
 import tocraft.walkers.impl.tick.AbilityKeyPressHandler;
 import tocraft.walkers.impl.tick.MenuKeyPressHandler;
+import tocraft.walkers.impl.tick.TransformKeyPressHandler;
 import tocraft.walkers.network.ClientNetworking;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -33,12 +34,19 @@ public class WalkersClient {
                     InputUtil.Type.KEYSYM,
                     GLFW.GLFW_KEY_R,
                     "key.categories.walkers");
+    public static final KeyBinding TRANSFORM_KEY =
+            new KeyBinding(
+                    "key.walkers_transform",
+                    InputUtil.Type.KEYSYM,
+                    GLFW.GLFW_KEY_G,
+                    "key.categories.walkers");
 
     private static final Set<ApplicablePacket> SYNC_PACKET_QUEUE = new HashSet<>();
 
     public void initialize() {
         KeyMappingRegistry.register(MENU_KEY);
         KeyMappingRegistry.register(ABILITY_KEY);
+        KeyMappingRegistry.register(TRANSFORM_KEY);
 
         // Register client-side event handlers
         EntityUpdaters.init();
@@ -48,6 +56,7 @@ public class WalkersClient {
         // Register event handlers
         ClientTickEvent.CLIENT_PRE.register(new MenuKeyPressHandler());
         ClientTickEvent.CLIENT_PRE.register(new AbilityKeyPressHandler());
+        ClientTickEvent.CLIENT_PRE.register(new TransformKeyPressHandler());
         ClientNetworking.registerPacketHandlers();
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new ClientPlayerJoinHandler());
     }

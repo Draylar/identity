@@ -2,6 +2,7 @@ package tocraft.walkers.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
+import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.WalkersType;
 import tocraft.walkers.network.impl.FavoritePackets;
 import tocraft.walkers.network.impl.SwapPackets;
@@ -44,10 +45,11 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
 
         if(bl) {
             // Update current Walkers
-            if(button == 0) {
+            if(button == 0 || WalkersConfig.getInstance().autoUnlockShapes()) {
                 SwapPackets.sendSwapRequest(type);
                 parent.disableAll();
                 active = true;
+                if (WalkersConfig.getInstance().autoUnlockShapes()) FavoritePackets.sendFavoriteRequest(type, true);
             }
 
             // Add to favorites
@@ -67,7 +69,6 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
                 // TODO: re-sort screen?
             }
         }
-
         return super.mouseClicked(mouseX, mouseY, button);
     }
 

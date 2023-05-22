@@ -1,5 +1,6 @@
 package tocraft.walkers.api;
 
+import tocraft.walkers.Walkers;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.WalkersType;
 import net.minecraft.entity.Entity;
@@ -30,6 +31,9 @@ public class WalkersGranting {
                 if(amountKilled < required) {
                     return;
                 }
+            }
+            else {
+                return;
             }
 
             boolean isNew = false;

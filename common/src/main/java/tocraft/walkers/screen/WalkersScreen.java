@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.api.PlayerFavorites;
 import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.variant.WalkersType;
 import tocraft.walkers.mixin.accessor.ScreenAccessor;
@@ -11,6 +12,8 @@ import tocraft.walkers.screen.widget.EntityWidget;
 import tocraft.walkers.screen.widget.HelpWidget;
 import tocraft.walkers.screen.widget.PlayerWidget;
 import tocraft.walkers.screen.widget.SearchWidget;
+import tocraft.walkers.impl.PlayerDataProvider;
+import tocraft.walkers.impl.tick.MenuKeyPressHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
@@ -43,6 +46,8 @@ public class WalkersScreen extends Screen {
     public WalkersScreen() {
         super(Text.literal(""));
         super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
+
+        MenuKeyPressHandler.menuIsOpen = true;
 
         // don't initialize if the player is null
         if(client.player == null) {
@@ -231,7 +236,7 @@ public class WalkersScreen extends Screen {
 
         // collect current unlocked identities (or allow all for creative users)
         renderEntities.forEach((type, instance) -> {
-            if(PlayerUnlocks.has(player, type) || player.isCreative()) {
+            if(PlayerUnlocks.has(player, type) || player.isCreative() || (WalkersConfig.getInstance().autoUnlockShapes() && ((PlayerDataProvider) player).getUnlocked().isEmpty())) {
                 unlocked.add(type);
             }
         });
@@ -278,10 +283,17 @@ public class WalkersScreen extends Screen {
     }
 
     @Override
+    public void close() {
+        MenuKeyPressHandler.menuIsOpen = false;
+        super.close();
+    }
+
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(mouseY < 35) {
             return searchBar.mouseClicked(mouseX, mouseY, button) || playerButton.mouseClicked(mouseX, mouseY, button) || helpButton.mouseClicked(mouseX, mouseY, button);
         } else {
+            if (WalkersConfig.getInstance().autoUnlockShapes() && !client.player.isCreative()) client.player.closeHandledScreen();
             return super.mouseClicked(mouseX, mouseY, button);
         }
     }
