@@ -1,23 +1,14 @@
 package tocraft.walkers.api;
 
 import dev.architectury.event.EventResult;
-import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.api.event.UnlockWalkersCallback;
 import tocraft.walkers.api.variant.WalkersType;
 import tocraft.walkers.impl.PlayerDataProvider;
-import tocraft.walkers.network.NetworkHandler;
 import tocraft.walkers.network.impl.UnlockPackets;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class PlayerUnlocks {
 

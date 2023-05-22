@@ -59,6 +59,6 @@ public class PlayerWalkers {
         packet.writeUuid(changed.getUuid());
         packet.writeString(walkers == null ? "minecraft:empty" : Registry.ENTITY_TYPE.getId(walkers.getType()).toString());
         packet.writeNbt(entityTag);
-        NetworkManager.sendToPlayer(packetTarget, NetworkHandler.IDENTITY_SYNC, packet);
+        NetworkManager.sendToPlayer(packetTarget, NetworkHandler.WALKERS_SYNC, packet);
     }
 }

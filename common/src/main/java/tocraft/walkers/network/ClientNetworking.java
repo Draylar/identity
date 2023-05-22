@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ClientNetworking implements NetworkHandler {
 
     public static void registerPacketHandlers() {
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.IDENTITY_SYNC, ClientNetworking::handleWalkersSyncPacket);
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.WALKERS_SYNC, ClientNetworking::handleWalkersSyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.FAVORITE_SYNC, FavoritePackets::handleFavoriteSyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.ABILITY_SYNC, ClientNetworking::handleAbilitySyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.UNLOCK_SYNC, UnlockPackets::handleUnlockSyncPacket);
