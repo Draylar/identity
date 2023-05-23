@@ -9,8 +9,6 @@ import tocraft.walkers.network.impl.SwapPackets;
 import net.minecraft.client.MinecraftClient;
 
 public class TransformKeyPressHandler implements ClientTickEvent.Client {
-    public static boolean menuIsOpen = false;
-
     @Override
     public void tick(MinecraftClient client) {
         assert client.player != null;

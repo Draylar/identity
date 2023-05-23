@@ -11,7 +11,7 @@ import tocraft.walkers.screen.widget.EntityWidget;
 import tocraft.walkers.screen.widget.HelpWidget;
 import tocraft.walkers.screen.widget.SearchWidget;
 import tocraft.walkers.impl.PlayerDataProvider;
-import tocraft.walkers.impl.tick.MenuKeyPressHandler;
+import tocraft.walkers.impl.tick.MenuOnJoinHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
@@ -44,7 +44,7 @@ public class WalkersScreen extends Screen {
         super(Text.literal(""));
         super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
 
-        MenuKeyPressHandler.menuIsOpen = true;
+        MenuOnJoinHandler.menuIsOpen = true;
 
         // don't initialize if the player is null
         if(client.player == null) {
@@ -256,7 +256,7 @@ public class WalkersScreen extends Screen {
 
     @Override
     public void close() {
-        MenuKeyPressHandler.menuIsOpen = false;
+        MenuOnJoinHandler.menuIsOpen = false;
         super.close();
     }
 
