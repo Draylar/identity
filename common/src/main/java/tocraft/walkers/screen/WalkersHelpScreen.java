@@ -61,6 +61,6 @@ public class WalkersHelpScreen extends Screen {
     @Override
     public void close() {
         MenuKeyPressHandler.menuIsOpen = false;
-        super.close();
+        MinecraftClient.getInstance().setScreen(new WalkersScreen());
     }
 }
