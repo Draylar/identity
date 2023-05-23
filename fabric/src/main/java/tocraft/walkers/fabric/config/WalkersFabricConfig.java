@@ -95,12 +95,6 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
 
     public float flySpeed = 0.05f;
 
-    @Comment(value = "If true, the player has to kill a certain number of entities before unlocking an Walkers.")
-    public boolean killForWalkers = false;
-
-    @Comment(value = "Number of kills required to unlock an Walkers if killsForWalkers is true.")
-    public int requiredKillsForWalkers = 50;
-
     @Comment(value = "If true, players with the Warden Walkers will have a shorter view range with the darkness effect.")
     public boolean wardenIsBlinded = true;
 
@@ -156,21 +150,6 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Override
     public Map<String, Integer> getAbilityCooldownMap() {
         return abilityCooldownMap;
-    }
-
-    @Override
-    public boolean requiresKillsForWalkers() {
-        return killForWalkers;
-    }
-
-    @Override
-    public int getRequiredKillsForWalkers() {
-        return requiredKillsForWalkers;
-    }
-
-    @Override
-    public Map<String, Integer> getRequiredKillsByType() {
-        return requiredKillsByType;
     }
 
     @Override

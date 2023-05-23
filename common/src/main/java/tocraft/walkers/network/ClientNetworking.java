@@ -5,7 +5,6 @@ import tocraft.walkers.WalkersClient;
 import tocraft.walkers.api.ApplicablePacket;
 import tocraft.walkers.impl.DimensionsRefresher;
 import tocraft.walkers.impl.PlayerDataProvider;
-import tocraft.walkers.network.impl.FavoritePackets;
 import tocraft.walkers.network.impl.UnlockPackets;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
@@ -22,7 +21,6 @@ public class ClientNetworking implements NetworkHandler {
 
     public static void registerPacketHandlers() {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.WALKERS_SYNC, ClientNetworking::handleWalkersSyncPacket);
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.FAVORITE_SYNC, FavoritePackets::handleFavoriteSyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.ABILITY_SYNC, ClientNetworking::handleAbilitySyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.UNLOCK_SYNC, UnlockPackets::handleUnlockSyncPacket);
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, NetworkHandler.CONFIG_SYNC, ClientNetworking::handleConfigurationSyncPacket);

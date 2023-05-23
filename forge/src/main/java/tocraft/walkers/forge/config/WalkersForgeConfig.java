@@ -86,21 +86,6 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean requiresKillsForWalkers() {
-        return killForWalkers;
-    }
-
-    @Override
-    public int getRequiredKillsForWalkers() {
-        return requiredKillsForWalkers;
-    }
-
-    @Override
-    public Map<String, Integer> getRequiredKillsByType() {
-        return requiredKillsByType;
-    }
-
-    @Override
     public boolean shouldOverlayWalkersUnlocks() {
         return overlayWalkersUnlocks;
     }

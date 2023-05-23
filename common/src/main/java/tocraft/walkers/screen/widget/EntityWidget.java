@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.WalkersType;
-import tocraft.walkers.network.impl.FavoritePackets;
 import tocraft.walkers.network.impl.SwapPackets;
 import tocraft.walkers.screen.WalkersScreen;
 import net.minecraft.client.MinecraftClient;
@@ -25,17 +24,15 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     private final T entity;
     private final int size;
     private boolean active;
-    private boolean starred;
     private final WalkersScreen parent;
 
-    public EntityWidget(float x, float y, float width, float height, WalkersType<T> type, T entity, WalkersScreen parent, boolean starred, boolean current) {
+    public EntityWidget(float x, float y, float width, float height, WalkersType<T> type, T entity, WalkersScreen parent, boolean current) {
         super((int) x, (int) y, (int) width, (int) height, Text.of("")); // int x, int y, int width, int height, message
         this.type = type;
         this.entity = entity;
         size = (int) (25 * (1 / (Math.max(entity.getHeight(), entity.getWidth()))));
         entity.setGlowing(true);
         this.parent = parent;
-        this.starred = starred;
         this.active = current;
     }
 
@@ -49,24 +46,6 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
                 SwapPackets.sendSwapRequest(type);
                 parent.disableAll();
                 active = true;
-                if (WalkersConfig.getInstance().autoUnlockShapes()) FavoritePackets.sendFavoriteRequest(type, true);
-            }
-
-            // Add to favorites
-            else if(button == 1) {
-                boolean favorite = false;
-
-                if(starred) {
-                    starred = false;
-                } else {
-                    starred = true;
-                    favorite = true;
-                }
-
-                // Update server with information on favorite
-                FavoritePackets.sendFavoriteRequest(type, favorite);
-
-                // TODO: re-sort screen?
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -88,12 +67,6 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
         if(active) {
             RenderSystem.setShaderTexture(0, Walkers.id("textures/gui/selected.png"));
             DrawableHelper.drawTexture(matrices, x, y, getWidth(), getHeight(), 0, 0, 48, 32, 48, 32);
-        }
-
-        // Render favorite star
-        if(starred) {
-            RenderSystem.setShaderTexture(0, Walkers.id("textures/gui/star.png"));
-            DrawableHelper.drawTexture(matrices, x, y, 0, 0, 15, 15, 15, 15);
         }
 
         // Draw tooltip

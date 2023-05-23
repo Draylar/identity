@@ -1,7 +1,6 @@
 package tocraft.walkers.mixin;
 
 import tocraft.walkers.Walkers;
-import tocraft.walkers.api.WalkersGranting;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.variant.WalkersType;
 import tocraft.walkers.impl.NearbySongAccessor;
@@ -45,20 +44,6 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
 
     protected LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
-    }
-
-    @Inject(
-            method = "onDeath",
-            at = @At("RETURN")
-    )
-    private void onDeath(DamageSource source, CallbackInfo ci) {
-        Entity attacker = source.getAttacker();
-        @Nullable WalkersType<?> thisType = WalkersType.from((LivingEntity) (Object) this);
-
-        // check if attacker is a player to grant walkers
-        if (attacker instanceof PlayerEntity && thisType != null) {
-            WalkersGranting.grantByAttack((PlayerEntity) attacker, thisType);
-        }
     }
 
     @Redirect(

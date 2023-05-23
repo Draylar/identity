@@ -2,7 +2,6 @@ package tocraft.walkers.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
-import tocraft.walkers.api.PlayerFavorites;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.PlayerUnlocks;
@@ -10,7 +9,6 @@ import tocraft.walkers.api.variant.WalkersType;
 import tocraft.walkers.mixin.accessor.ScreenAccessor;
 import tocraft.walkers.screen.widget.EntityWidget;
 import tocraft.walkers.screen.widget.HelpWidget;
-import tocraft.walkers.screen.widget.PlayerWidget;
 import tocraft.walkers.screen.widget.SearchWidget;
 import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.impl.tick.MenuKeyPressHandler;
@@ -39,7 +37,6 @@ public class WalkersScreen extends Screen {
     private final Map<WalkersType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
     private final SearchWidget searchBar = createSearchBar();
-    private final PlayerWidget playerButton = createPlayerButton();
     private final ButtonWidget helpButton = createHelpButton();
     private String lastSearchContents = "";
 
@@ -57,26 +54,10 @@ public class WalkersScreen extends Screen {
 
         populateRenderEntities();
         addDrawableChild(searchBar);
-        addDrawableChild(playerButton);
         addDrawableChild(helpButton);
 
         // collect unlocked entities
         unlocked.addAll(collectUnlockedEntities(client.player));
-
-        // Some users were experiencing a crash with this sort method, so we catch potential errors here
-        // https://github.com/ToCraft/woodwalkers-mod/issues/87
-        try {
-            // sort unlocked based on favorites
-            unlocked.sort((first, second) -> {
-                if(PlayerFavorites.has(client.player, first)) {
-                    return -1;
-                }
-
-                return 1;
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         // add entity widgets
         populateEntityWidgets(client.player, unlocked);
@@ -131,7 +112,6 @@ public class WalkersScreen extends Screen {
         }
 
         searchBar.render(matrices, mouseX, mouseY, delta);
-        playerButton.render(matrices, mouseX, mouseY, delta);
         helpButton.render(matrices, mouseX, mouseY, delta);
         renderEntityWidgets(matrices, mouseX, mouseY, delta);
     }
@@ -206,7 +186,6 @@ public class WalkersScreen extends Screen {
                             type,
                             renderEntities.get(type),
                             this,
-                            PlayerFavorites.has(player, type),
                             isCurrent
                     );
 
@@ -252,22 +231,15 @@ public class WalkersScreen extends Screen {
                 20f);
     }
 
-    private PlayerWidget createPlayerButton() {
-        return new PlayerWidget(
-                getWindow().getScaledWidth() / 2f + (getWindow().getScaledWidth() / 8f) + 5,
-                7,
-                15,
-                15,
-                this);
-    }
-
     private ButtonWidget createHelpButton() {
         return new HelpWidget(
-                (int) (getWindow().getScaledWidth() / 2f - (getWindow().getScaledWidth() / 4f / 2) - 5) - 30,
+                (int) (getWindow().getScaledWidth() / 2f + (getWindow().getScaledWidth() / 8f) + 5),
                 5,
                 20,
                 20);
     }
+
+
 
     public Window getWindow() {
         return MinecraftClient.getInstance().getWindow();
@@ -291,7 +263,7 @@ public class WalkersScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(mouseY < 35) {
-            return searchBar.mouseClicked(mouseX, mouseY, button) || playerButton.mouseClicked(mouseX, mouseY, button) || helpButton.mouseClicked(mouseX, mouseY, button);
+            return searchBar.mouseClicked(mouseX, mouseY, button) || helpButton.mouseClicked(mouseX, mouseY, button);
         } else {
             if (WalkersConfig.getInstance().autoUnlockShapes() && !client.player.isCreative()) client.player.closeHandledScreen();
             return super.mouseClicked(mouseX, mouseY, button);

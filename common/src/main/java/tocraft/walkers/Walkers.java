@@ -4,7 +4,6 @@ import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.ability.AbilityRegistry;
 import tocraft.walkers.api.WalkersTickHandlers;
-import tocraft.walkers.api.PlayerFavorites;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.platform.WalkersConfig;
@@ -54,9 +53,6 @@ public class Walkers {
 
             // Sync unlocked Walkers
             PlayerUnlocks.sync(player);
-
-            // Sync favorites
-            PlayerFavorites.sync(player);
         });
     }
 

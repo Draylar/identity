@@ -18,12 +18,6 @@ public abstract class WalkersConfig {
 
     public abstract Map<String, Integer> getAbilityCooldownMap();
 
-    public abstract boolean requiresKillsForWalkers();
-
-    public abstract int getRequiredKillsForWalkers();
-
-    public abstract Map<String, Integer> getRequiredKillsByType();
-
     public abstract boolean shouldOverlayWalkersUnlocks();
 
     public abstract boolean forceChangeNew();

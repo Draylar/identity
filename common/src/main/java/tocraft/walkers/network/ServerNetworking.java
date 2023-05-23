@@ -5,7 +5,6 @@ import tocraft.walkers.ability.AbilityRegistry;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.PlayerAbilities;
-import tocraft.walkers.network.impl.FavoritePackets;
 import tocraft.walkers.network.impl.SwapPackets;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +15,6 @@ import net.minecraft.util.registry.Registry;
 public class ServerNetworking implements NetworkHandler {
 
     public static void initialize() {
-        FavoritePackets.registerFavoriteRequestHandler();
         SwapPackets.registerWalkersRequestPacketHandler();
         SwapPackets.registerWalkersRequestPacketHandler();
     }
