@@ -23,19 +23,9 @@ Forge => [Architectury API (Forge)](https://www.curseforge.com/minecraft/mc-mods
 
 With *Walkers*, you can become anything you want, friend or foe, hot or cold, fluffy or rough.
 
-![](https://i.imgur.com/zMhPFfH.png)
-
-![](https://i.imgur.com/07kHvFt.png)
-
-![](https://i.imgur.com/H7ib97N.png)
-
-![](https://i.imgur.com/TMA0PQW.png)
-
-![](https://i.imgur.com/VyzaCY3.png)
-
 ### Getting Started
 
-To unlock an *Walkers*, kill a nearby mob. You'll see a notification above your hotbar informing you of the unlock. You can then press the ` key to swap between identities.
+Once you first joined a world, a menu will ask you to choose your second shape. You can switch to it by pressing "G". Choose carefully! This choice is forever! (Still, there's a creative-only command...)
 
 ### License
 
