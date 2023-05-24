@@ -43,7 +43,6 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
     @Unique private static final String ABILITY_COOLDOWN_KEY = "AbilityCooldown";
     @Unique private final Set<WalkersType<?>> unlocked = new HashSet<>();
-    @Unique private final Set<WalkersType<?>> favorites = new HashSet<>();
     @Unique private int remainingTime = 0;
     @Unique private int abilityCooldown = 0;
     @Unique private LivingEntity walkers = null;
@@ -57,51 +56,15 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     private void readNbt(NbtCompound tag, CallbackInfo info) {
         unlocked.clear();
 
-        // This tag might exist - it contains old save data for pre-variant Identities.
-        // Each entry will be a string with an entity registry ID value.
-        NbtList unlockedIdList = tag.getList("UnlockedMorphs", NbtElement.STRING_TYPE);
-        unlockedIdList.forEach(entityRegistryID -> {
-            Identifier id = new Identifier(entityRegistryID.asString());
-            if(Registry.ENTITY_TYPE.containsId(id)) {
-                EntityType<?> type = Registry.ENTITY_TYPE.get(id);
-
-                // The variant added from the UnlockedMorphs list will default to the fallback value if needed (eg. Sheep => White)
-                // This value will be re-serialize in UnlockedIdentities list, so this is 100% for old save conversions
-                unlocked.add(new WalkersType(type));
-            } else {
-                // TODO: log reading error here
-            }
-        });
-
         // This is the new tag for saving Walkers unlock information.
         // It includes metadata for variants.
-        NbtList unlockedWalkersList = tag.getList("UnlockedIdentities", NbtElement.COMPOUND_TYPE);
+        NbtList unlockedWalkersList = tag.getList("Unlocked2ndShapes", NbtElement.COMPOUND_TYPE);
         unlockedWalkersList.forEach(compound -> {
             WalkersType<?> type = WalkersType.from((NbtCompound) compound);
             if(type != null) {
                 unlocked.add(type);
             } else {
                 // TODO: log reading error here
-            }
-        });
-
-        // Favorites - OLD TAG containing String IDs
-        favorites.clear();
-        NbtList favoriteIdList = tag.getList("FavoriteIdentities", NbtElement.STRING_TYPE);
-        favoriteIdList.forEach(registryID -> {
-            Identifier id = new Identifier(registryID.asString());
-            if(Registry.ENTITY_TYPE.containsId(id)) {
-                EntityType<?> type = Registry.ENTITY_TYPE.get(id);
-                favorites.add(new WalkersType(type));
-            }
-        });
-
-        // Favorites - NEW TAG for updated variant compound data
-        NbtList favoriteTypeList = tag.getList("FavoriteIdentitiesV2", NbtElement.STRING_TYPE);
-        favoriteTypeList.forEach(compound -> {
-            WalkersType<?> type = WalkersType.from((NbtCompound) compound);
-            if(type != null) {
-                favorites.add(type);
             }
         });
 
@@ -124,13 +87,6 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
             // This was "UnlockedMorphs" in previous versions, but it has been changed with the introduction of variants.
             tag.put("UnlockedIdentities", idList);
-        }
-
-        // Favorites
-        {
-            NbtList idList = new NbtList();
-            favorites.forEach(entityId -> idList.add(entityId.writeCompound()));
-            tag.put("FavoriteIdentitiesV2", idList);
         }
 
         // Abilities
@@ -200,18 +156,6 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     public void setUnlocked(Set<WalkersType<?>> unlocked) {
         this.unlocked.clear();
         this.unlocked.addAll(unlocked);
-    }
-
-    @Unique
-    @Override
-    public Set<WalkersType<?>> getFavorites() {
-        return favorites;
-    }
-
-    @Override
-    public void setFavorites(Set<WalkersType<?>> favorites) {
-        this.favorites.clear();
-        this.favorites.addAll(favorites);
     }
 
     @Unique

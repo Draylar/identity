@@ -38,7 +38,6 @@ public class ClientPlayerDataCacheMixin {
         if(dataCache != null && client.player != null) {
             ((PlayerDataProvider) client.player).setWalkers(dataCache.getWalkers());
             ((PlayerDataProvider) client.player).setUnlocked(dataCache.getUnlocked());
-            ((PlayerDataProvider) client.player).setFavorites(dataCache.getFavorites());
             ((PlayerDataProvider) client.player).setAbilityCooldown(dataCache.getAbilityCooldown());
             ((PlayerDataProvider) client.player).setRemainingHostilityTime(dataCache.getRemainingHostilityTime());
         }

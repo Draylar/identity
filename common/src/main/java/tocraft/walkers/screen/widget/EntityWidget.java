@@ -23,17 +23,15 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     private final WalkersType<T> type;
     private final T entity;
     private final int size;
-    private boolean active;
     private final WalkersScreen parent;
 
-    public EntityWidget(float x, float y, float width, float height, WalkersType<T> type, T entity, WalkersScreen parent, boolean current) {
+    public EntityWidget(float x, float y, float width, float height, WalkersType<T> type, T entity, WalkersScreen parent) {
         super((int) x, (int) y, (int) width, (int) height, Text.of("")); // int x, int y, int width, int height, message
         this.type = type;
         this.entity = entity;
         size = (int) (25 * (1 / (Math.max(entity.getHeight(), entity.getWidth()))));
         entity.setGlowing(true);
         this.parent = parent;
-        this.active = current;
     }
 
     @Override
@@ -42,11 +40,8 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
 
         if(bl) {
             // Update current Walkers
-            if(button == 0 || WalkersConfig.getInstance().autoUnlockShapes()) {
-                SwapPackets.sendSwapRequest(type);
-                parent.disableAll();
-                active = true;
-            }
+            SwapPackets.sendSwapRequest(type);
+            parent.disableAll();
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }

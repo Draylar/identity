@@ -185,8 +185,7 @@ public class WalkersScreen extends Screen {
                             getWindow().getScaledHeight() / 5f,
                             type,
                             renderEntities.get(type),
-                            this,
-                            isCurrent
+                            this
                     );
 
                     addDrawableChild(entityWidget);
@@ -215,7 +214,7 @@ public class WalkersScreen extends Screen {
 
         // collect current unlocked identities (or allow all for creative users)
         renderEntities.forEach((type, instance) -> {
-            if(PlayerUnlocks.has(player, type) || player.isCreative() || (WalkersConfig.getInstance().autoUnlockShapes() && ((PlayerDataProvider) player).getUnlocked().isEmpty())) {
+            if(((PlayerDataProvider) player).getUnlocked().isEmpty()) {
                 unlocked.add(type);
             }
         });
@@ -265,7 +264,7 @@ public class WalkersScreen extends Screen {
         if(mouseY < 35) {
             return searchBar.mouseClicked(mouseX, mouseY, button) || helpButton.mouseClicked(mouseX, mouseY, button);
         } else {
-            if (WalkersConfig.getInstance().autoUnlockShapes() && !client.player.isCreative()) client.player.closeHandledScreen();
+            client.player.closeHandledScreen();
             return super.mouseClicked(mouseX, mouseY, button);
         }
     }

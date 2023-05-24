@@ -21,7 +21,6 @@ public class RespawnDataCopyMixin {
         newData.setRemainingHostilityTime(oldData.getRemainingHostilityTime());
         newData.setWalkers(oldData.getWalkers());
         newData.setUnlocked(oldData.getUnlocked());
-        newData.setFavorites(oldData.getFavorites());
 
         PlayerUnlocks.sync((ServerPlayerEntity) (Object) this);
     }

@@ -34,7 +34,7 @@ public class SwapPackets {
                             @Nullable WalkersType<LivingEntity> type = WalkersType.from(entityType, variant);
                             if(type != null) {
                                 // unlock walker
-                                if (WalkersConfig.getInstance().autoUnlockShapes()) PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
+                                PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
                                 // update Player
                                 PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
                             }
