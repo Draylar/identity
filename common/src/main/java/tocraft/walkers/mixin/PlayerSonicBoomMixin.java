@@ -43,7 +43,7 @@ public abstract class PlayerSonicBoomMixin extends LivingEntity implements Sonic
 
     @Override
     public void walkers$ability_startSonicBoom() {
-        @Nullable LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
+        @Nullable LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) (Object) this);
         if(walkers instanceof WardenEntity) {
             world.sendEntityStatus(this, EntityStatuses.SONIC_BOOM);
             walkers$ability_wardenBoomDelay = 40;

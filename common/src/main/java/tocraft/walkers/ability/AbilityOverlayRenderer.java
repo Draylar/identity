@@ -25,7 +25,7 @@ public class AbilityOverlayRenderer {
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
             Window window = client.getWindow();
-            LivingEntity walkers = PlayerWalkers.getWalkers(player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
             if(walkers == null) {
                 return;

@@ -51,7 +51,7 @@ public class ClientNetworking implements NetworkHandler {
 
                 // set walkers to null (no walkers) if the entity id is "minecraft:empty"
                 if(id.equals("minecraft:empty")) {
-                    data.setWalkers(null);
+                    data.setCurrentShape(null);
                     ((DimensionsRefresher) syncTarget).walkers_refreshDimensions();
                     return;
                 }
@@ -61,12 +61,12 @@ public class ClientNetworking implements NetworkHandler {
                     entityNbt.putString("id", id);
                     Optional<EntityType<?>> type = EntityType.fromNbt(entityNbt);
                     if(type.isPresent()) {
-                        LivingEntity walkers = data.getWalkers();
+                        LivingEntity walkers = data.getCurrentShape();
 
                         // ensure entity data exists
                         if(walkers == null || !type.get().equals(walkers.getType())) {
                             walkers = (LivingEntity) type.get().create(syncTarget.world);
-                            data.setWalkers(walkers);
+                            data.setCurrentShape(walkers);
 
                             // refresh player dimensions/hitbox on client
                             ((DimensionsRefresher) syncTarget).walkers_refreshDimensions();

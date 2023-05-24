@@ -39,13 +39,13 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     )
     private void revoke2ndShapesOnDeath(DamageSource source, CallbackInfo ci) {
         if(WalkersConfig.getInstance().revoke2ndShapesOnDeath() && !this.isCreative() && !this.isSpectator()) {
-            LivingEntity entity = PlayerWalkers.getWalkers(this);
+            LivingEntity entity = PlayerWalkers.getCurrentShape(this);
 
             // revoke the walkers current equipped by the player
             if(entity != null) {
                 EntityType<?> type = entity.getType();
-                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this, PlayerWalkers.getWalkersType(this));
-                PlayerWalkers.updateWalkers((ServerPlayerEntity) (Object) this, null,null);
+                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this, PlayerWalkers.getCurrentShapeType(this));
+                PlayerWalkers.updateShapes((ServerPlayerEntity) (Object) this, null,null);
 
                 // todo: this option might be server-only given that this method isn't[?] called on the client
                 // send revoke message to player if they aren't in creative and the config option is on

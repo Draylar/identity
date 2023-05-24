@@ -23,7 +23,7 @@ public abstract class VillagerEntityMixin {
             cancellable = true
     )
     private void onInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        LivingEntity walkers = PlayerWalkers.getWalkers(player);
+        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
         if(walkers != null && walkers.isUndead()) {
             this.sayNo();

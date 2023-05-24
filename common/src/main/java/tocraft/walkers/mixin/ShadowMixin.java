@@ -36,7 +36,7 @@ public abstract class ShadowMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(DDD)D", ordinal = 0), index = 7)
     private static float adjustShadowSize(float originalSize) {
         if(walkers_shadowEntity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getWalkers(player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
             if(walkers != null) {
                 EntityRenderer<?> r = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(walkers);

@@ -16,8 +16,8 @@ public class PlayerUnlocks {
         PlayerDataProvider provider = (PlayerDataProvider) player;
         EventResult unlock = UnlockWalkersCallback.EVENT.invoker().unlock(player, granted);
 
-        if(unlock.asMinecraft() != ActionResult.FAIL && !provider.getUnlocked().contains(granted)) {
-            provider.getUnlocked().add(granted);
+        if(unlock.asMinecraft() != ActionResult.FAIL && !provider.get2ndShape().contains(granted)) {
+            provider.get2ndShape().add(granted);
             sync(player);
             PlayerAbilities.sync(player); // TODO: ???
             return true;
@@ -27,14 +27,14 @@ public class PlayerUnlocks {
     }
 
     public static boolean has(PlayerEntity player, WalkersType type) {
-        return type.getEntityType().equals(EntityType.PLAYER) || (((PlayerDataProvider) player)).getUnlocked().contains(type);
+        return type.getEntityType().equals(EntityType.PLAYER) || (((PlayerDataProvider) player)).get2ndShape().contains(type);
     }
 
     public static void revoke(ServerPlayerEntity player, WalkersType type) {
         PlayerDataProvider provider = (PlayerDataProvider) player;
 
-        if(provider.getUnlocked().contains(type)) {
-            provider.getUnlocked().remove(type);
+        if(provider.get2ndShape().contains(type)) {
+            provider.get2ndShape().remove(type);
             sync(player);
             PlayerAbilities.sync(player); // TODO: ???
         }

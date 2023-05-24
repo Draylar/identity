@@ -60,7 +60,7 @@ public class Walkers {
     }
 
     public static boolean hasFlyingPermissions(ServerPlayerEntity player) {
-        LivingEntity walkers = PlayerWalkers.getWalkers(player);
+        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
         if(walkers != null && WalkersConfig.getInstance().enableFlight() && walkers.getType().isIn(WalkersEntityTags.FLYING)) {
             List<String> requiredAdvancements = WalkersConfig.getInstance().advancementsRequiredForFlight();

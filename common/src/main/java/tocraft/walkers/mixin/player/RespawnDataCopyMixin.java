@@ -19,8 +19,8 @@ public class RespawnDataCopyMixin {
         // Transfer data from the old ServerPlayerEntity -> new ServerPlayerEntity
         newData.setAbilityCooldown(oldData.getAbilityCooldown());
         newData.setRemainingHostilityTime(oldData.getRemainingHostilityTime());
-        newData.setWalkers(oldData.getWalkers());
-        newData.setUnlocked(oldData.getUnlocked());
+        newData.setCurrentShape(oldData.getCurrentShape());
+        newData.set2ndShape(oldData.get2ndShape());
 
         PlayerUnlocks.sync((ServerPlayerEntity) (Object) this);
     }

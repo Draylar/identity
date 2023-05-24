@@ -24,7 +24,7 @@ public class ServerNetworking implements NetworkHandler {
             PlayerEntity player = context.getPlayer();
 
             context.getPlayer().getServer().execute(() -> {
-                LivingEntity walkers = PlayerWalkers.getWalkers(player);
+                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
                 // Verify we should use ability for the player's current walkers
                 if(walkers != null) {

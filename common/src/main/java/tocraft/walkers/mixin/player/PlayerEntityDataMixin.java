@@ -148,12 +148,12 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Unique
     @Override
-    public Set<WalkersType<?>> getUnlocked() {
+    public Set<WalkersType<?>> get2ndShape() {
         return unlocked;
     }
 
     @Override
-    public void setUnlocked(Set<WalkersType<?>> unlocked) {
+    public void set2ndShape(Set<WalkersType<?>> unlocked) {
         this.unlocked.clear();
         this.unlocked.addAll(unlocked);
     }
@@ -184,24 +184,24 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Unique
     @Override
-    public LivingEntity getWalkers() {
+    public LivingEntity getCurrentShape() {
         return walkers;
     }
 
     @Override
-    public WalkersType<?> getWalkersType() {
+    public WalkersType<?> getCurrentShapeType() {
         return walkersType;
     }
 
     @Unique
     @Override
-    public void setWalkers(LivingEntity walkers) {
+    public void setCurrentShape(LivingEntity walkers) {
         this.walkers = walkers;
     }
 
     @Unique
     @Override
-    public boolean updateWalkers(@Nullable LivingEntity walkers) {
+    public boolean updateShapes(@Nullable LivingEntity walkers) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         EventResult result = WalkersSwapCallback.EVENT.invoker().swap((ServerPlayerEntity) player, walkers);
         if(result.isFalse()) {

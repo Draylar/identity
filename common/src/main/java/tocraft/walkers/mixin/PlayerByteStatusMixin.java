@@ -16,7 +16,7 @@ public class PlayerByteStatusMixin {
     // When a player receives a handleStatus byte, pass it on to their Walkers.
     @Inject(method = "handleStatus", at = @At("RETURN"))
     private void walkers$passByteStatus(byte status, CallbackInfo ci) {
-        @Nullable LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
+        @Nullable LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) (Object) this);
         if(walkers != null) {
             walkers.handleStatus(status);
         }

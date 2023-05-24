@@ -27,7 +27,7 @@ public abstract class PlayerEntityTickMixin extends LivingEntity {
     @Inject(method = "tick", at = @At("HEAD"))
     private void serverTick(CallbackInfo info) {
         // Tick WalkersTickHandlers on the client & server.
-        @Nullable LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
+        @Nullable LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) (Object) this);
         if(walkers != null) {
             @Nullable WalkersTickHandler handler = WalkersTickHandlers.getHandlers().get(walkers.getType());
             if(handler != null) {

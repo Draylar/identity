@@ -37,7 +37,7 @@ public abstract class LivingEntityFoodMixin extends Entity {
             at = @At(value = "INVOKE", target = "Ljava/util/Iterator;hasNext()Z"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void removeFleshHungerForWolves(ItemStack stack, World world, LivingEntity targetEntity, CallbackInfo ci, Item item) {
         if((LivingEntity) (Object) this instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getWalkers(player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
             // If this player is a Wolf and the item they are eating is an item wolves are immune to, cancel the method.
             if(walkers instanceof WolfEntity) {

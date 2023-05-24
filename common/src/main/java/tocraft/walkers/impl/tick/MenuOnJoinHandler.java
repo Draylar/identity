@@ -13,7 +13,7 @@ public class MenuOnJoinHandler implements ClientTickEvent.Client {
         assert client.player != null;
         if (!menuIsOpen && client.world != null)
             if (!(MinecraftClient.getInstance().currentScreen instanceof WalkersScreen))
-                if(((PlayerDataProvider) client.player).getUnlocked().isEmpty()) {
+                if(((PlayerDataProvider) client.player).get2ndShape().isEmpty()) {
                     MinecraftClient.getInstance().setScreen(new WalkersScreen());
                 }
     }

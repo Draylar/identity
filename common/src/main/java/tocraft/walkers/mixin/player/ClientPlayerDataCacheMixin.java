@@ -36,8 +36,8 @@ public class ClientPlayerDataCacheMixin {
     @Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getRegistryKey()Lnet/minecraft/util/registry/RegistryKey;", ordinal = 1))
     private void afterPlayerReset(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
         if(dataCache != null && client.player != null) {
-            ((PlayerDataProvider) client.player).setWalkers(dataCache.getWalkers());
-            ((PlayerDataProvider) client.player).setUnlocked(dataCache.getUnlocked());
+            ((PlayerDataProvider) client.player).setCurrentShape(dataCache.getCurrentShape());
+            ((PlayerDataProvider) client.player).set2ndShape(dataCache.get2ndShape());
             ((PlayerDataProvider) client.player).setAbilityCooldown(dataCache.getAbilityCooldown());
             ((PlayerDataProvider) client.player).setRemainingHostilityTime(dataCache.getRemainingHostilityTime());
         }

@@ -21,7 +21,7 @@ public class BowItemMixin {
     @Inject(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void flameArrows(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfo ci, PlayerEntity playerEntity, boolean bl, ItemStack itemStack, int i, float f, boolean bl2, ArrowItem arrowItem, PersistentProjectileEntity arrow) {
         if(user instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getWalkers(player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
             if(walkers instanceof WitherSkeletonEntity) {
                 arrow.setOnFireFor(100);
             }

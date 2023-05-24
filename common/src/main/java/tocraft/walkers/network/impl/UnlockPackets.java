@@ -22,8 +22,8 @@ public class UnlockPackets {
             NbtList list = nbt.getList(UNLOCK_KEY, NbtElement.COMPOUND_TYPE);
 
             ClientNetworking.runOrQueue(context, player -> {
-                ((PlayerDataProvider) player).getUnlocked().clear();
-                list.forEach(idTag -> ((PlayerDataProvider) player).getUnlocked().add(WalkersType.from((NbtCompound) idTag)));
+                ((PlayerDataProvider) player).get2ndShape().clear();
+                list.forEach(idTag -> ((PlayerDataProvider) player).get2ndShape().add(WalkersType.from((NbtCompound) idTag)));
             });
         }
     }
@@ -34,7 +34,7 @@ public class UnlockPackets {
         // Serialize unlocked to tag
         NbtCompound compound = new NbtCompound();
         NbtList idList = new NbtList();
-        ((PlayerDataProvider) player).getUnlocked().forEach(type -> idList.add(type.writeCompound()));
+        ((PlayerDataProvider) player).get2ndShape().forEach(type -> idList.add(type.writeCompound()));
         compound.put(UNLOCK_KEY, idList);
         packet.writeNbt(compound);
 

@@ -33,7 +33,7 @@ public abstract class WolfEntityMixin extends TameableEntity {
                 return false;
             }
 
-            LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) player);
 
             // wolves should ignore players that look like their prey if they have an owner,
             // unless the config option is turned to true

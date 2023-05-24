@@ -26,7 +26,7 @@ public class HoglinBrainMixin {
 
             // Check if Hoglin target is player
             if(target instanceof PlayerEntity player) {
-                LivingEntity walkers = PlayerWalkers.getWalkers(player);
+                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
                 // Ensure player walkers is valid
                 if(walkers != null) {

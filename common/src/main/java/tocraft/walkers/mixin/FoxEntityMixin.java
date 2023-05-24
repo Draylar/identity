@@ -40,7 +40,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
             boolean isWalkersPlayer = false;
 
             if(entity instanceof PlayerEntity player) {
-                LivingEntity walkers = PlayerWalkers.getWalkers(player);
+                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
                 if(walkers instanceof FoxEntity) {
                     isWalkersPlayer = true;
                 }
@@ -63,7 +63,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
 
             // foxes can target players if their walkers is in the fox_prey tag, or if they are an entity that extends FishEntity
             // todo: add baby turtle targeting
-            LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) player);
             return walkers != null && walkers.getType().isIn(WalkersEntityTags.FOX_PREY) || walkers instanceof FishEntity;
         }));
     }

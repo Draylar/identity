@@ -30,7 +30,7 @@ public abstract class CreeperEntityMixin extends HostileEntity {
                 PlayerEntity.class,
                 entity -> {
                     if (entity instanceof PlayerEntity player) {
-                        LivingEntity walkers = PlayerWalkers.getWalkers(player);
+                        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
                         return walkers != null && walkers.getType().equals(EntityType.OCELOT);
                     }
 

@@ -33,7 +33,7 @@ public class PlayerManagerMixin {
             at = @At("RETURN")
     )
     private void onRespawn(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
-        LivingEntity walkers = PlayerWalkers.getWalkers(player);
+        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
         // refresh entity hitbox dimensions after death
         ((DimensionsRefresher) player).walkers_refreshDimensions();

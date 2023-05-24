@@ -27,14 +27,14 @@ public class SwapPackets {
                 context.getPlayer().getServer().execute(() -> {
                     // player type shouldn't be sent, but we still check regardless
                     if(entityType.equals(EntityType.PLAYER)) {
-                        PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), null, null);
+                        PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
                     } else {
                         @Nullable WalkersType<LivingEntity> type = WalkersType.from(entityType, variant);
                         if(type != null) {
                             // unlock walker
                             PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
                             // update Player
-                            PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
+                            PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
                         }
                     }
                     
@@ -44,7 +44,7 @@ public class SwapPackets {
             } else {
                 // Swap back to player if server allows it
                 context.getPlayer().getServer().execute(() -> {
-                    PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), null, null);
+                    PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
 
                     context.getPlayer().calculateDimensions();
                 });

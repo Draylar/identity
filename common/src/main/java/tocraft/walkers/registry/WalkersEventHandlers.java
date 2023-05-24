@@ -31,7 +31,7 @@ public class WalkersEventHandlers {
     public static void registerRavagerRidingHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
             if(entity instanceof RavagerEntity) {
-                LivingEntity walkers = PlayerWalkers.getWalkers(player);
+                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
                 if(walkers != null) {
                     if(walkers.getType().isIn(WalkersEntityTags.RAVAGER_RIDING)) {
                         player.startRiding(entity);

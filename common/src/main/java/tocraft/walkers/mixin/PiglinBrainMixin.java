@@ -26,7 +26,7 @@ public class PiglinBrainMixin {
         boolean shouldAttack = cir.getReturnValue();
 
         if(shouldAttack && target instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getWalkers(player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
             boolean hasHostility = PlayerHostility.hasHostility(player);
 
             if(walkers != null) {

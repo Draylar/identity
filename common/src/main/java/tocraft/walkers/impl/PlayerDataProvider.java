@@ -8,8 +8,8 @@ import java.util.Set;
 
 public interface PlayerDataProvider {
 
-    Set<WalkersType<?>> getUnlocked();
-    void setUnlocked(Set<WalkersType<?>> unlocked);
+    Set<WalkersType<?>> get2ndShape();
+    void set2ndShape(Set<WalkersType<?>> unlocked);
 
     int getRemainingHostilityTime();
     void setRemainingHostilityTime(int max);
@@ -17,9 +17,9 @@ public interface PlayerDataProvider {
     int getAbilityCooldown();
     void setAbilityCooldown(int cooldown);
 
-    LivingEntity getWalkers();
-    void setWalkers(@Nullable LivingEntity walkers);
-    boolean updateWalkers(@Nullable LivingEntity walkers);
+    LivingEntity getCurrentShape();
+    void setCurrentShape(@Nullable LivingEntity walkers);
+    boolean updateShapes(@Nullable LivingEntity walkers);
 
-    WalkersType<?> getWalkersType();
+    WalkersType<?> getCurrentShapeType();
 }

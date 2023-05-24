@@ -21,12 +21,12 @@ public class PlayerWalkers {
      *
      * @return the current {@link LivingEntity} walkers associated with this component's player owner, or null if they have no walkers equipped
      */
-    public static LivingEntity getWalkers(PlayerEntity player) {
-        return ((PlayerDataProvider) player).getWalkers();
+    public static LivingEntity getCurrentShape(PlayerEntity player) {
+        return ((PlayerDataProvider) player).getCurrentShape();
     }
 
-    public static WalkersType<?> getWalkersType(PlayerEntity player) {
-        return ((PlayerDataProvider) player).getWalkersType();
+    public static WalkersType<?> getCurrentShapeType(PlayerEntity player) {
+        return ((PlayerDataProvider) player).getCurrentShapeType();
     }
 
     /**
@@ -37,8 +37,8 @@ public class PlayerWalkers {
      *
      * @param entity {@link LivingEntity} new walkers for this component, or null to clear
      */
-    public static boolean updateWalkers(ServerPlayerEntity player, WalkersType<?> type, LivingEntity entity) {
-        return ((PlayerDataProvider) player).updateWalkers(entity);
+    public static boolean updateShapes(ServerPlayerEntity player, WalkersType<?> type, LivingEntity entity) {
+        return ((PlayerDataProvider) player).updateShapes(entity);
     }
 
     public static void sync(ServerPlayerEntity player) {
@@ -50,7 +50,7 @@ public class PlayerWalkers {
         NbtCompound entityTag = new NbtCompound();
 
         // serialize current walkers data to tag if it exists
-        LivingEntity walkers = getWalkers(changed);
+        LivingEntity walkers = getCurrentShape(changed);
         if(walkers != null) {
             walkers.writeNbt(entityTag);
         }

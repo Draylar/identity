@@ -17,7 +17,7 @@ public class AbilityKeyPressHandler implements ClientTickEvent.Client {
         if(WalkersClient.ABILITY_KEY.wasPressed()) {
             // TODO: maybe the check should be on the server to allow for ability extension mods?
             // Only send the ability packet if the walkers equipped by the player has one
-            LivingEntity walkers = PlayerWalkers.getWalkers(client.player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(client.player);
 
             if(walkers != null) {
                 if(AbilityRegistry.has(walkers.getType())) {

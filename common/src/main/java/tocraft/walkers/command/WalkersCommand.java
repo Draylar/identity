@@ -134,9 +134,9 @@ public class WalkersCommand {
 
     private static int show2ndShape(ServerPlayerEntity source, ServerPlayerEntity player) {
 
-        if(!((PlayerDataProvider) player).getUnlocked().isEmpty()) {
+        if(!((PlayerDataProvider) player).get2ndShape().isEmpty()) {
             if(WalkersConfig.getInstance().logCommands()) {
-                ((PlayerDataProvider) player).getUnlocked().forEach(unlocked -> {
+                ((PlayerDataProvider) player).get2ndShape().forEach(unlocked -> {
                     source.sendMessage(Text.translatable("walkers.show2ndShapeNot_positive", player.getDisplayName(), Text.translatable(unlocked.getEntityType().getTranslationKey())), true);
                 });
             }
@@ -167,7 +167,7 @@ public class WalkersCommand {
         }
 
         if(!PlayerUnlocks.has(player, type)) {
-            ((PlayerDataProvider) player).getUnlocked().forEach(unlocked -> {
+            ((PlayerDataProvider) player).get2ndShape().forEach(unlocked -> {
                 PlayerUnlocks.revoke(player, unlocked);
             });
             boolean result = PlayerUnlocks.unlock(player, type);
@@ -200,7 +200,7 @@ public class WalkersCommand {
             @Nullable WalkersType<?> defaultType = WalkersType.from(living);
 
             if(defaultType != null) {
-                boolean result = PlayerWalkers.updateWalkers(player, defaultType, (LivingEntity) created);
+                boolean result = PlayerWalkers.updateShapes(player, defaultType, (LivingEntity) created);
                 if(result && WalkersConfig.getInstance().logCommands()) {
                     source.sendMessage(Text.translatable("walkers.equip_success", Text.translatable(created.getType().getTranslationKey()), player.getDisplayName()), true);
                 }
@@ -209,7 +209,7 @@ public class WalkersCommand {
     }
 
     private static void unequip(ServerPlayerEntity source, ServerPlayerEntity player) {
-        boolean result = PlayerWalkers.updateWalkers(player, null, null);
+        boolean result = PlayerWalkers.updateShapes(player, null, null);
 
         if(result && WalkersConfig.getInstance().logCommands()) {
             source.sendMessage(Text.translatable("walkers.unequip_success", player.getDisplayName()), false);

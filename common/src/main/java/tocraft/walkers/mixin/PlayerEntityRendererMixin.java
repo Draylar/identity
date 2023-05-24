@@ -55,7 +55,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     )
     private void redirectRender(LivingEntityRenderer renderer, LivingEntity player, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
-        LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) player);
+        LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) player);
 
         // sync player data to walkers walkers
         if(walkers != null) {
@@ -175,7 +175,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             cancellable = true
     )
     private void modifyPositionOffset(AbstractClientPlayerEntity player, float f, CallbackInfoReturnable<Vec3d> cir) {
-        LivingEntity walkers = PlayerWalkers.getWalkers(player);
+        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
         if(walkers != null) {
             if(walkers instanceof TameableEntity) {
@@ -188,7 +188,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             method = "renderArm",
             at = @At("HEAD"), cancellable = true)
     private void onRenderArm(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player, ModelPart arm, ModelPart sleeve, CallbackInfo ci) {
-        LivingEntity walkers = PlayerWalkers.getWalkers(player);
+        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
         // sync player data to walkers walkers
         if(walkers != null) {

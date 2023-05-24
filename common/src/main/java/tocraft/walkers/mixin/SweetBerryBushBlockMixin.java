@@ -25,7 +25,7 @@ public class SweetBerryBushBlockMixin {
     )
     private void onDamage(BlockState state, World world, BlockPos pos, Entity entity, CallbackInfo ci) {
         if(entity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getWalkers(player);
+            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
 
             // Cancel damage if the player's walkers is a fox
             if(walkers instanceof FoxEntity || walkers instanceof BeeEntity) {

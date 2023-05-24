@@ -14,8 +14,8 @@ public class TransformKeyPressHandler implements ClientTickEvent.Client {
         assert client.player != null;
 
         if(WalkersClient.TRANSFORM_KEY.wasPressed()) {
-            for (WalkersType<?> unlocked : ((PlayerDataProvider) client.player).getUnlocked()) {
-                if (PlayerWalkers.getWalkers(client.player) == null)
+            for (WalkersType<?> unlocked : ((PlayerDataProvider) client.player).get2ndShape()) {
+                if (PlayerWalkers.getCurrentShape(client.player) == null)
                     SwapPackets.sendSwapRequest(unlocked);
                 else
                     SwapPackets.sendSwapRequest(null);
