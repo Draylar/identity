@@ -167,9 +167,7 @@ public class WalkersCommand {
         }
 
         if(!PlayerUnlocks.has(player, type)) {
-            ((PlayerDataProvider) player).get2ndShape().forEach(unlocked -> {
-                PlayerUnlocks.revoke(player, unlocked);
-            });
+            PlayerUnlocks.revoke(player);
             boolean result = PlayerUnlocks.unlock(player, type);
 
             if(result && WalkersConfig.getInstance().logCommands()) {

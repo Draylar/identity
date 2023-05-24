@@ -44,7 +44,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             // revoke the walkers current equipped by the player
             if(entity != null) {
                 EntityType<?> type = entity.getType();
-                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this, PlayerWalkers.getCurrentShapeType(this));
+                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this);
                 PlayerWalkers.updateShapes((ServerPlayerEntity) (Object) this, null,null);
 
                 // todo: this option might be server-only given that this method isn't[?] called on the client
