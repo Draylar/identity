@@ -28,8 +28,8 @@ public abstract class ActiveTargetGoalMixin extends TrackTargetGoalMixin {
             at = @At("HEAD"),
             cancellable = true
     )
-    private void ignoreMorphedPlayers(CallbackInfo ci) {
-        if (WalkersConfig.getInstance().hostilesIgnoreHostileWalkersPlayer() && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity) {
+    private void ignoreShapedPlayers(CallbackInfo ci) {
+        if (WalkersConfig.getInstance().hostilesIgnoreHostileShapedPlayer() && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) this.targetEntity;
             LivingEntity walkers = PlayerWalkers.getWalkers(player);
 
@@ -63,7 +63,7 @@ public abstract class ActiveTargetGoalMixin extends TrackTargetGoalMixin {
     @Override
     protected void walkers_shouldContinue(CallbackInfoReturnable<Boolean> cir) {
         // check cancelling for hostiles
-        if(WalkersConfig.getInstance().hostilesIgnoreHostileWalkersPlayer() && WalkersConfig.getInstance().hostilesForgetNewHostileWalkersPlayer() && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity player) {
+        if(WalkersConfig.getInstance().hostilesIgnoreHostileShapedPlayer() && WalkersConfig.getInstance().hostilesForgetNewHostileShapedPlayer() && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity player) {
             LivingEntity walkers = PlayerWalkers.getWalkers(player);
 
             if (walkers != null) {

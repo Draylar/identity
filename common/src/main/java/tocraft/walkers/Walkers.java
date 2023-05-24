@@ -47,7 +47,6 @@ public class Walkers {
         PlayerEvent.PLAYER_JOIN.register(player -> {
             // Send config sync packet
             PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-            packet.writeBoolean(WalkersConfig.getInstance().enableClientSwapMenu());
             packet.writeBoolean(WalkersConfig.getInstance().showPlayerNametag());
             NetworkManager.sendToPlayer(player, NetworkHandler.CONFIG_SYNC, packet);
 

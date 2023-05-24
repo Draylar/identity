@@ -27,7 +27,7 @@ public class VillagerHostilesSensorMixin {
     private void checkHostileWalkers(LivingEntity entity, CallbackInfoReturnable<Boolean> cir) {
         if(entity instanceof PlayerEntity player) {
             // check if we should be performing this from config
-            if(WalkersConfig.getInstance().villagersRunFromShapes()) {
+            if(WalkersConfig.getInstance().villagersRunFrom2ndShapes()) {
                 LivingEntity walkers = PlayerWalkers.getWalkers(player);
 
                 // check if walkers is valid & if it is a type villagers run from

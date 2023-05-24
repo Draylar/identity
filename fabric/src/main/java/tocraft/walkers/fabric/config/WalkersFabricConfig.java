@@ -14,13 +14,13 @@ import java.util.Map;
 public class WalkersFabricConfig extends WalkersConfig implements Config {
 
     @Comment(value = "Whether an overlay message appears above the hotbar when a new walkers is unlocked.")
-    public boolean overlayWalkersUnlocks = true;
+    public boolean overlayShapesUnlocks = true;
 
     @Comment(value = "Whether an overlay message appears above the hotbar when a new walkers is revoked.")
-    public boolean overlayWalkersRevokes = true;
+    public boolean overlay2ndShapesRevokes = true;
 
     @Comment(value = "Whether a player's equipped walkers is revoked on death.")
-    public boolean revokeWalkersOnDeath = false;
+    public boolean revoke2ndShapesOnDeath = false;
 
     @Comment(value = "Whether shapes equip the items (swords, items, tools) held by the underlying player.")
     public boolean shapesEquipItems = true;
@@ -29,25 +29,25 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     public boolean shapesEquipArmor = true;
 
     @Comment(value = "Whether hostile mobs ignore players with hostile mob shapes.")
-    public boolean hostilesIgnoreHostileWalkersPlayer = true;
+    public boolean hostilesIgnoreHostileShapedPlayer = true;
 
     @Comment(value = "Whether a hostile mob will stop targeting you after switching to a hostile mob walkers.")
-    public boolean hostilesForgetNewHostileWalkersPlayer = false;
+    public boolean hostilesForgetNewHostileShapedPlayer = false;
 
     @Comment(value = "Whether Wolves will attack Players with an walkers that the Wolf would normally hunt (Sheep, Fox, Skeleton).")
-    public boolean wolvesAttackWalkersPrey = true;
+    public boolean wolvesAttack2ndShapedPrey = true;
 
     @Comment(value = "Whether owned Wolves will attack Players with an walkers that the Wolf would normally hunt (Sheep, Fox, Skeleton).")
-    public boolean ownedWolvesAttackWalkersPrey = false;
+    public boolean ownedwolvesAttack2ndShapedPrey = false;
 
     @Comment(value = "Whether Villagers will run from Players morphed as shapes villagers normally run from (Zombies).")
-    public boolean villagersRunFromShapes = true;
+    public boolean villagersRunFrom2ndShapes = true;
 
     @Comment(value = "Whether Foxes will attack Players with an walkers that the Fox would normally hunt (Fish, Chicken).")
-    public boolean foxesAttackWalkersPrey = true;
+    public boolean foxesAttack2ndShapedPrey = true;
 
     @Comment(value = "Whether Walkers sounds take priority over Player Sounds (eg. Blaze hurt sound when hit).")
-    public boolean useWalkersSounds = true;
+    public boolean useShapeSounds = true;
 
     @Comment(value = "Whether disguised players should randomly emit the ambient sound of their Walkers.")
     public boolean playAmbientSounds = true;
@@ -70,25 +70,12 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Comment(value = "The maximum value of scaling health. Useful for not giving players 300 HP when they turn into a wither.")
     public int maxHealth = 40;
 
-    @Syncing
-    @Comment(value = "If set to false, only operators can switch shapes through the ` menu. Note that this config option is synced from S2C when a client joins the game, but a client can still open the menu if they have a modified version of Walkers.")
-    public boolean enableClientSwapMenu = true;
-
-    @Comment(value = "If set to false, only operators can switch shapes. Used on the server; guaranteed to be authoritative.")
-    public boolean enableSwaps = true;
-
     @Comment(value = "In blocks, how far can the Enderman ability teleport?")
     public int endermanAbilityTeleportDistance = 32;
 
     @Syncing
     @Comment(value = "Should player nametags render above players disguised with an walkers? Note that the server is the authority for this config option.")
     public boolean showPlayerNametag = false;
-
-    @Comment(value = "If true, players that gain a NEW Walkers will be forcibly changed into it on kill.")
-    public boolean forceChangeNew = false;
-
-    @Comment(value = "If true, players will be forcibly changed into any entity they kill. The above option, forceChangeNew, only applies to new unlocks.")
-    public boolean forceChangeAlways = false;
 
     @Comment(value = "If true, /walkers commands will send feedback in the action bar.")
     public boolean logCommands = true;
@@ -100,15 +87,6 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
 
     @Comment(value = "If true, players with the Warden Walkers will blind other nearby players.")
     public boolean wardenBlindsNearby = true;
-
-    @Comment(value = "An override map for requiredKillsForWalkers for specific entity types.")
-    public Map<String, Integer> requiredKillsByType = new HashMap<>() {
-        {
-            put("minecraft:ender_dragon", 1);
-            put("minecraft:elder_guardian", 1);
-            put("minecraft:wither", 1);
-        }
-    };
 
     public Map<String, Integer> abilityCooldownMap = new HashMap<>() {
         {
@@ -150,18 +128,8 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     }
 
     @Override
-    public boolean shouldOverlayWalkersUnlocks() {
-        return overlayWalkersUnlocks;
-    }
-
-    @Override
-    public boolean forceChangeNew() {
-        return forceChangeNew;
-    }
-
-    @Override
-    public boolean forceChangeAlways() {
-        return forceChangeAlways;
+    public boolean shouldOverlayShapesUnlocks() {
+        return overlayShapesUnlocks;
     }
 
     @Override
@@ -170,33 +138,28 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     }
 
     @Override
-    public boolean enableClientSwapMenu() {
-        return enableClientSwapMenu;
+    public boolean foxesAttack2ndShapedPrey() {
+        return foxesAttack2ndShapedPrey;
     }
 
     @Override
-    public boolean wolvesAttackWalkersPrey() {
-        return wolvesAttackWalkersPrey;
+    public boolean ownedwolvesAttack2ndShapedPrey() {
+        return ownedwolvesAttack2ndShapedPrey;
     }
 
     @Override
-    public boolean ownedWolvesAttackWalkersPrey() {
-        return ownedWolvesAttackWalkersPrey;
+    public boolean villagersRunFrom2ndShapes() {
+        return villagersRunFrom2ndShapes;
     }
 
     @Override
-    public boolean villagersRunFromShapes() {
-        return villagersRunFromShapes;
+    public boolean revoke2ndShapesOnDeath() {
+        return revoke2ndShapesOnDeath;
     }
 
     @Override
-    public boolean revokeWalkersOnDeath() {
-        return revokeWalkersOnDeath;
-    }
-
-    @Override
-    public boolean overlayWalkersRevokes() {
-        return overlayWalkersRevokes;
+    public boolean overlay2ndShapesRevokes() {
+        return overlay2ndShapesRevokes;
     }
 
     @Override
@@ -230,18 +193,18 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     }
 
     @Override
-    public boolean foxesAttackWalkersPrey() {
-        return foxesAttackWalkersPrey;
+    public boolean wolvesAttack2ndShapedPrey() {
+        return wolvesAttack2ndShapedPrey;
     }
 
     @Override
-    public boolean hostilesForgetNewHostileWalkersPlayer() {
-        return hostilesForgetNewHostileWalkersPlayer;
+    public boolean hostilesForgetNewHostileShapedPlayer() {
+        return hostilesForgetNewHostileShapedPlayer;
     }
 
     @Override
-    public boolean hostilesIgnoreHostileWalkersPlayer() {
-        return hostilesIgnoreHostileWalkersPlayer;
+    public boolean hostilesIgnoreHostileShapedPlayer() {
+        return hostilesIgnoreHostileShapedPlayer;
     }
 
     @Override
@@ -250,8 +213,8 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     }
 
     @Override
-    public boolean useWalkersSounds() {
-        return useWalkersSounds;
+    public boolean useShapeSounds() {
+        return useShapeSounds;
     }
 
     @Override
@@ -262,11 +225,6 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Override
     public double endermanAbilityTeleportDistance() {
         return endermanAbilityTeleportDistance;
-    }
-
-    @Override
-    public boolean enableSwaps() {
-        return enableSwaps;
     }
 
     @Override

@@ -57,7 +57,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
     private void addPlayerTarget(CallbackInfo ci) {
         this.targetSelector.add(7, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, false, false, player -> {
             // ensure foxes can attack players with an walkers similar to their normal prey
-            if(!WalkersConfig.getInstance().foxesAttackWalkersPrey()) {
+            if(!WalkersConfig.getInstance().foxesAttack2ndShapedPrey()) {
                 return false;
             }
 

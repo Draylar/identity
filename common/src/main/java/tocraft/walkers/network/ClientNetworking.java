@@ -87,11 +87,9 @@ public class ClientNetworking implements NetworkHandler {
     }
 
     public static void handleConfigurationSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
-        boolean enableClientSwapMenu = packet.readBoolean();
         boolean showPlayerNametag = packet.readBoolean();
 
         // TODO: re-handle sync packet
-//        WalkersConfig.getInstance().enableClientSwapMenu() = enableClientSwapMenu;
 //        WalkersConfig.getInstance().showPlayerNametag() = showPlayerNametag;
         // TODO: UNDO THIS WHEN THE PLAYER LEAVES - OMEGA CONFIG HANDLES THIS, BUT OUR BUDGET FORGE IMPLEMENTATION DOES NOT
     }

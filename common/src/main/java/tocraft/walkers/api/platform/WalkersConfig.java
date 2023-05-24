@@ -18,25 +18,19 @@ public abstract class WalkersConfig {
 
     public abstract Map<String, Integer> getAbilityCooldownMap();
 
-    public abstract boolean shouldOverlayWalkersUnlocks();
-
-    public abstract boolean forceChangeNew();
-
-    public abstract boolean forceChangeAlways();
+    public abstract boolean shouldOverlayShapesUnlocks();
 
     public abstract boolean logCommands();
 
-    public abstract boolean enableClientSwapMenu();
+    public abstract boolean foxesAttack2ndShapedPrey();
 
-    public abstract boolean wolvesAttackWalkersPrey();
+    public abstract boolean ownedwolvesAttack2ndShapedPrey();
 
-    public abstract boolean ownedWolvesAttackWalkersPrey();
+    public abstract boolean villagersRunFrom2ndShapes();
 
-    public abstract boolean villagersRunFromShapes();
+    public abstract boolean revoke2ndShapesOnDeath();
 
-    public abstract boolean revokeWalkersOnDeath();
-
-    public abstract boolean overlayWalkersRevokes();
+    public abstract boolean overlay2ndShapesRevokes();
 
     public abstract float flySpeed();
 
@@ -50,21 +44,19 @@ public abstract class WalkersConfig {
 
     public abstract boolean showPlayerNametag();
 
-    public abstract boolean foxesAttackWalkersPrey();
+    public abstract boolean wolvesAttack2ndShapedPrey();
 
-    public abstract boolean hostilesForgetNewHostileWalkersPlayer();
+    public abstract boolean hostilesForgetNewHostileShapedPlayer();
 
-    public abstract boolean hostilesIgnoreHostileWalkersPlayer();
+    public abstract boolean hostilesIgnoreHostileShapedPlayer();
 
     public abstract boolean playAmbientSounds();
 
-    public abstract boolean useWalkersSounds();
+    public abstract boolean useShapeSounds();
 
     public abstract boolean hearSelfAmbient();
 
     public abstract double endermanAbilityTeleportDistance();
-
-    public abstract boolean enableSwaps();
 
     public abstract int hostilityTime();
 

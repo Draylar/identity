@@ -123,7 +123,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     @Environment(EnvType.CLIENT)
     @Override
     public float getEyeHeight(EntityPose pose) {
-        PlayerEntity playerEntity = (PlayerEntity) (Object) this;
         LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
 
         if(walkers != null) {
@@ -141,7 +140,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private void getHurtSound(DamageSource source, CallbackInfoReturnable<SoundEvent> cir) {
         LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
 
-        if(WalkersConfig.getInstance().useWalkersSounds() && walkers != null) {
+        if(WalkersConfig.getInstance().useShapeSounds() && walkers != null) {
             cir.setReturnValue(((LivingEntityAccessor) walkers).callGetHurtSound(source));
         }
     }
@@ -190,7 +189,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private void getDeathSound(CallbackInfoReturnable<SoundEvent> cir) {
         LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
 
-        if(WalkersConfig.getInstance().useWalkersSounds() && walkers != null) {
+        if(WalkersConfig.getInstance().useShapeSounds() && walkers != null) {
             cir.setReturnValue(((LivingEntityAccessor) walkers).callGetDeathSound());
         }
     }
@@ -203,7 +202,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private void getFallSounds(CallbackInfoReturnable<LivingEntity.FallSounds> cir) {
         LivingEntity walkers = PlayerWalkers.getWalkers((PlayerEntity) (Object) this);
 
-        if(WalkersConfig.getInstance().useWalkersSounds() && walkers != null) {
+        if(WalkersConfig.getInstance().useShapeSounds() && walkers != null) {
             cir.setReturnValue(walkers.getFallSounds());
         }
     }

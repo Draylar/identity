@@ -37,7 +37,7 @@ public class PiglinBrainMixin {
 
                 // Player has an Walkers but is not a piglin, check config for what to do
                 else {
-                    if (WalkersConfig.getInstance().hostilesIgnoreHostileWalkersPlayer() && walkers instanceof Monster) {
+                    if (WalkersConfig.getInstance().hostilesIgnoreHostileShapedPlayer() && walkers instanceof Monster) {
 
                         // Check hostility for aggro on non-piglin hostiles
                         if(!hasHostility) {

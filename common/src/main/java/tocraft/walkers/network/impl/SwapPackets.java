@@ -25,31 +25,26 @@ public class SwapPackets {
                 int variant = buf.readInt();
 
                 context.getPlayer().getServer().execute(() -> {
-                    // Ensure player has permission to switch shapes
-                    if(WalkersConfig.getInstance().enableSwaps() || context.getPlayer().hasPermissionLevel(3)) {
-                        // player type shouldn't be sent, but we still check regardless
-                        if(entityType.equals(EntityType.PLAYER)) {
-                            PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), null, null);
-                        } else {
-                            @Nullable WalkersType<LivingEntity> type = WalkersType.from(entityType, variant);
-                            if(type != null) {
-                                // unlock walker
-                                PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
-                                // update Player
-                                PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
-                            }
+                    // player type shouldn't be sent, but we still check regardless
+                    if(entityType.equals(EntityType.PLAYER)) {
+                        PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), null, null);
+                    } else {
+                        @Nullable WalkersType<LivingEntity> type = WalkersType.from(entityType, variant);
+                        if(type != null) {
+                            // unlock walker
+                            PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
+                            // update Player
+                            PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
                         }
-                        
-                        // Refresh player dimensions
-                        context.getPlayer().calculateDimensions();
                     }
+                    
+                    // Refresh player dimensions
+                    context.getPlayer().calculateDimensions();
                 });
             } else {
                 // Swap back to player if server allows it
                 context.getPlayer().getServer().execute(() -> {
-                    if(WalkersConfig.getInstance().enableSwaps() || context.getPlayer().hasPermissionLevel(3)) {
-                        PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), null, null);
-                    }
+                    PlayerWalkers.updateWalkers((ServerPlayerEntity) context.getPlayer(), null, null);
 
                     context.getPlayer().calculateDimensions();
                 });

@@ -37,8 +37,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             method = "onDeath",
             at = @At("HEAD")
     )
-    private void revokeWalkersOnDeath(DamageSource source, CallbackInfo ci) {
-        if(WalkersConfig.getInstance().revokeWalkersOnDeath() && !this.isCreative() && !this.isSpectator()) {
+    private void revoke2ndShapesOnDeath(DamageSource source, CallbackInfo ci) {
+        if(WalkersConfig.getInstance().revoke2ndShapesOnDeath() && !this.isCreative() && !this.isSpectator()) {
             LivingEntity entity = PlayerWalkers.getWalkers(this);
 
             // revoke the walkers current equipped by the player
@@ -49,7 +49,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
                 // todo: this option might be server-only given that this method isn't[?] called on the client
                 // send revoke message to player if they aren't in creative and the config option is on
-                if(WalkersConfig.getInstance().overlayWalkersRevokes()) {
+                if(WalkersConfig.getInstance().overlay2ndShapesRevokes()) {
                     sendMessage(
                             Text.translatable(
                                     "walkers.revoke_entity",

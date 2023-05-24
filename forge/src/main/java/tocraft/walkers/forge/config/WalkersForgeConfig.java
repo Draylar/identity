@@ -11,18 +11,18 @@ import java.util.Map;
 
 public class WalkersForgeConfig extends WalkersConfig {
 
-    public boolean overlayWalkersUnlocks = true;
-    public boolean overlayWalkersRevokes = true;
-    public boolean revokeWalkersOnDeath = false;
+    public boolean overlayShapesUnlocks = true;
+    public boolean overlay2ndShapesRevokes = true;
+    public boolean revoke2ndShapesOnDeath = false;
     public boolean shapesEquipItems = true;
     public boolean shapesEquipArmor = true;
-    public boolean hostilesIgnoreHostileWalkersPlayer = true;
-    public boolean hostilesForgetNewHostileWalkersPlayer = false;
-    public boolean wolvesAttackWalkersPrey = true;
-    public boolean ownedWolvesAttackWalkersPrey = false;
-    public boolean villagersRunFromShapes = true;
-    public boolean foxesAttackWalkersPrey = true;
-    public boolean useWalkersSounds = true;
+    public boolean hostilesIgnoreHostileShapedPlayer = true;
+    public boolean hostilesForgetNewHostileShapedPlayer = false;
+    public boolean wolvesAttack2ndShapedPrey = true;
+    public boolean ownedwolvesAttack2ndShapedPrey = false;
+    public boolean villagersRunFrom2ndShapes = true;
+    public boolean foxesAttack2ndShapedPrey = true;
+    public boolean useShapeSounds = true;
     public boolean playAmbientSounds = true;
     public boolean hearSelfAmbient = false;
     public boolean enableFlight = true;
@@ -30,26 +30,12 @@ public class WalkersForgeConfig extends WalkersConfig {
     public List<String> advancementsRequiredForFlight = new ArrayList<>();
     public boolean scalingHealth = true;
     public int maxHealth = 40;
-    public boolean enableClientSwapMenu = true;
-    public boolean enableSwaps = true;
     public int endermanAbilityTeleportDistance = 32;
     public boolean showPlayerNametag = false;
-    public boolean forceChangeNew = false;
-    public boolean forceChangeAlways = false;
     public boolean logCommands = true;
     public float flySpeed = 0.05f;
-    public boolean killForWalkers = false;
-    public int requiredKillsForWalkers = 50;
     public boolean wardenIsBlinded = true;
     public boolean wardenBlindsNearby = true;
-
-    public Map<String, Integer> requiredKillsByType = new HashMap<>() {
-        {
-            put("minecraft:ender_dragon", 1);
-            put("minecraft:elder_guardian", 1);
-            put("minecraft:wither", 1);
-        }
-    };
 
     public Map<String, Integer> abilityCooldownMap = new HashMap<>() {
         {
@@ -85,18 +71,8 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean shouldOverlayWalkersUnlocks() {
-        return overlayWalkersUnlocks;
-    }
-
-    @Override
-    public boolean forceChangeNew() {
-        return forceChangeNew;
-    }
-
-    @Override
-    public boolean forceChangeAlways() {
-        return forceChangeAlways;
+    public boolean shouldOverlayShapesUnlocks() {
+        return overlayShapesUnlocks;
     }
 
     @Override
@@ -105,33 +81,28 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean enableClientSwapMenu() {
-        return enableClientSwapMenu;
+    public boolean wolvesAttack2ndShapedPrey() {
+        return wolvesAttack2ndShapedPrey;
     }
 
     @Override
-    public boolean wolvesAttackWalkersPrey() {
-        return wolvesAttackWalkersPrey;
+    public boolean ownedwolvesAttack2ndShapedPrey() {
+        return ownedwolvesAttack2ndShapedPrey;
     }
 
     @Override
-    public boolean ownedWolvesAttackWalkersPrey() {
-        return ownedWolvesAttackWalkersPrey;
+    public boolean villagersRunFrom2ndShapes() {
+        return villagersRunFrom2ndShapes;
     }
 
     @Override
-    public boolean villagersRunFromShapes() {
-        return villagersRunFromShapes;
+    public boolean revoke2ndShapesOnDeath() {
+        return revoke2ndShapesOnDeath;
     }
 
     @Override
-    public boolean revokeWalkersOnDeath() {
-        return revokeWalkersOnDeath;
-    }
-
-    @Override
-    public boolean overlayWalkersRevokes() {
-        return overlayWalkersRevokes;
+    public boolean overlay2ndShapesRevokes() {
+        return overlay2ndShapesRevokes;
     }
 
     @Override
@@ -165,18 +136,18 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean foxesAttackWalkersPrey() {
-        return foxesAttackWalkersPrey;
+    public boolean foxesAttack2ndShapedPrey() {
+        return foxesAttack2ndShapedPrey;
     }
 
     @Override
-    public boolean hostilesForgetNewHostileWalkersPlayer() {
-        return hostilesForgetNewHostileWalkersPlayer;
+    public boolean hostilesForgetNewHostileShapedPlayer() {
+        return hostilesForgetNewHostileShapedPlayer;
     }
 
     @Override
-    public boolean hostilesIgnoreHostileWalkersPlayer() {
-        return hostilesIgnoreHostileWalkersPlayer;
+    public boolean hostilesIgnoreHostileShapedPlayer() {
+        return hostilesIgnoreHostileShapedPlayer;
     }
 
     @Override
@@ -185,8 +156,8 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean useWalkersSounds() {
-        return useWalkersSounds;
+    public boolean useShapeSounds() {
+        return useShapeSounds;
     }
 
     @Override
@@ -197,11 +168,6 @@ public class WalkersForgeConfig extends WalkersConfig {
     @Override
     public double endermanAbilityTeleportDistance() {
         return endermanAbilityTeleportDistance;
-    }
-
-    @Override
-    public boolean enableSwaps() {
-        return enableSwaps;
     }
 
     @Override
