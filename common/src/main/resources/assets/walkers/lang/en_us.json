@@ -1,15 +1,13 @@
 {
-  "walkers.unlock_entity": "Unlocked %s walkers.",
-  "walkers.revoke_entity": "Your memories of being a %s fade to dust...",
-  "walkers.grant_success": "Successfully granted %s walkers to %s.",
-  "walkers.revoke_success": "Successfully revoked %s walkers from %s.",
+  "walkers.unlock_entity": "Changed your second shape to %s.",
+  "walkers.grant_success": "Successfully changed %s to be the second shape of %s.",
   "walkers.already_has": "%s already has the %s walkers!",
-  "walkers.does_not_have": "%s does not have the %s walkers!",
+  "walkers.does_not_have": "%s does not have second shapes!",
   "walkers.equip_success": "Set the walkers of %s to %s.",
   "walkers.unequip_success": "Removed the walkers of %s.",
-  "walkers.test_positive": "%s is disguised as a %s.",
-  "walkers.test_failed": "%s is not disguised as a %s.",
-  "walkers.menu_hint": "To gain an Walkers, slay any creature in your world...",
+  "walkers.show2ndShapeNot_positive": "%s is disguised as a %s.",
+  "walkers.show2ndShapeNot_failed": "%s doesn't have a second shape.",
+  "walkers.menu_hint": "Choose your second shape... forever!",
   "walkers.help": "Open Walkers help menu",
   "walkers.help.welcome": "Welcome to Walkers, a modern version of Morph built for Fabric, written by To_Craft.",
   "walkers.help.credits": "Thank you to everyone who supports Walkers through bug reporting and suggestions!",
@@ -27,5 +25,5 @@
   "walkers.help.return": "Press any key to return to the Walkers menu.",
   "key.categories.walkers": "Walkers",
   "key.walkers": "Transform to your other shape",
-  "key.walkers_ability": "Use an Walkers Ability"
+  "key.walkers_ability": "Use an Shape Ability"
 }
