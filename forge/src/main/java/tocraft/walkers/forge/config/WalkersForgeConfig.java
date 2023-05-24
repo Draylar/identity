@@ -42,7 +42,6 @@ public class WalkersForgeConfig extends WalkersConfig {
     public int requiredKillsForWalkers = 50;
     public boolean wardenIsBlinded = true;
     public boolean wardenBlindsNearby = true;
-    public boolean autoUnlockShapes = true;
 
     public Map<String, Integer> requiredKillsByType = new HashMap<>() {
         {
@@ -218,10 +217,5 @@ public class WalkersForgeConfig extends WalkersConfig {
     @Override
     public boolean wardenBlindsNearby() {
         return wardenBlindsNearby;
-    }
-
-    @Override
-    public boolean autoUnlockShapes() {
-        return autoUnlockShapes;
     }
 }

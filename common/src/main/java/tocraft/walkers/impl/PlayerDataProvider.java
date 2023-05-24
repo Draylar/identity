@@ -11,9 +11,6 @@ public interface PlayerDataProvider {
     Set<WalkersType<?>> getUnlocked();
     void setUnlocked(Set<WalkersType<?>> unlocked);
 
-    Set<WalkersType<?>> getFavorites();
-    void setFavorites(Set<WalkersType<?>> favorites);
-
     int getRemainingHostilityTime();
     void setRemainingHostilityTime(int max);
 

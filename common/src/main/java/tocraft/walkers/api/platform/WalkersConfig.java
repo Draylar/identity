@@ -71,6 +71,4 @@ public abstract class WalkersConfig {
     public abstract boolean wardenIsBlinded();
 
     public abstract boolean wardenBlindsNearby();
-
-    public abstract boolean autoUnlockShapes();
 }
