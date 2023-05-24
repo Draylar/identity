@@ -93,7 +93,7 @@ public class WalkersScreen extends Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
 
-        // Render background hint when no identities have been collected
+        // Render background hint when no shapes have been collected
         if(unlocked.isEmpty()) {
             MutableText message = Text.translatable("walkers.menu_hint");
             float xPosition = (getWindow().getWidth() / 2f) - (MinecraftClient.getInstance().textRenderer.getWidth(message) / 2f);
@@ -212,7 +212,7 @@ public class WalkersScreen extends Screen {
     private List<WalkersType<?>> collectUnlockedEntities(ClientPlayerEntity player) {
         List<WalkersType<?>> unlocked = new ArrayList<>();
 
-        // collect current unlocked identities (or allow all for creative users)
+        // collect current unlocked shapes (or allow all for creative users)
         renderEntities.forEach((type, instance) -> {
             if(((PlayerDataProvider) player).getUnlocked().isEmpty()) {
                 unlocked.add(type);

@@ -86,7 +86,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
             unlocked.forEach(walkers -> idList.add(walkers.writeCompound()));
 
             // This was "UnlockedMorphs" in previous versions, but it has been changed with the introduction of variants.
-            tag.put("UnlockedIdentities", idList);
+            tag.put("UnlockedShapes", idList);
         }
 
         // Abilities

@@ -22,13 +22,13 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Comment(value = "Whether a player's equipped walkers is revoked on death.")
     public boolean revokeWalkersOnDeath = false;
 
-    @Comment(value = "Whether identities equip the items (swords, items, tools) held by the underlying player.")
-    public boolean identitiesEquipItems = true;
+    @Comment(value = "Whether shapes equip the items (swords, items, tools) held by the underlying player.")
+    public boolean shapesEquipItems = true;
 
-    @Comment(value = "Whether identities equip the armor (chestplate, leggings, elytra) worn by the underlying player.")
-    public boolean identitiesEquipArmor = true;
+    @Comment(value = "Whether shapes equip the armor (chestplate, leggings, elytra) worn by the underlying player.")
+    public boolean shapesEquipArmor = true;
 
-    @Comment(value = "Whether hostile mobs ignore players with hostile mob identities.")
+    @Comment(value = "Whether hostile mobs ignore players with hostile mob shapes.")
     public boolean hostilesIgnoreHostileWalkersPlayer = true;
 
     @Comment(value = "Whether a hostile mob will stop targeting you after switching to a hostile mob walkers.")
@@ -40,8 +40,8 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Comment(value = "Whether owned Wolves will attack Players with an walkers that the Wolf would normally hunt (Sheep, Fox, Skeleton).")
     public boolean ownedWolvesAttackWalkersPrey = false;
 
-    @Comment(value = "Whether Villagers will run from Players morphed as identities villagers normally run from (Zombies).")
-    public boolean villagersRunFromIdentities = true;
+    @Comment(value = "Whether Villagers will run from Players morphed as shapes villagers normally run from (Zombies).")
+    public boolean villagersRunFromShapes = true;
 
     @Comment(value = "Whether Foxes will attack Players with an walkers that the Fox would normally hunt (Fish, Chicken).")
     public boolean foxesAttackWalkersPrey = true;
@@ -64,17 +64,17 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Comment(value = "A list of Advancements required before the player can fly using an Walkers.")
     public List<String> advancementsRequiredForFlight = new ArrayList<>();
 
-    @Comment(value = "Whether Identities modify your max health value based on their max health value.")
+    @Comment(value = "Whether Shapes modify your max health value based on their max health value.")
     public boolean scalingHealth = true;
 
     @Comment(value = "The maximum value of scaling health. Useful for not giving players 300 HP when they turn into a wither.")
     public int maxHealth = 40;
 
     @Syncing
-    @Comment(value = "If set to false, only operators can switch identities through the ` menu. Note that this config option is synced from S2C when a client joins the game, but a client can still open the menu if they have a modified version of Walkers.")
+    @Comment(value = "If set to false, only operators can switch shapes through the ` menu. Note that this config option is synced from S2C when a client joins the game, but a client can still open the menu if they have a modified version of Walkers.")
     public boolean enableClientSwapMenu = true;
 
-    @Comment(value = "If set to false, only operators can switch identities. Used on the server; guaranteed to be authoritative.")
+    @Comment(value = "If set to false, only operators can switch shapes. Used on the server; guaranteed to be authoritative.")
     public boolean enableSwaps = true;
 
     @Comment(value = "In blocks, how far can the Enderman ability teleport?")
@@ -185,8 +185,8 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     }
 
     @Override
-    public boolean villagersRunFromIdentities() {
-        return villagersRunFromIdentities;
+    public boolean villagersRunFromShapes() {
+        return villagersRunFromShapes;
     }
 
     @Override
@@ -215,13 +215,13 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     }
 
     @Override
-    public boolean identitiesEquipItems() {
-        return identitiesEquipItems;
+    public boolean shapesEquipItems() {
+        return shapesEquipItems;
     }
 
     @Override
-    public boolean identitiesEquipArmor() {
-        return identitiesEquipArmor;
+    public boolean shapesEquipArmor() {
+        return shapesEquipArmor;
     }
 
     @Override

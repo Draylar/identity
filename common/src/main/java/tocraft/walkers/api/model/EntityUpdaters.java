@@ -116,9 +116,9 @@ public class EntityUpdaters {
             }
         });
 
-        // To prevent Creeper Identities from flickering white, we reset currentFuseTime to 0.
+        // To prevent Creeper shapes from flickering white, we reset currentFuseTime to 0.
         // Creepers normally tick their fuse timer in tick(), but:
-        //    1. Identities do not tick
+        //    1. shapes do not tick
         //    2. The Creeper ability is instant, so we do not need to re-implement ticking
         EntityUpdaters.register(EntityType.CREEPER, (player, creeper) -> {
             ((CreeperEntityAccessor) creeper).setCurrentFuseTime(0);

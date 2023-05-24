@@ -14,13 +14,13 @@ public class WalkersForgeConfig extends WalkersConfig {
     public boolean overlayWalkersUnlocks = true;
     public boolean overlayWalkersRevokes = true;
     public boolean revokeWalkersOnDeath = false;
-    public boolean identitiesEquipItems = true;
-    public boolean identitiesEquipArmor = true;
+    public boolean shapesEquipItems = true;
+    public boolean shapesEquipArmor = true;
     public boolean hostilesIgnoreHostileWalkersPlayer = true;
     public boolean hostilesForgetNewHostileWalkersPlayer = false;
     public boolean wolvesAttackWalkersPrey = true;
     public boolean ownedWolvesAttackWalkersPrey = false;
-    public boolean villagersRunFromIdentities = true;
+    public boolean villagersRunFromShapes = true;
     public boolean foxesAttackWalkersPrey = true;
     public boolean useWalkersSounds = true;
     public boolean playAmbientSounds = true;
@@ -120,8 +120,8 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean villagersRunFromIdentities() {
-        return villagersRunFromIdentities;
+    public boolean villagersRunFromShapes() {
+        return villagersRunFromShapes;
     }
 
     @Override
@@ -150,13 +150,13 @@ public class WalkersForgeConfig extends WalkersConfig {
     }
 
     @Override
-    public boolean identitiesEquipItems() {
-        return identitiesEquipItems;
+    public boolean shapesEquipItems() {
+        return shapesEquipItems;
     }
 
     @Override
-    public boolean identitiesEquipArmor() {
-        return identitiesEquipArmor;
+    public boolean shapesEquipArmor() {
+        return shapesEquipArmor;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class SwapPackets {
                 int variant = buf.readInt();
 
                 context.getPlayer().getServer().execute(() -> {
-                    // Ensure player has permission to switch identities
+                    // Ensure player has permission to switch shapes
                     if(WalkersConfig.getInstance().enableSwaps() || context.getPlayer().hasPermissionLevel(3)) {
                         // player type shouldn't be sent, but we still check regardless
                         if(entityType.equals(EntityType.PLAYER)) {

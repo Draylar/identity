@@ -32,7 +32,7 @@ public abstract class WalkersConfig {
 
     public abstract boolean ownedWolvesAttackWalkersPrey();
 
-    public abstract boolean villagersRunFromIdentities();
+    public abstract boolean villagersRunFromShapes();
 
     public abstract boolean revokeWalkersOnDeath();
 
@@ -44,9 +44,9 @@ public abstract class WalkersConfig {
 
     public abstract int maxHealth();
 
-    public abstract boolean identitiesEquipItems();
+    public abstract boolean shapesEquipItems();
 
-    public abstract boolean identitiesEquipArmor();
+    public abstract boolean shapesEquipArmor();
 
     public abstract boolean showPlayerNametag();
 

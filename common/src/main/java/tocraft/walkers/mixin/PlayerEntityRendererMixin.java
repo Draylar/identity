@@ -88,13 +88,13 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             }
 
             // equip held items on walkers
-            if(WalkersConfig.getInstance().identitiesEquipItems()) {
+            if(WalkersConfig.getInstance().shapesEquipItems()) {
                 walkers.equipStack(EquipmentSlot.MAINHAND, player.getEquippedStack(EquipmentSlot.MAINHAND));
                 walkers.equipStack(EquipmentSlot.OFFHAND, player.getEquippedStack(EquipmentSlot.OFFHAND));
             }
 
             // equip armor items on walkers
-            if(WalkersConfig.getInstance().identitiesEquipArmor()) {
+            if(WalkersConfig.getInstance().shapesEquipArmor()) {
                 walkers.equipStack(EquipmentSlot.HEAD, player.getEquippedStack(EquipmentSlot.HEAD));
                 walkers.equipStack(EquipmentSlot.CHEST, player.getEquippedStack(EquipmentSlot.CHEST));
                 walkers.equipStack(EquipmentSlot.LEGS, player.getEquippedStack(EquipmentSlot.LEGS));

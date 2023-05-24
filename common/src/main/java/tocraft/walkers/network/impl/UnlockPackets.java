@@ -14,7 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class UnlockPackets {
 
-    private static final String UNLOCK_KEY = "UnlockedIdentities";
+    private static final String UNLOCK_KEY = "UnlockedShapes";
 
     public static void handleUnlockSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
         NbtCompound nbt = packet.readNbt();
