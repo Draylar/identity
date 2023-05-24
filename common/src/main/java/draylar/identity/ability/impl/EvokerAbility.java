@@ -30,7 +30,7 @@ public class EvokerAbility extends IdentityAbility<EvokerEntity> {
 
             // If the block underneath is solid, we are good to go.
             EvokerFangsEntity fangs = new EvokerFangsEntity(world, origin.getX(), origin.getY(), origin.getZ(), player.getYaw(), blockOut * 2, player);
-            BlockPos underneathPosition = new BlockPos(origin).down();
+            BlockPos underneathPosition = BlockPos.ofFloored(origin).down();
             BlockState underneath = world.getBlockState(underneathPosition);
             if(underneath.isSideSolidFullSquare(world, underneathPosition, Direction.UP) && world.isAir(underneathPosition.up())) {
                 world.spawnEntity(fangs);
@@ -38,7 +38,7 @@ public class EvokerAbility extends IdentityAbility<EvokerEntity> {
             }
 
             // Check underneath (2x down) again...
-            BlockPos underneath2Position = new BlockPos(origin).down(2);
+            BlockPos underneath2Position = BlockPos.ofFloored(origin).down(2);
             BlockState underneath2 = world.getBlockState(underneath2Position);
             if(underneath2.isSideSolidFullSquare(world, underneath2Position, Direction.UP) && world.isAir(underneath2Position.up())) {
                 fangs.setPos(fangs.getX(), fangs.getY() - 1, fangs.getZ());
@@ -48,7 +48,7 @@ public class EvokerAbility extends IdentityAbility<EvokerEntity> {
             }
 
             // Check above (1x up)
-            BlockPos upPosition = new BlockPos(origin).up();
+            BlockPos upPosition = BlockPos.ofFloored(origin).up();
             BlockState up = world.getBlockState(underneath2Position);
             if(up.isSideSolidFullSquare(world, upPosition, Direction.UP) && world.isAir(upPosition)) {
                 fangs.setPos(fangs.getX(), fangs.getY() + 1, fangs.getZ());

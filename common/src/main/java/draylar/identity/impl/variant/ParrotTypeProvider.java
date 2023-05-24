@@ -21,13 +21,13 @@ public class ParrotTypeProvider extends TypeProvider<ParrotEntity> {
 
     @Override
     public int getVariantData(ParrotEntity entity) {
-        return entity.getVariant();
+        return entity.getVariant().getId();
     }
 
     @Override
     public ParrotEntity create(EntityType<ParrotEntity> type, World world, int data) {
         ParrotEntity parrot = new ParrotEntity(type, world);
-        parrot.setVariant(data);
+        parrot.setVariant(ParrotEntity.Variant.byIndex(data));
         return parrot;
     }
 

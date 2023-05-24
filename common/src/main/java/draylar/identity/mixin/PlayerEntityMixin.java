@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.mob.WardenEntity;
@@ -18,10 +19,10 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
@@ -96,7 +97,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     // Air has ran out, start drowning
                     if(this.getAir() == -20) {
                         this.setAir(0);
-                        this.damage(DamageSource.DROWN, 2.0F);
+                        this.damage(world.getDamageSources().drown(), 2.0F);
                     }
                 } else {
                     this.setAir(300);
@@ -315,7 +316,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private boolean isInDaylight() {
         if(world.isDay() && !world.isClient) {
             float brightnessAtEyes = getBrightnessAtEyes();
-            BlockPos daylightTestPosition = new BlockPos(getX(), (double) Math.round(getY()), getZ());
+            BlockPos daylightTestPosition = BlockPos.ofFloored(getX(), (double) Math.round(getY()), getZ());
 
             // move test position up one block for boats
             if(getVehicle() instanceof BoatEntity) {
@@ -341,8 +342,8 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
                 if(type.isIn(IdentityEntityTags.HURT_BY_HIGH_TEMPERATURE)) {
                     Biome biome = world.getBiome(getBlockPos()).value();
-                    if (biome.isHot(getBlockPos())) {
-                        player.damage(DamageSource.ON_FIRE, 1.0f);
+                    if (!biome.isCold(getBlockPos())) {
+                        player.damage(world.getDamageSources().onFire(), 1.0f);
                     }
                 }
             }

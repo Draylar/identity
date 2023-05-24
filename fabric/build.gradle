@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.0"
+    id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 architectury {
@@ -16,7 +16,7 @@ configurations {
 }
 
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.draylar.dev/releases' }
 }
 
 
@@ -29,7 +29,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
 
     // config
-    modImplementation include ("com.github.Draylar.omega-config:omega-config-base:1.2.3-1.18.1") {
+    modImplementation include ("dev.draylar.omega-config:omega-config-base:1.3.0+1.19.2") {
         exclude group: "net.fabricmc.fabric-api"
     }
 }
@@ -46,17 +46,17 @@ processResources {
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier.set("dev-shadow")
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "fabric"
+    archiveClassifier.set("fabric")
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier.set("dev")
 }
 
 sourcesJar {

@@ -1,22 +1,12 @@
 package draylar.identity.api;
 
-import dev.architectury.networking.NetworkManager;
 import draylar.identity.api.variant.IdentityType;
 import draylar.identity.impl.PlayerDataProvider;
-import draylar.identity.network.NetworkHandler;
 import draylar.identity.network.impl.FavoritePackets;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
-import java.util.List;
 import java.util.Set;
 
 public class PlayerFavorites {

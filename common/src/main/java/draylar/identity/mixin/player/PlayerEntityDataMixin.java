@@ -25,7 +25,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,8 +62,8 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         NbtList unlockedIdList = tag.getList("UnlockedMorphs", NbtElement.STRING_TYPE);
         unlockedIdList.forEach(entityRegistryID -> {
             Identifier id = new Identifier(entityRegistryID.asString());
-            if(Registry.ENTITY_TYPE.containsId(id)) {
-                EntityType<?> type = Registry.ENTITY_TYPE.get(id);
+            if(Registries.ENTITY_TYPE.containsId(id)) {
+                EntityType<?> type = Registries.ENTITY_TYPE.get(id);
 
                 // The variant added from the UnlockedMorphs list will default to the fallback value if needed (eg. Sheep => White)
                 // This value will be re-serialize in UnlockedIdentities list, so this is 100% for old save conversions
@@ -90,8 +90,8 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         NbtList favoriteIdList = tag.getList("FavoriteIdentities", NbtElement.STRING_TYPE);
         favoriteIdList.forEach(registryID -> {
             Identifier id = new Identifier(registryID.asString());
-            if(Registry.ENTITY_TYPE.containsId(id)) {
-                EntityType<?> type = Registry.ENTITY_TYPE.get(id);
+            if(Registries.ENTITY_TYPE.containsId(id)) {
+                EntityType<?> type = Registries.ENTITY_TYPE.get(id);
                 favorites.add(new IdentityType(type));
             }
         });
@@ -156,7 +156,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         }
 
         // put entity type ID under the key "id", or "minecraft:empty" if no identity is equipped (or the identity entity type is invalid)
-        tag.putString("id", identity == null ? "minecraft:empty" : Registry.ENTITY_TYPE.getId(identity.getType()).toString());
+        tag.putString("id", identity == null ? "minecraft:empty" : Registries.ENTITY_TYPE.getId(identity.getType()).toString());
         tag.put("EntityData", entityTag);
         return tag;
     }

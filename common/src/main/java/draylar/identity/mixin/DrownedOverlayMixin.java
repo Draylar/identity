@@ -30,7 +30,7 @@ public abstract class DrownedOverlayMixin extends FeatureRenderer<DrownedEntity,
         DrownedEntityModel<DrownedEntity> model = getContextModel();
 
         if (model != null) {
-            model.setAttributes(this.model);
+            this.model.copyBipedStateTo(model);
             model.sneaking = drownedEntity.isSneaking();
         }
     }
