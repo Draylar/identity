@@ -57,23 +57,6 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
         } catch (Exception ignored) {
 
         }
-
-        // Render selected outline
-        if(active) {
-            RenderSystem.setShaderTexture(0, Walkers.id("textures/gui/selected.png"));
-            DrawableHelper.drawTexture(matrices, x, y, getWidth(), getHeight(), 0, 0, 48, 32, 48, 32);
-        }
-
-        // Draw tooltip
-//        float x = MouseUtilities.mouseX;
-//        float y = MouseUtilities.mouseY;
-//
-//        if(getX() <= x && getX() + getWidth() >= x) {
-//            if(getY() <= y && getY() + getHeight() >= y) {
-//                drawTooltip(matrices, provider);
-//                renderToolTip();
-//            }
-//        }
     }
 
     @Override

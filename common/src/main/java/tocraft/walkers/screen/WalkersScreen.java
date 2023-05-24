@@ -2,9 +2,6 @@ package tocraft.walkers.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
-import tocraft.walkers.api.PlayerWalkers;
-import tocraft.walkers.api.platform.WalkersConfig;
-import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.variant.WalkersType;
 import tocraft.walkers.mixin.accessor.ScreenAccessor;
 import tocraft.walkers.screen.widget.EntityWidget;
@@ -33,7 +30,7 @@ import java.util.stream.Collectors;
 
 public class WalkersScreen extends Screen {
 
-    private final List<WalkersType<?>> unlocked = new ArrayList<>();
+    private final List<WalkersType<?>> rendered = new ArrayList<>();
     private final Map<WalkersType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
     private final SearchWidget searchBar = createSearchBar();
@@ -56,11 +53,13 @@ public class WalkersScreen extends Screen {
         addDrawableChild(searchBar);
         addDrawableChild(helpButton);
 
-        // collect unlocked entities
-        unlocked.addAll(collectUnlockedEntities(client.player));
+        // collect rendered entities
+        renderEntities.forEach((type, instance) -> {
+            rendered.add(type);
+        });
 
         // add entity widgets
-        populateEntityWidgets(client.player, unlocked);
+        populateEntityWidgets(client.player, rendered);
 
         // implement search handler
         searchBar.setChangedListener(text -> {
@@ -72,7 +71,7 @@ public class WalkersScreen extends Screen {
                 children().removeIf(button -> button instanceof EntityWidget);
                 entityWidgets.clear();
 
-                List<WalkersType<?>> filtered = unlocked
+                List<WalkersType<?>> filtered = rendered
                         .stream()
                         .filter(type -> text.isEmpty() || type.getEntityType().getTranslationKey().contains(text))
                         .collect(Collectors.toList());
@@ -92,15 +91,6 @@ public class WalkersScreen extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-
-        // Render background hint when no shapes have been collected
-        if(unlocked.isEmpty()) {
-            MutableText message = Text.translatable("walkers.menu_hint");
-            float xPosition = (getWindow().getWidth() / 2f) - (MinecraftClient.getInstance().textRenderer.getWidth(message) / 2f);
-            float yPosition = (getWindow().getHeight() / 2f);
-            MinecraftClient.getInstance().textRenderer.draw(matrices, message, xPosition, yPosition, 0xFFFFFF);
-        }
-
         // tooltips
         for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
             if(selectable instanceof PressableWidget button) {
@@ -156,27 +146,18 @@ public class WalkersScreen extends Screen {
         return false;
     }
 
-    private void populateEntityWidgets(ClientPlayerEntity player, List<WalkersType<?>> unlocked) {
-        // add widget for each unlocked entity
+    private void populateEntityWidgets(ClientPlayerEntity player, List<WalkersType<?>> rendered) {
+        // add widget for each rendered entity
         int x = 15;
         int y = 35;
-        int rows = (int) Math.ceil(unlocked.size() / 7f);
-
-        WalkersType<LivingEntity> currentType = WalkersType.from(PlayerWalkers.getWalkers(player));
+        int rows = (int) Math.ceil(rendered.size() / 7f);
 
         for (int yIndex = 0; yIndex <= rows; yIndex++) {
             for (int xIndex = 0; xIndex < 7; xIndex++) {
                 int listIndex = yIndex * 7 + xIndex;
 
-                if(listIndex < unlocked.size()) {
-                    WalkersType<?> type = unlocked.get(listIndex);
-
-                    // TODO: only render selected type, this will show all eg. sheep
-                    // Determine whether this widget should start with the selection outline
-                    boolean isCurrent = false;
-                    if(currentType != null && currentType.equals(type)) {
-                        isCurrent = true;
-                    }
+                if(listIndex < rendered.size()) {
+                    WalkersType<?> type = rendered.get(listIndex);
 
                     EntityWidget entityWidget = new EntityWidget(
                             (getWindow().getScaledWidth() - 27) / 7f * xIndex + x,
@@ -207,19 +188,6 @@ public class WalkersScreen extends Screen {
 
             Walkers.LOGGER.info(String.format("Loaded %d entities for rendering", types.size()));
         }
-    }
-
-    private List<WalkersType<?>> collectUnlockedEntities(ClientPlayerEntity player) {
-        List<WalkersType<?>> unlocked = new ArrayList<>();
-
-        // collect current unlocked shapes (or allow all for creative users)
-        renderEntities.forEach((type, instance) -> {
-            if(((PlayerDataProvider) player).getUnlocked().isEmpty()) {
-                unlocked.add(type);
-            }
-        });
-
-        return unlocked;
     }
 
     private SearchWidget createSearchBar() {
