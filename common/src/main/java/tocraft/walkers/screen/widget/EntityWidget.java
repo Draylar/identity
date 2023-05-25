@@ -36,13 +36,11 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        boolean bl = mouseX >= (double) this.x && mouseX < (double) (this.x + this.width) && mouseY >= (double) this.y && mouseY < (double) (this.y + this.height);
-
-        if(bl) {
-            // Update current Walkers
-            SwapPackets.sendSwapRequest(type);
-            parent.disableAll();
-        }
+        // Update current Walkers
+        SwapPackets.sendSwapRequest(type);
+        parent.disableAll();
+        // close active screen handler
+        parent.close();
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
