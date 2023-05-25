@@ -10,6 +10,8 @@
     "minecraft:ender_dragon",
     "minecraft:wither",
     "minecraft:vex",
-    "minecraft:allay"
+    "minecraft:allay",
+    "betteranimalsplus:butterfly",
+    "betteranimalsplus:dragonfly"
   ]
 }
