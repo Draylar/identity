@@ -18,7 +18,6 @@ import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 
 public class WalkersScreen extends Screen {
 
-    private final List<WalkersType<?>> unlocked = new ArrayList<>();
     private final List<WalkersType<?>> rendered = new ArrayList<>();
     private final Map<WalkersType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
@@ -51,36 +49,31 @@ public class WalkersScreen extends Screen {
         addDrawableChild(searchBar);
         addDrawableChild(helpButton);
 
-        // collect unlocked entities
-        unlocked.addAll(collectEntities(client.player, true));
+        rendered.addAll(collectEntities(client.player));
 
-        if(unlocked.isEmpty()) {
-            rendered.addAll(collectEntities(client.player, false));
+        // add entity widgets
+        populateEntityWidgets(client.player, rendered);
 
-            // add entity widgets
-            populateEntityWidgets(client.player, rendered);
+        // implement search handler
+        searchBar.setChangedListener(text -> {
+            focusOn(searchBar);
 
-            // implement search handler
-            searchBar.setChangedListener(text -> {
-                focusOn(searchBar);
+            // Only re-filter if the text contents changed
+            if(!lastSearchContents.equals(text)) {
+                ((ScreenAccessor) this).getSelectables().removeIf(button -> button instanceof EntityWidget);
+                children().removeIf(button -> button instanceof EntityWidget);
+                entityWidgets.clear();
 
-                // Only re-filter if the text contents changed
-                if(!lastSearchContents.equals(text)) {
-                    ((ScreenAccessor) this).getSelectables().removeIf(button -> button instanceof EntityWidget);
-                    children().removeIf(button -> button instanceof EntityWidget);
-                    entityWidgets.clear();
+                List<WalkersType<?>> filtered = rendered
+                        .stream()
+                        .filter(type -> text.isEmpty() || type.getEntityType().getTranslationKey().contains(text))
+                        .collect(Collectors.toList());
 
-                    List<WalkersType<?>> filtered = rendered
-                            .stream()
-                            .filter(type -> text.isEmpty() || type.getEntityType().getTranslationKey().contains(text))
-                            .collect(Collectors.toList());
+                populateEntityWidgets(client.player, filtered);
+            }
 
-                    populateEntityWidgets(client.player, filtered);
-                }
-
-                lastSearchContents = text;
-            });
-        }
+            lastSearchContents = text;
+        });
     }
 
     @Override
@@ -191,14 +184,12 @@ public class WalkersScreen extends Screen {
         }
     }
 
-    private List<WalkersType<?>> collectEntities(ClientPlayerEntity player, boolean unlocked) {
+    private List<WalkersType<?>> collectEntities(ClientPlayerEntity player) {
         List<WalkersType<?>> entities = new ArrayList<>();
 
         // collect current unlocked second shape
         renderEntities.forEach((type, instance) -> {
-            if(!unlocked || (unlocked && PlayerUnlocks.has(player, type))) {
-                entities.add(type);
-            }
+            entities.add(type);
         });
 
         return entities;

@@ -51,12 +51,7 @@ public class WalkersHelpScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        MinecraftClient.getInstance().setScreen(new WalkersScreen());
+        close();
         return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    @Override
-    public void close() {
-        MinecraftClient.getInstance().setScreen(new WalkersScreen());
     }
 }

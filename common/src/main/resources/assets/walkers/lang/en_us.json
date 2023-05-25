@@ -21,7 +21,7 @@
   "walkers.help.credits_label": "Credits",
   "walkers.help.credits_general": "General: Pyrofab, AllanChain, James103, lawleagle",
   "walkers.help.credits_translators": "Translators: qsefthuopq, Godzmoline, SmajloSlovakian, Juuxel, cominixo, CDAGaming",
-  "walkers.help.return": "Press any key to return to the Woodwalkers menu.",
+  "walkers.help.return": "Press any key to close this menu.",
   "key.categories.walkers": "Woodwalkers",
   "key.walkers": "Transform to your other shape",
   "key.walker_menu": "Open menu to choose second shape",
