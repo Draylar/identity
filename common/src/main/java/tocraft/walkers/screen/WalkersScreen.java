@@ -3,7 +3,7 @@ package tocraft.walkers.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.api.PlayerUnlocks;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.mixin.accessor.ScreenAccessor;
 import tocraft.walkers.screen.widget.EntityWidget;
 import tocraft.walkers.screen.widget.HelpWidget;
@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 
 public class WalkersScreen extends Screen {
 
-    private final List<WalkersType<?>> rendered = new ArrayList<>();
-    private final Map<WalkersType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
+    private final List<ShapeType<?>> rendered = new ArrayList<>();
+    private final Map<ShapeType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
     private final List<EntityWidget> entityWidgets = new ArrayList<>();
     private final SearchWidget searchBar = createSearchBar();
     private final ButtonWidget helpButton = createHelpButton();
@@ -64,7 +64,7 @@ public class WalkersScreen extends Screen {
                 children().removeIf(button -> button instanceof EntityWidget);
                 entityWidgets.clear();
 
-                List<WalkersType<?>> filtered = rendered
+                List<ShapeType<?>> filtered = rendered
                         .stream()
                         .filter(type -> text.isEmpty() || type.getEntityType().getTranslationKey().contains(text))
                         .collect(Collectors.toList());
@@ -139,7 +139,7 @@ public class WalkersScreen extends Screen {
         return false;
     }
 
-    private void populateEntityWidgets(ClientPlayerEntity player, List<WalkersType<?>> unlocked) {
+    private void populateEntityWidgets(ClientPlayerEntity player, List<ShapeType<?>> unlocked) {
         // add widget for each unlocked entity
         int x = 15;
         int y = 35;
@@ -150,7 +150,7 @@ public class WalkersScreen extends Screen {
                 int listIndex = yIndex * 7 + xIndex;
 
                 if(listIndex < unlocked.size()) {
-                    WalkersType<?> type = unlocked.get(listIndex);
+                    ShapeType<?> type = unlocked.get(listIndex);
 
                     // TODO: only render selected type, this will show all eg. sheep
                     EntityWidget entityWidget = new EntityWidget(
@@ -172,8 +172,8 @@ public class WalkersScreen extends Screen {
 
     private void populateRenderEntities() {
         if(renderEntities.isEmpty()) {
-            List<WalkersType<?>> types = WalkersType.getAllTypes(MinecraftClient.getInstance().world);
-            for (WalkersType<?> type : types) {
+            List<ShapeType<?>> types = ShapeType.getAllTypes(MinecraftClient.getInstance().world);
+            for (ShapeType<?> type : types) {
                 Entity entity = type.create(MinecraftClient.getInstance().world);
                 if(entity instanceof LivingEntity living) {
                     renderEntities.put(type, living);
@@ -184,8 +184,8 @@ public class WalkersScreen extends Screen {
         }
     }
 
-    private List<WalkersType<?>> collectEntities(ClientPlayerEntity player) {
-        List<WalkersType<?>> entities = new ArrayList<>();
+    private List<ShapeType<?>> collectEntities(ClientPlayerEntity player) {
+        List<ShapeType<?>> entities = new ArrayList<>();
 
         // collect current unlocked second shape
         renderEntities.forEach((type, instance) -> {

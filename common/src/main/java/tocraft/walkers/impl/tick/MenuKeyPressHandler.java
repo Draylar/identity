@@ -9,7 +9,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.WalkersClient;
 import tocraft.walkers.api.PlayerUnlocks;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.screen.WalkersHelpScreen;
 import tocraft.walkers.screen.WalkersScreen;
 import net.minecraft.client.MinecraftClient;
@@ -24,14 +24,14 @@ public class MenuKeyPressHandler implements ClientTickEvent.Client {
         assert client.player != null;
 
         if(WalkersClient.MENU_KEY.wasPressed()) {
-            final Map<WalkersType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
-            final List<WalkersType<?>> unlocked = new ArrayList<>();
+            final Map<ShapeType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
+            final List<ShapeType<?>> unlocked = new ArrayList<>();
 
 
             // populate render Entities
             if(renderEntities.isEmpty()) {
-                List<WalkersType<?>> types = WalkersType.getAllTypes(MinecraftClient.getInstance().world);
-                for (WalkersType<?> type : types) {
+                List<ShapeType<?>> types = ShapeType.getAllTypes(MinecraftClient.getInstance().world);
+                for (ShapeType<?> type : types) {
                     Entity entity = type.create(MinecraftClient.getInstance().world);
                     if(entity instanceof LivingEntity living) {
                         renderEntities.put(type, living);

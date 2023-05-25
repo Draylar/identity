@@ -3,7 +3,7 @@ package tocraft.walkers.screen.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.api.platform.WalkersConfig;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.network.impl.SwapPackets;
 import tocraft.walkers.screen.WalkersScreen;
 import net.minecraft.client.MinecraftClient;
@@ -20,12 +20,12 @@ import java.util.Collections;
 
 public class EntityWidget<T extends LivingEntity> extends PressableWidget {
 
-    private final WalkersType<T> type;
+    private final ShapeType<T> type;
     private final T entity;
     private final int size;
     private final WalkersScreen parent;
 
-    public EntityWidget(float x, float y, float width, float height, WalkersType<T> type, T entity, WalkersScreen parent) {
+    public EntityWidget(float x, float y, float width, float height, ShapeType<T> type, T entity, WalkersScreen parent) {
         super((int) x, (int) y, (int) width, (int) height, Text.of("")); // int x, int y, int width, int height, message
         this.type = type;
         this.entity = entity;

@@ -1,7 +1,7 @@
 package tocraft.walkers.network.impl;
 
 import dev.architectury.networking.NetworkManager;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.network.ClientNetworking;
 import tocraft.walkers.network.NetworkHandler;
@@ -21,7 +21,7 @@ public class UnlockPackets {
 
             ClientNetworking.runOrQueue(context, player -> {
                 ((PlayerDataProvider) player).get2ndShape().clear();
-                ((PlayerDataProvider) player).get2ndShape().add(WalkersType.from((NbtCompound) idTag));
+                ((PlayerDataProvider) player).get2ndShape().add(ShapeType.from((NbtCompound) idTag));
             });
         }
     }

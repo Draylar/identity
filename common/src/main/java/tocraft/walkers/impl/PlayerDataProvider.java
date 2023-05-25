@@ -1,6 +1,6 @@
 package tocraft.walkers.impl;
 
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,8 +8,8 @@ import java.util.Set;
 
 public interface PlayerDataProvider {
 
-    Set<WalkersType<?>> get2ndShape();
-    void set2ndShape(Set<WalkersType<?>> unlocked);
+    Set<ShapeType<?>> get2ndShape();
+    void set2ndShape(Set<ShapeType<?>> unlocked);
 
     int getRemainingHostilityTime();
     void setRemainingHostilityTime(int max);
@@ -21,5 +21,5 @@ public interface PlayerDataProvider {
     void setCurrentShape(@Nullable LivingEntity walkers);
     boolean updateShapes(@Nullable LivingEntity walkers);
 
-    WalkersType<?> getCurrentShapeType();
+    ShapeType<?> getCurrentShapeType();
 }

@@ -2,7 +2,7 @@ package tocraft.walkers.api;
 
 import dev.architectury.event.EventResult;
 import tocraft.walkers.api.event.UnlockWalkersCallback;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.network.impl.UnlockPackets;
 import net.minecraft.entity.EntityType;
@@ -12,7 +12,7 @@ import net.minecraft.util.ActionResult;
 
 public class PlayerUnlocks {
 
-    public static boolean unlock(ServerPlayerEntity player, WalkersType granted) {
+    public static boolean unlock(ServerPlayerEntity player, ShapeType granted) {
         PlayerDataProvider provider = (PlayerDataProvider) player;
         EventResult unlock = UnlockWalkersCallback.EVENT.invoker().unlock(player, granted);
 
@@ -27,7 +27,7 @@ public class PlayerUnlocks {
         }
     }
 
-    public static boolean has(PlayerEntity player, WalkersType type) {
+    public static boolean has(PlayerEntity player, ShapeType type) {
         return type.getEntityType().equals(EntityType.PLAYER) || (((PlayerDataProvider) player)).get2ndShape().contains(type);
     }
 

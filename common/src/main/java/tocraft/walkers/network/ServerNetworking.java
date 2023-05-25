@@ -28,14 +28,14 @@ public class ServerNetworking implements NetworkHandler {
 
                 // Verify we should use ability for the player's current walkers
                 if(walkers != null) {
-                    EntityType<?> walkersType = walkers.getType();
+                    EntityType<?> shapeType = walkers.getType();
 
-                    if(AbilityRegistry.has(walkersType)) {
+                    if(AbilityRegistry.has(shapeType)) {
 
                         // Check cooldown
                         if(PlayerAbilities.canUseAbility(player)) {
-                            AbilityRegistry.get(walkersType).onUse(player, walkers, context.getPlayer().world);
-                            PlayerAbilities.setCooldown(player, AbilityRegistry.get(walkersType).getCooldown(walkers));
+                            AbilityRegistry.get(shapeType).onUse(player, walkers, context.getPlayer().world);
+                            PlayerAbilities.setCooldown(player, AbilityRegistry.get(shapeType).getCooldown(walkers));
                             PlayerAbilities.sync((ServerPlayerEntity) player);
                         }
                     }

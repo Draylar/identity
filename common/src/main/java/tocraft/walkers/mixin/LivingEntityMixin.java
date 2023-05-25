@@ -2,7 +2,7 @@ package tocraft.walkers.mixin;
 
 import tocraft.walkers.Walkers;
 import tocraft.walkers.api.PlayerWalkers;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.NearbySongAccessor;
 import tocraft.walkers.mixin.accessor.LivingEntityAccessor;
 import tocraft.walkers.registry.WalkersEntityTags;

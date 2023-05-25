@@ -5,7 +5,7 @@ import dev.architectury.event.events.common.CommandRegistrationEvent;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.platform.WalkersConfig;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.EntitySummonArgumentType;
@@ -151,17 +151,17 @@ public class WalkersCommand {
     }
 
     private static void change2ndShape(ServerPlayerEntity source, ServerPlayerEntity player, Identifier id, @Nullable NbtCompound nbt) {
-        WalkersType<LivingEntity> type = new WalkersType(Registry.ENTITY_TYPE.get(id));
+        ShapeType<LivingEntity> type = new ShapeType(Registry.ENTITY_TYPE.get(id));
         Text name = Text.translatable(type.getEntityType().getTranslationKey());
 
-        // If the specified granting NBT is not null, change the WalkersType to reflect potential variants.
+        // If the specified granting NBT is not null, change the ShapeType to reflect potential variants.
         if(nbt != null) {
             NbtCompound copy = nbt.copy();
             copy.putString("id", id.toString());
             ServerWorld serverWorld = source.getWorld();
             Entity loaded = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
             if(loaded instanceof LivingEntity living) {
-                type = new WalkersType<>(living);
+                type = new ShapeType<>(living);
                 name = type.createTooltipText(living);
             }
         }
@@ -195,7 +195,7 @@ public class WalkersCommand {
         }
 
         if(created instanceof LivingEntity living) {
-            @Nullable WalkersType<?> defaultType = WalkersType.from(living);
+            @Nullable ShapeType<?> defaultType = ShapeType.from(living);
 
             if(defaultType != null) {
                 boolean result = PlayerWalkers.updateShapes(player, defaultType, (LivingEntity) created);

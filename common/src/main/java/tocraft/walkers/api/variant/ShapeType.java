@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class WalkersType<T extends LivingEntity> {
+public class ShapeType<T extends LivingEntity> {
 
     private static final List<EntityType<? extends LivingEntity>> LIVING_TYPE_CASH = new ArrayList<>();
     private static final Map<EntityType<? extends LivingEntity>, TypeProvider<?>> VARIANT_BY_TYPE = new LinkedHashMap<>();
@@ -30,7 +30,7 @@ public class WalkersType<T extends LivingEntity> {
         VARIANT_BY_TYPE.put(EntityType.FROG, new FrogTypeProvider());
     }
 
-    public WalkersType(EntityType<T> type) {
+    public ShapeType(EntityType<T> type) {
         this.type = type;
         variantData = getDefaultVariantData(type);
     }
@@ -43,12 +43,12 @@ public class WalkersType<T extends LivingEntity> {
         }
     }
 
-    public WalkersType(EntityType<T> type, int variantData) {
+    public ShapeType(EntityType<T> type, int variantData) {
         this.type = type;
         this.variantData = variantData;
     }
 
-    public WalkersType(T entity) {
+    public ShapeType(T entity) {
         this.type = (EntityType<T>) entity.getType();
 
         // Discover variant data based on entity NBT data.
@@ -61,7 +61,7 @@ public class WalkersType<T extends LivingEntity> {
     }
 
     @Nullable
-    public static <Z extends LivingEntity> WalkersType<Z> from(Z entity) {
+    public static <Z extends LivingEntity> ShapeType<Z> from(Z entity) {
         if(entity == null) {
             return null;
         }
@@ -72,20 +72,20 @@ public class WalkersType<T extends LivingEntity> {
             return typeProvider.create(type, entity);
         }
 
-        return new WalkersType<>((EntityType<Z>) entity.getType());
+        return new ShapeType<>((EntityType<Z>) entity.getType());
     }
 
     @Nullable
-    public static WalkersType<?> from(NbtCompound compound) {
+    public static ShapeType<?> from(NbtCompound compound) {
         Identifier id = new Identifier(compound.getString("EntityID"));
         if(!Registry.ENTITY_TYPE.containsId(id)) {
             return null;
         }
 
-        return new WalkersType(Registry.ENTITY_TYPE.get(id), compound.contains("Variant") ? compound.getInt("Variant") : -1);
+        return new ShapeType(Registry.ENTITY_TYPE.get(id), compound.contains("Variant") ? compound.getInt("Variant") : -1);
     }
 
-    public static List<WalkersType<?>> getAllTypes(World world) {
+    public static List<ShapeType<?>> getAllTypes(World world) {
         if(LIVING_TYPE_CASH.isEmpty()) {
             for (EntityType<?> type : Registry.ENTITY_TYPE) {
                 Entity instance = type.create(world);
@@ -95,15 +95,15 @@ public class WalkersType<T extends LivingEntity> {
             }
         }
 
-        List<WalkersType<?>> types = new ArrayList<>();
+        List<ShapeType<?>> types = new ArrayList<>();
         for (EntityType<?> type : LIVING_TYPE_CASH) {
             if(VARIANT_BY_TYPE.containsKey(type)) {
                 TypeProvider<?> variant = VARIANT_BY_TYPE.get(type);
                 for (int i = 0; i <= variant.getRange(); i++) {
-                    types.add(new WalkersType(type, i));
+                    types.add(new ShapeType(type, i));
                 }
             } else {
-                types.add(new WalkersType(type));
+                types.add(new ShapeType(type));
             }
         }
 
@@ -111,7 +111,7 @@ public class WalkersType<T extends LivingEntity> {
     }
 
     @Nullable
-    public static <Z extends LivingEntity> WalkersType<Z> from(EntityType<?> entityType, int variant) {
+    public static <Z extends LivingEntity> ShapeType<Z> from(EntityType<?> entityType, int variant) {
         if(VARIANT_BY_TYPE.containsKey(entityType)) {
             TypeProvider<?> provider = VARIANT_BY_TYPE.get(entityType);
             if(variant < -1 || variant > provider.getRange()) {
@@ -119,7 +119,7 @@ public class WalkersType<T extends LivingEntity> {
             }
         }
 
-        return new WalkersType<>((EntityType<Z>) entityType, variant);
+        return new ShapeType<>((EntityType<Z>) entityType, variant);
     }
 
     public NbtCompound writeCompound() {
@@ -150,7 +150,7 @@ public class WalkersType<T extends LivingEntity> {
     public boolean equals(Object o) {
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
-        WalkersType<?> that = (WalkersType<?>) o;
+        ShapeType<?> that = (ShapeType<?>) o;
         return variantData == that.variantData && type.equals(that.type);
     }
 
@@ -161,11 +161,11 @@ public class WalkersType<T extends LivingEntity> {
 
     public void writeEntityNbt(NbtCompound tag) {
         NbtCompound inner = writeCompound();
-        tag.put("WalkersType", inner);
+        tag.put("ShapeType", inner);
     }
 
-    public static WalkersType<?> fromEntityNbt(NbtCompound tag) {
-        return from(tag.getCompound("WalkersType"));
+    public static ShapeType<?> fromEntityNbt(NbtCompound tag) {
+        return from(tag.getCompound("ShapeType"));
     }
 
     public Text createTooltipText(T entity) {

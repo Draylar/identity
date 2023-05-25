@@ -6,7 +6,7 @@ import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.event.WalkersSwapCallback;
 import tocraft.walkers.api.FlightHelper;
 import tocraft.walkers.api.platform.WalkersConfig;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.DimensionsRefresher;
 import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.mixin.EntityTrackerAccessor;
@@ -39,11 +39,11 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
     @Unique private static final String ABILITY_COOLDOWN_KEY = "AbilityCooldown";
-    @Unique private final Set<WalkersType<?>> unlocked = new HashSet<>();
+    @Unique private final Set<ShapeType<?>> unlocked = new HashSet<>();
     @Unique private int remainingTime = 0;
     @Unique private int abilityCooldown = 0;
     @Unique private LivingEntity walkers = null;
-    @Unique private WalkersType<?> walkersType = null;
+    @Unique private ShapeType<?> shapeType = null;
 
     private PlayerEntityDataMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
@@ -56,7 +56,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         // This is the new tag for saving Walkers unlock information.
         // It includes metadata for variants.
         NbtCompound unlockedShape = tag.getCompound("UnlockedShape");
-        WalkersType<?> type = WalkersType.from(unlockedShape);
+        ShapeType<?> type = ShapeType.from(unlockedShape);
         if(type != null) {
             unlocked.add(type);
         } else {
@@ -101,8 +101,8 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         // serialize current walkers data to tag if it exists
         if(walkers != null) {
             walkers.writeNbt(entityTag);
-            if(walkersType != null) {
-                walkersType.writeEntityNbt(entityTag);
+            if(shapeType != null) {
+                shapeType.writeEntityNbt(entityTag);
             }
         }
 
@@ -136,19 +136,19 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
                 }
 
                 walkers.readNbt(entityTag);
-                walkersType = WalkersType.fromEntityNbt(tag);
+                shapeType = ShapeType.fromEntityNbt(tag);
             }
         }
     }
 
     @Unique
     @Override
-    public Set<WalkersType<?>> get2ndShape() {
+    public Set<ShapeType<?>> get2ndShape() {
         return unlocked;
     }
 
     @Override
-    public void set2ndShape(Set<WalkersType<?>> unlocked) {
+    public void set2ndShape(Set<ShapeType<?>> unlocked) {
         this.unlocked.clear();
         this.unlocked.addAll(unlocked);
     }
@@ -184,8 +184,8 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     }
 
     @Override
-    public WalkersType<?> getCurrentShapeType() {
-        return walkersType;
+    public ShapeType<?> getCurrentShapeType() {
+        return shapeType;
     }
 
     @Unique

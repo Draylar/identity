@@ -1,7 +1,7 @@
 package tocraft.walkers.api;
 
 import dev.architectury.networking.NetworkManager;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
@@ -25,7 +25,7 @@ public class PlayerWalkers {
         return ((PlayerDataProvider) player).getCurrentShape();
     }
 
-    public static WalkersType<?> getCurrentShapeType(PlayerEntity player) {
+    public static ShapeType<?> getCurrentShapeType(PlayerEntity player) {
         return ((PlayerDataProvider) player).getCurrentShapeType();
     }
 
@@ -37,7 +37,7 @@ public class PlayerWalkers {
      *
      * @param entity {@link LivingEntity} new walkers for this component, or null to clear
      */
-    public static boolean updateShapes(ServerPlayerEntity player, WalkersType<?> type, LivingEntity entity) {
+    public static boolean updateShapes(ServerPlayerEntity player, ShapeType<?> type, LivingEntity entity) {
         return ((PlayerDataProvider) player).updateShapes(entity);
     }
 

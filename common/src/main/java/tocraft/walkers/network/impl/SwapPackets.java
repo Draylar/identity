@@ -4,7 +4,7 @@ import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.PlayerWalkers;
 import tocraft.walkers.api.platform.WalkersConfig;
-import tocraft.walkers.api.variant.WalkersType;
+import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.network.ClientNetworking;
 import tocraft.walkers.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
@@ -29,7 +29,7 @@ public class SwapPackets {
                     if(entityType.equals(EntityType.PLAYER)) {
                         PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
                     } else {
-                        @Nullable WalkersType<LivingEntity> type = WalkersType.from(entityType, variant);
+                        @Nullable ShapeType<LivingEntity> type = ShapeType.from(entityType, variant);
                         if(type != null) {
                             // unlock walker
                             PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
@@ -52,7 +52,7 @@ public class SwapPackets {
         });
     }
 
-    public static void sendSwapRequest(@Nullable WalkersType<?> type) {
+    public static void sendSwapRequest(@Nullable ShapeType<?> type) {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
 
         packet.writeBoolean(type != null);
