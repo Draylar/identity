@@ -70,7 +70,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         remainingTime = tag.getInt("RemainingHostilityTime");
 
         // Current Walkers
-        readCurrentWalkers(tag.getCompound("CurrentWalkers"));
+        readCurrentShape(tag.getCompound("CurrentShape"));
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
@@ -91,11 +91,11 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         tag.putInt("RemainingHostilityTime", remainingTime);
 
         // Current Walkers
-        tag.put("CurrentWalkers", writeCurrentWalkers(new NbtCompound()));
+        tag.put("CurrentShape", writeCurrentShape(new NbtCompound()));
     }
 
     @Unique
-    private NbtCompound writeCurrentWalkers(NbtCompound tag) {
+    private NbtCompound writeCurrentShape(NbtCompound tag) {
         NbtCompound entityTag = new NbtCompound();
 
         // serialize current walkers data to tag if it exists
@@ -113,7 +113,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     }
 
     @Unique
-    public void readCurrentWalkers(NbtCompound tag) {
+    public void readCurrentShape(NbtCompound tag) {
         Optional<EntityType<?>> type = EntityType.fromNbt(tag);
 
         // set walkers to null (no walkers) if the entity id is "minecraft:empty"
