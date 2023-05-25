@@ -24,5 +24,6 @@
   "walkers.help.return": "Press any key to return to the Woodwalkers menu.",
   "key.categories.walkers": "Woodwalkers",
   "key.walkers": "Transform to your other shape",
+  "key.walker_menu": "Open menu to choose second shape",
   "key.walkers_ability": "Use an Shape Ability"
 }

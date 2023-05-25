@@ -5,15 +5,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import tocraft.walkers.impl.tick.MenuOnJoinHandler;
 
 public class WalkersHelpScreen extends Screen {
 
     public WalkersHelpScreen() {
         super(Text.literal(""));
         super.init(MinecraftClient.getInstance(), MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight());
-
-        MenuOnJoinHandler.menuIsOpen = true;
     }
 
     @Override
@@ -60,7 +57,6 @@ public class WalkersHelpScreen extends Screen {
 
     @Override
     public void close() {
-        MenuOnJoinHandler.menuIsOpen = false;
         MinecraftClient.getInstance().setScreen(new WalkersScreen());
     }
 }
