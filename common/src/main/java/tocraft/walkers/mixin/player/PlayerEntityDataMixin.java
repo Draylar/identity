@@ -58,7 +58,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
         // This is the new tag for saving Walkers unlock information.
         // It includes metadata for variants.
-        NbtList unlockedWalkersList = tag.getList("Unlocked2ndShapes", NbtElement.COMPOUND_TYPE);
+        NbtList unlockedWalkersList = tag.getList("UnlockedShapes", NbtElement.COMPOUND_TYPE);
         unlockedWalkersList.forEach(compound -> {
             WalkersType<?> type = WalkersType.from((NbtCompound) compound);
             if(type != null) {
