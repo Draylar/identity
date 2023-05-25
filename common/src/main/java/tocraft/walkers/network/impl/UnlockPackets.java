@@ -7,23 +7,21 @@ import tocraft.walkers.network.ClientNetworking;
 import tocraft.walkers.network.NetworkHandler;
 import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class UnlockPackets {
 
-    private static final String UNLOCK_KEY = "UnlockedShapes";
+    private static final String UNLOCK_KEY = "UnlockedShape";
 
     public static void handleUnlockSyncPacket(PacketByteBuf packet, NetworkManager.PacketContext context) {
         NbtCompound nbt = packet.readNbt();
         if(nbt != null) {
-            NbtList list = nbt.getList(UNLOCK_KEY, NbtElement.COMPOUND_TYPE);
+            NbtCompound idTag = nbt.getCompound(UNLOCK_KEY);
 
             ClientNetworking.runOrQueue(context, player -> {
                 ((PlayerDataProvider) player).get2ndShape().clear();
-                list.forEach(idTag -> ((PlayerDataProvider) player).get2ndShape().add(WalkersType.from((NbtCompound) idTag)));
+                ((PlayerDataProvider) player).get2ndShape().add(WalkersType.from((NbtCompound) idTag));
             });
         }
     }
@@ -33,9 +31,12 @@ public class UnlockPackets {
 
         // Serialize unlocked to tag
         NbtCompound compound = new NbtCompound();
-        NbtList idList = new NbtList();
-        ((PlayerDataProvider) player).get2ndShape().forEach(type -> idList.add(type.writeCompound()));
-        compound.put(UNLOCK_KEY, idList);
+        ((PlayerDataProvider) player).get2ndShape().forEach(type -> {
+            NbtCompound id = new NbtCompound();
+            id = type.writeCompound();
+            compound.put(UNLOCK_KEY, id);
+
+        });
         packet.writeNbt(compound);
 
         // Send to client

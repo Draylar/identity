@@ -19,12 +19,9 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -58,15 +55,13 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
         // This is the new tag for saving Walkers unlock information.
         // It includes metadata for variants.
-        NbtList unlockedWalkersList = tag.getList("UnlockedShapes", NbtElement.COMPOUND_TYPE);
-        unlockedWalkersList.forEach(compound -> {
-            WalkersType<?> type = WalkersType.from((NbtCompound) compound);
-            if(type != null) {
-                unlocked.add(type);
-            } else {
-                // TODO: log reading error here
-            }
-        });
+        NbtCompound unlockedShape = tag.getCompound("UnlockedShape");
+        WalkersType<?> type = WalkersType.from(unlockedShape);
+        if(type != null) {
+            unlocked.add(type);
+        } else {
+            // TODO: log reading error here
+        }
 
         // Abilities
         abilityCooldown = tag.getInt(ABILITY_COOLDOWN_KEY);
@@ -82,11 +77,11 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     private void writeNbt(NbtCompound tag, CallbackInfo info) {
         // Write 'Unlocked' Walkers data
         {
-            NbtList idList = new NbtList();
-            unlocked.forEach(walkers -> idList.add(walkers.writeCompound()));
-
-            // This was "UnlockedMorphs" in previous versions, but it has been changed with the introduction of variants.
-            tag.put("UnlockedShapes", idList);
+            unlocked.forEach(walkers -> {
+                NbtCompound id = new NbtCompound();
+                id = walkers.writeCompound();
+                tag.put("UnlockedShape", id);
+            });
         }
 
         // Abilities
