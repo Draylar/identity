@@ -210,18 +210,28 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
         // Walkers is valid and scaling health is on; set entity's max health and current health to reflect walkers.
         if(walkers != null && WalkersConfig.getInstance().scalingHealth()) {
-            player.setHealth(Math.min(player.getHealth(), walkers.getMaxHealth()));
+            if (WalkersConfig.getInstance().percentScalingHealth()) {
+                float currentHealthPercent = player.getHealth() / player.getMaxHealth();
+                player.setHealth(Math.min(currentHealthPercent * walkers.getMaxHealth(), walkers.getMaxHealth()));
+            }
+            else
+                player.setHealth(Math.min(player.getHealth(), walkers.getMaxHealth()));
             player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(Math.min(WalkersConfig.getInstance().maxHealth(), walkers.getMaxHealth()));
         }
 
         // If the walkers is null (going back to player), set the player's base health value to 20 (default) to clear old changes.
         if(walkers == null) {
+            float currentHealthPercent = player.getHealth() / player.getMaxHealth();
+
             if(WalkersConfig.getInstance().scalingHealth()) {
                 player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(20);
             }
 
             // Clear health value if needed
-            player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
+            if (WalkersConfig.getInstance().percentScalingHealth())
+                player.setHealth(Math.min(currentHealthPercent * player.getMaxHealth(), player.getMaxHealth()));
+            else
+                player.setHealth(Math.min(player.getHealth(), player.getMaxHealth()));
         }
 
         // update flight properties on player depending on walkers

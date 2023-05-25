@@ -67,6 +67,9 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Comment(value = "Whether Shapes modify your max health value based on their max health value.")
     public boolean scalingHealth = true;
 
+    @Comment(value = "This gets the percentage of your current health and implements it into your new health. Only works with scalingHealth!")
+    public boolean percentScalingHealth = true;
+
     @Comment(value = "The maximum value of scaling health. Useful for not giving players 300 HP when they turn into a wither.")
     public int maxHealth = 40;
 
@@ -170,6 +173,11 @@ public class WalkersFabricConfig extends WalkersConfig implements Config {
     @Override
     public boolean scalingHealth() {
         return scalingHealth;
+    }
+
+    @Override
+    public boolean percentScalingHealth() {
+        return percentScalingHealth;
     }
 
     @Override

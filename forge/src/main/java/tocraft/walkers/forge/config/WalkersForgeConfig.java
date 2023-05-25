@@ -29,6 +29,7 @@ public class WalkersForgeConfig extends WalkersConfig {
     public int hostilityTime = 20 * 15;
     public List<String> advancementsRequiredForFlight = new ArrayList<>();
     public boolean scalingHealth = true;
+    public boolean percentScalingHealth = true;
     public int maxHealth = 40;
     public int endermanAbilityTeleportDistance = 32;
     public boolean showPlayerNametag = false;
@@ -113,6 +114,11 @@ public class WalkersForgeConfig extends WalkersConfig {
     @Override
     public boolean scalingHealth() {
         return scalingHealth;
+    }
+
+    @Override
+    public boolean percentScalingHealth() {
+        return percentScalingHealth;
     }
 
     @Override

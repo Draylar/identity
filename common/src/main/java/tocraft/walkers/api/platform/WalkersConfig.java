@@ -36,6 +36,8 @@ public abstract class WalkersConfig {
 
     public abstract boolean scalingHealth();
 
+    public abstract boolean percentScalingHealth();
+
     public abstract int maxHealth();
 
     public abstract boolean shapesEquipItems();
