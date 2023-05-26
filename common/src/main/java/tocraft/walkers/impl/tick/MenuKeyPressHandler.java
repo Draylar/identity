@@ -8,7 +8,7 @@ import java.util.Map;
 import dev.architectury.event.events.client.ClientTickEvent;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.WalkersClient;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.screen.WalkersHelpScreen;

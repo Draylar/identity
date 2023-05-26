@@ -3,7 +3,7 @@ package tocraft.walkers.command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import tocraft.walkers.api.PlayerShape;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
@@ -164,9 +164,9 @@ public class WalkersCommand {
             }
         }
 
-        if(!PlayerUnlocks.has(player, type)) {
-            PlayerUnlocks.revoke(player);
-            boolean result = PlayerUnlocks.unlock(player, type);
+        if(((PlayerDataProvider) player).get2ndShape() != type) {
+            PlayerShapeChanger.changeShape(player, null);
+            boolean result = PlayerShapeChanger.changeShape(player, type);
 
             if(result && WalkersConfig.getInstance().logCommands()) {
                 player.sendMessage(Text.translatable("walkers.unlock_entity", name), true);

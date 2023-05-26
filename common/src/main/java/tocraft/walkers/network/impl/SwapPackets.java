@@ -1,7 +1,7 @@
 package tocraft.walkers.network.impl;
 
 import dev.architectury.networking.NetworkManager;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.ShapeType;
@@ -32,7 +32,7 @@ public class SwapPackets {
                         @Nullable ShapeType<LivingEntity> type = ShapeType.from(entityType, variant);
                         if(type != null) {
                             // unlock walker
-                            PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
+                            PlayerShapeChanger.changeShape((ServerPlayerEntity) context.getPlayer(), type);
                             // update Player
                             PlayerShape.updateShapes((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
                         }

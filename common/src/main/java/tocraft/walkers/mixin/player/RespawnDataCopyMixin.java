@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin.player;
 
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.impl.PlayerDataProvider;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,6 +22,6 @@ public class RespawnDataCopyMixin {
         newData.setCurrentShape(oldData.getCurrentShape());
         newData.set2ndShape(oldData.get2ndShape());
 
-        PlayerUnlocks.sync((ServerPlayerEntity) (Object) this);
+        PlayerShapeChanger.sync((ServerPlayerEntity) (Object) this);
     }
 }

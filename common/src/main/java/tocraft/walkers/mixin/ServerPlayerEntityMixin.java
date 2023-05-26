@@ -3,7 +3,7 @@ package tocraft.walkers.mixin;
 import com.mojang.authlib.GameProfile;
 import tocraft.walkers.Walkers;
 import tocraft.walkers.api.PlayerShape;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.api.FlightHelper;
 import tocraft.walkers.api.platform.WalkersConfig;
 import net.minecraft.entity.EntityType;
@@ -44,7 +44,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             // revoke the walkers current equipped by the player
             if(entity != null) {
                 EntityType<?> type = entity.getType();
-                PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this);
+                PlayerShapeChanger.changeShape((ServerPlayerEntity) (Object) this, null);
                 PlayerShape.updateShapes((ServerPlayerEntity) (Object) this, null,null);
 
                 // todo: this option might be server-only given that this method isn't[?] called on the client

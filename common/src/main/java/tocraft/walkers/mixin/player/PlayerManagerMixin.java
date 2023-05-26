@@ -1,7 +1,7 @@
 package tocraft.walkers.mixin.player;
 
 import tocraft.walkers.api.PlayerShape;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ public class PlayerManagerMixin {
 
     @Inject(method = "respawnPlayer", at = @At(value = "RETURN"))
     private void sendResyncPacketOnRespawn(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
-        PlayerUnlocks.sync(player);
+        PlayerShapeChanger.sync(player);
         PlayerShape.sync(player);
     }
 }

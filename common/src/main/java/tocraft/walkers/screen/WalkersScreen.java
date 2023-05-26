@@ -2,7 +2,7 @@ package tocraft.walkers.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import tocraft.walkers.Walkers;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.mixin.accessor.ScreenAccessor;
 import tocraft.walkers.screen.widget.EntityWidget;

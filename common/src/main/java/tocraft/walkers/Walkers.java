@@ -5,7 +5,7 @@ import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.ability.AbilityRegistry;
 import tocraft.walkers.api.WalkersTickHandlers;
 import tocraft.walkers.api.PlayerShape;
-import tocraft.walkers.api.PlayerUnlocks;
+import tocraft.walkers.api.PlayerShapeChanger;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.network.NetworkHandler;
 import tocraft.walkers.network.ServerNetworking;
@@ -51,7 +51,7 @@ public class Walkers {
             NetworkManager.sendToPlayer(player, NetworkHandler.CONFIG_SYNC, packet);
 
             // Sync unlocked Walkers
-            PlayerUnlocks.sync(player);
+            PlayerShapeChanger.sync(player);
         });
     }
 
