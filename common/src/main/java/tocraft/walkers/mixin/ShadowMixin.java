@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.mixin.accessor.EntityShadowAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -36,7 +36,7 @@ public abstract class ShadowMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(DDD)D", ordinal = 0), index = 7)
     private static float adjustShadowSize(float originalSize) {
         if(walkers_shadowEntity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if(walkers != null) {
                 EntityRenderer<?> r = MinecraftClient.getInstance().getEntityRenderDispatcher().getRenderer(walkers);

@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
@@ -30,7 +30,7 @@ public abstract class CreeperEntityMixin extends HostileEntity {
                 PlayerEntity.class,
                 entity -> {
                     if (entity instanceof PlayerEntity player) {
-                        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+                        LivingEntity walkers = PlayerShape.getCurrentShape(player);
                         return walkers != null && walkers.getType().equals(EntityType.OCELOT);
                     }
 

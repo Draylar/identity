@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.registry.WalkersEntityTags;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,7 +19,7 @@ public class PlayerSwimmingMixin {
     private void onGolemSwimUp(TagKey<Fluid> fluid, CallbackInfo ci) {
         LivingEntity thisEntity = (LivingEntity) (Object) this;
         if(thisEntity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if(walkers != null && walkers.getType().isIn(WalkersEntityTags.CANT_SWIM)) {
                 ci.cancel();

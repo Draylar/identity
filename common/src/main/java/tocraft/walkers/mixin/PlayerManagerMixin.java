@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.event.PlayerJoinCallback;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.impl.DimensionsRefresher;
@@ -33,7 +33,7 @@ public class PlayerManagerMixin {
             at = @At("RETURN")
     )
     private void onRespawn(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
-        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+        LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
         // refresh entity hitbox dimensions after death
         ((DimensionsRefresher) player).walkers_refreshDimensions();

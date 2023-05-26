@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HoglinBrain;
 import net.minecraft.entity.mob.HoglinEntity;
@@ -26,7 +26,7 @@ public class HoglinBrainMixin {
 
             // Check if Hoglin target is player
             if(target instanceof PlayerEntity player) {
-                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+                LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
                 // Ensure player walkers is valid
                 if(walkers != null) {

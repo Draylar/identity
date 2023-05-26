@@ -3,7 +3,7 @@ package tocraft.walkers.ability;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import tocraft.walkers.api.PlayerAbilities;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -25,7 +25,7 @@ public class AbilityOverlayRenderer {
             MinecraftClient client = MinecraftClient.getInstance();
             ClientPlayerEntity player = client.player;
             Window window = client.getWindow();
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if(walkers == null) {
                 return;

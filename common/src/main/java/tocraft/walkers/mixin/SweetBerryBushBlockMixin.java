@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SweetBerryBushBlock;
 import net.minecraft.entity.Entity;
@@ -25,7 +25,7 @@ public class SweetBerryBushBlockMixin {
     )
     private void onDamage(BlockState state, World world, BlockPos pos, Entity entity, CallbackInfo ci) {
         if(entity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             // Cancel damage if the player's walkers is a fox
             if(walkers instanceof FoxEntity || walkers instanceof BeeEntity) {

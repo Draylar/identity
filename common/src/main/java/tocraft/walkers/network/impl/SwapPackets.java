@@ -2,7 +2,7 @@ package tocraft.walkers.network.impl;
 
 import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.api.PlayerUnlocks;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.network.ClientNetworking;
@@ -27,14 +27,14 @@ public class SwapPackets {
                 context.getPlayer().getServer().execute(() -> {
                     // player type shouldn't be sent, but we still check regardless
                     if(entityType.equals(EntityType.PLAYER)) {
-                        PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
+                        PlayerShape.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
                     } else {
                         @Nullable ShapeType<LivingEntity> type = ShapeType.from(entityType, variant);
                         if(type != null) {
                             // unlock walker
                             PlayerUnlocks.unlock((ServerPlayerEntity) context.getPlayer(), type);
                             // update Player
-                            PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
+                            PlayerShape.updateShapes((ServerPlayerEntity) context.getPlayer(), type, type.create(context.getPlayer().getWorld()));
                         }
                     }
                     
@@ -44,7 +44,7 @@ public class SwapPackets {
             } else {
                 // Swap back to player if server allows it
                 context.getPlayer().getServer().execute(() -> {
-                    PlayerWalkers.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
+                    PlayerShape.updateShapes((ServerPlayerEntity) context.getPlayer(), null, null);
 
                     context.getPlayer().calculateDimensions();
                 });

@@ -2,7 +2,7 @@ package tocraft.walkers.mixin.player;
 
 import dev.architectury.event.EventResult;
 import tocraft.walkers.Walkers;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.event.WalkersSwapCallback;
 import tocraft.walkers.api.FlightHelper;
 import tocraft.walkers.api.platform.WalkersConfig;
@@ -242,12 +242,12 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
         // sync with client
         if(!player.world.isClient) {
-            PlayerWalkers.sync((ServerPlayerEntity) player);
+            PlayerShape.sync((ServerPlayerEntity) player);
 
             Int2ObjectMap<Object> trackers = ((ThreadedAnvilChunkStorageAccessor) ((ServerWorld) player.world).getChunkManager().threadedAnvilChunkStorage).getEntityTrackers();
             Object tracking = trackers.get(player.getId());
             ((EntityTrackerAccessor) tracking).getListeners().forEach(listener -> {
-                PlayerWalkers.sync((ServerPlayerEntity) player, listener.getPlayer());
+                PlayerShape.sync((ServerPlayerEntity) player, listener.getPlayer());
             });
         }
 

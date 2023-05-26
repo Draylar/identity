@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin.player;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -19,8 +19,8 @@ public class PlayerTrackingMixin {
     @Inject(method = "startTracking", at = @At("RETURN"))
     private void sendTrackingWalkersPackets(ServerPlayerEntity newlyTracked, CallbackInfo ci) {
         if(this.entity instanceof ServerPlayerEntity player) {
-            PlayerWalkers.sync(newlyTracked, player);
-            PlayerWalkers.sync(player, newlyTracked);
+            PlayerShape.sync(newlyTracked, player);
+            PlayerShape.sync(player, newlyTracked);
         }
     }
 }

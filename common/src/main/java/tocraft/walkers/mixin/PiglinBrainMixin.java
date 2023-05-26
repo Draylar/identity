@@ -1,7 +1,7 @@
 package tocraft.walkers.mixin;
 
 import tocraft.walkers.api.PlayerHostility;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.registry.WalkersEntityTags;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +26,7 @@ public class PiglinBrainMixin {
         boolean shouldAttack = cir.getReturnValue();
 
         if(shouldAttack && target instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
             boolean hasHostility = PlayerHostility.hasHostility(player);
 
             if(walkers != null) {

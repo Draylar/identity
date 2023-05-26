@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.registry.WalkersEntityTags;
 import net.minecraft.entity.Entity;
@@ -40,7 +40,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
             boolean isWalkersPlayer = false;
 
             if(entity instanceof PlayerEntity player) {
-                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+                LivingEntity walkers = PlayerShape.getCurrentShape(player);
                 if(walkers instanceof FoxEntity) {
                     isWalkersPlayer = true;
                 }
@@ -63,7 +63,7 @@ public abstract class FoxEntityMixin extends AnimalEntity {
 
             // foxes can target players if their walkers is in the fox_prey tag, or if they are an entity that extends FishEntity
             // todo: add baby turtle targeting
-            LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) player);
+            LivingEntity walkers = PlayerShape.getCurrentShape((PlayerEntity) player);
             return walkers != null && walkers.getType().isIn(WalkersEntityTags.FOX_PREY) || walkers instanceof FishEntity;
         }));
     }

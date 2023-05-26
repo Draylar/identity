@@ -3,7 +3,7 @@ package tocraft.walkers.registry;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import tocraft.walkers.api.PlayerHostility;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -31,7 +31,7 @@ public class WalkersEventHandlers {
     public static void registerRavagerRidingHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
             if(entity instanceof RavagerEntity) {
-                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+                LivingEntity walkers = PlayerShape.getCurrentShape(player);
                 if(walkers != null) {
                     if(walkers.getType().isIn(WalkersEntityTags.RAVAGER_RIDING)) {
                         player.startRiding(entity);

@@ -2,7 +2,7 @@ package tocraft.walkers.network;
 
 import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.ability.AbilityRegistry;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.PlayerAbilities;
 import tocraft.walkers.network.impl.SwapPackets;
@@ -24,7 +24,7 @@ public class ServerNetworking implements NetworkHandler {
             PlayerEntity player = context.getPlayer();
 
             context.getPlayer().getServer().execute(() -> {
-                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+                LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
                 // Verify we should use ability for the player's current walkers
                 if(walkers != null) {

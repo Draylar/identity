@@ -3,7 +3,7 @@ package tocraft.walkers.mixin.player;
 import tocraft.walkers.api.WalkersTickHandler;
 import tocraft.walkers.api.WalkersTickHandlers;
 import tocraft.walkers.api.PlayerAbilities;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.impl.PlayerDataProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -27,7 +27,7 @@ public abstract class PlayerEntityTickMixin extends LivingEntity {
     @Inject(method = "tick", at = @At("HEAD"))
     private void serverTick(CallbackInfo info) {
         // Tick WalkersTickHandlers on the client & server.
-        @Nullable LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) (Object) this);
+        @Nullable LivingEntity walkers = PlayerShape.getCurrentShape((PlayerEntity) (Object) this);
         if(walkers != null) {
             @Nullable WalkersTickHandler handler = WalkersTickHandlers.getHandlers().get(walkers.getType());
             if(handler != null) {

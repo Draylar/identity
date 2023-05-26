@@ -4,7 +4,7 @@ import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import tocraft.walkers.ability.AbilityRegistry;
 import tocraft.walkers.api.WalkersTickHandlers;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.network.NetworkHandler;
@@ -60,7 +60,7 @@ public class Walkers {
     }
 
     public static boolean hasFlyingPermissions(ServerPlayerEntity player) {
-        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+        LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
         if(walkers != null && WalkersConfig.getInstance().enableFlight() && walkers.getType().isIn(WalkersEntityTags.FLYING)) {
             List<String> requiredAdvancements = WalkersConfig.getInstance().advancementsRequiredForFlight();

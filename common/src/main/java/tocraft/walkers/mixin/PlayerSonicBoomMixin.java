@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.impl.SonicBoomUser;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
@@ -43,7 +43,7 @@ public abstract class PlayerSonicBoomMixin extends LivingEntity implements Sonic
 
     @Override
     public void walkers$ability_startSonicBoom() {
-        @Nullable LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) (Object) this);
+        @Nullable LivingEntity walkers = PlayerShape.getCurrentShape((PlayerEntity) (Object) this);
         if(walkers instanceof WardenEntity) {
             world.sendEntityStatus(this, EntityStatuses.SONIC_BOOM);
             walkers$ability_wardenBoomDelay = 40;

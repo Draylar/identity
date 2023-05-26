@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +16,7 @@ public class PlayerByteStatusMixin {
     // When a player receives a handleStatus byte, pass it on to their Walkers.
     @Inject(method = "handleStatus", at = @At("RETURN"))
     private void walkers$passByteStatus(byte status, CallbackInfo ci) {
-        @Nullable LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) (Object) this);
+        @Nullable LivingEntity walkers = PlayerShape.getCurrentShape((PlayerEntity) (Object) this);
         if(walkers != null) {
             walkers.handleStatus(status);
         }

@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +23,7 @@ public abstract class VillagerEntityMixin {
             cancellable = true
     )
     private void onInteract(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+        LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
         if(walkers != null && walkers.isUndead()) {
             this.sayNo();

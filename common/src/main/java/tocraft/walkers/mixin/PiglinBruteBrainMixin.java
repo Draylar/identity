@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.mob.AbstractPiglinEntity;
@@ -27,7 +27,7 @@ public class PiglinBruteBrainMixin {
     @Inject( method = "method_30255", at = @At("HEAD"), expect = 0, cancellable = true)
     private static void walkers$method_30249FilterLambdaIntermediary(AbstractPiglinEntity abstractPiglinEntity, LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
         if(livingEntity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if(walkers != null && !(walkers instanceof WitherSkeletonEntity) && !(walkers instanceof WitherEntity)) {
                 cir.setReturnValue(false);
@@ -39,7 +39,7 @@ public class PiglinBruteBrainMixin {
     @Inject(method = "m_35106_", at = @At("HEAD"), remap = false, expect = 0, cancellable = true)
     private static void walkers$method_30249FilterLambdaSRG(AbstractPiglinEntity abstractPiglinEntity, LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
         if(livingEntity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if(walkers != null && !(walkers instanceof WitherSkeletonEntity) && !(walkers instanceof WitherEntity)) {
                 cir.setReturnValue(false);

@@ -2,7 +2,7 @@ package tocraft.walkers.mixin;
 
 import com.mojang.authlib.GameProfile;
 import tocraft.walkers.Walkers;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.FlightHelper;
 import tocraft.walkers.api.platform.WalkersConfig;
@@ -39,13 +39,13 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     )
     private void revoke2ndShapesOnDeath(DamageSource source, CallbackInfo ci) {
         if(WalkersConfig.getInstance().revoke2ndShapesOnDeath() && !this.isCreative() && !this.isSpectator()) {
-            LivingEntity entity = PlayerWalkers.getCurrentShape(this);
+            LivingEntity entity = PlayerShape.getCurrentShape(this);
 
             // revoke the walkers current equipped by the player
             if(entity != null) {
                 EntityType<?> type = entity.getType();
                 PlayerUnlocks.revoke((ServerPlayerEntity) (Object) this);
-                PlayerWalkers.updateShapes((ServerPlayerEntity) (Object) this, null,null);
+                PlayerShape.updateShapes((ServerPlayerEntity) (Object) this, null,null);
 
                 // todo: this option might be server-only given that this method isn't[?] called on the client
                 // send revoke message to player if they aren't in creative and the config option is on

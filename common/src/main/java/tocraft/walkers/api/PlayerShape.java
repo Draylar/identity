@@ -12,7 +12,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.registry.Registry;
 
-public class PlayerWalkers {
+public class PlayerShape {
 
     /**
      * Returns the walkers associated with the {@link PlayerEntity} this component is attached to.

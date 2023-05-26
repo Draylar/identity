@@ -1,7 +1,7 @@
 package tocraft.walkers.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -28,7 +28,7 @@ public class VillagerHostilesSensorMixin {
         if(entity instanceof PlayerEntity player) {
             // check if we should be performing this from config
             if(WalkersConfig.getInstance().villagersRunFrom2ndShapes()) {
-                LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+                LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
                 // check if walkers is valid & if it is a type villagers run from
                 if (walkers != null && SQUARED_DISTANCES_FOR_DANGER.containsKey(walkers.getType())) {
@@ -46,7 +46,7 @@ public class VillagerHostilesSensorMixin {
     private void checkPlayerDanger(LivingEntity villager, LivingEntity potentialPlayer, CallbackInfoReturnable<Boolean> cir) {
         // should only be called if the above mixin passes, so we can assume the config option is true
         if(potentialPlayer instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             // check if walkers is valid & if it is a type villagers run from
             if (walkers != null && SQUARED_DISTANCES_FOR_DANGER.containsKey(walkers.getType())) {

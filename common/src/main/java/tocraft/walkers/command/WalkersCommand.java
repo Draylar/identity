@@ -2,7 +2,7 @@ package tocraft.walkers.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.ShapeType;
@@ -196,7 +196,7 @@ public class WalkersCommand {
             @Nullable ShapeType<?> defaultType = ShapeType.from(living);
 
             if(defaultType != null) {
-                boolean result = PlayerWalkers.updateShapes(player, defaultType, (LivingEntity) created);
+                boolean result = PlayerShape.updateShapes(player, defaultType, (LivingEntity) created);
                 if(result && WalkersConfig.getInstance().logCommands()) {
                     source.sendMessage(Text.translatable("walkers.equip_success", Text.translatable(created.getType().getTranslationKey()), player.getDisplayName()), true);
                 }
@@ -205,7 +205,7 @@ public class WalkersCommand {
     }
 
     private static void unequip(ServerPlayerEntity source, ServerPlayerEntity player) {
-        boolean result = PlayerWalkers.updateShapes(player, null, null);
+        boolean result = PlayerShape.updateShapes(player, null, null);
 
         if(result && WalkersConfig.getInstance().logCommands()) {
             source.sendMessage(Text.translatable("walkers.unequip_success", player.getDisplayName()), false);

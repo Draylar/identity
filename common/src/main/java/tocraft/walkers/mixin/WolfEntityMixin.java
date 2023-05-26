@@ -1,6 +1,6 @@
 package tocraft.walkers.mixin;
 
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.registry.WalkersEntityTags;
 import net.minecraft.entity.EntityType;
@@ -33,7 +33,7 @@ public abstract class WolfEntityMixin extends TameableEntity {
                 return false;
             }
 
-            LivingEntity walkers = PlayerWalkers.getCurrentShape((PlayerEntity) player);
+            LivingEntity walkers = PlayerShape.getCurrentShape((PlayerEntity) player);
 
             // wolves should ignore players that look like their prey if they have an owner,
             // unless the config option is turned to true

@@ -1,7 +1,7 @@
 package tocraft.walkers.mixin;
 
 import tocraft.walkers.api.PlayerHostility;
-import tocraft.walkers.api.PlayerWalkers;
+import tocraft.walkers.api.PlayerShape;
 import tocraft.walkers.api.platform.WalkersConfig;
 import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
@@ -31,7 +31,7 @@ public abstract class ActiveTargetGoalMixin extends TrackTargetGoalMixin {
     private void ignoreShapedPlayers(CallbackInfo ci) {
         if (WalkersConfig.getInstance().hostilesIgnoreHostileShapedPlayer() && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) this.targetEntity;
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if(walkers != null) {
                 boolean hasHostility = PlayerHostility.hasHostility(player);
@@ -64,7 +64,7 @@ public abstract class ActiveTargetGoalMixin extends TrackTargetGoalMixin {
     protected void walkers_shouldContinue(CallbackInfoReturnable<Boolean> cir) {
         // check cancelling for hostiles
         if(WalkersConfig.getInstance().hostilesIgnoreHostileShapedPlayer() && WalkersConfig.getInstance().hostilesForgetNewHostileShapedPlayer() && this.mob instanceof Monster && this.targetEntity instanceof PlayerEntity player) {
-            LivingEntity walkers = PlayerWalkers.getCurrentShape(player);
+            LivingEntity walkers = PlayerShape.getCurrentShape(player);
 
             if (walkers != null) {
                 boolean hasHostility = PlayerHostility.hasHostility(player);
