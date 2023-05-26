@@ -10,6 +10,7 @@ import tocraft.walkers.Walkers;
 import tocraft.walkers.WalkersClient;
 import tocraft.walkers.api.PlayerUnlocks;
 import tocraft.walkers.api.variant.ShapeType;
+import tocraft.walkers.impl.PlayerDataProvider;
 import tocraft.walkers.screen.WalkersHelpScreen;
 import tocraft.walkers.screen.WalkersScreen;
 import net.minecraft.client.MinecraftClient;
@@ -24,31 +25,7 @@ public class MenuKeyPressHandler implements ClientTickEvent.Client {
         assert client.player != null;
 
         if(WalkersClient.MENU_KEY.wasPressed()) {
-            final Map<ShapeType<?>, LivingEntity> renderEntities = new LinkedHashMap<>();
-            final List<ShapeType<?>> unlocked = new ArrayList<>();
-
-
-            // populate render Entities
-            if(renderEntities.isEmpty()) {
-                List<ShapeType<?>> types = ShapeType.getAllTypes(MinecraftClient.getInstance().world);
-                for (ShapeType<?> type : types) {
-                    Entity entity = type.create(MinecraftClient.getInstance().world);
-                    if(entity instanceof LivingEntity living) {
-                        renderEntities.put(type, living);
-                    }
-                }
-    
-                Walkers.LOGGER.info(String.format("Loaded %d entities", types.size()));
-            }
-
-            // collect current unlocked second shape
-            renderEntities.forEach((type, instance) -> {
-                if(PlayerUnlocks.has(client.player, type)) {
-                    unlocked.add(type);
-                }
-            });
-
-            if (unlocked.isEmpty())
+            if (((PlayerDataProvider) client.player).get2ndShape() == null)
                 MinecraftClient.getInstance().setScreen(new WalkersScreen());
             else
                 MinecraftClient.getInstance().setScreen(new WalkersHelpScreen());

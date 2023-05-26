@@ -39,7 +39,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Shadow public abstract void playSound(SoundEvent sound, float volume, float pitch);
     @Unique private static final String ABILITY_COOLDOWN_KEY = "AbilityCooldown";
-    @Unique private final Set<ShapeType<?>> unlocked = new HashSet<>();
+    @Unique private ShapeType<?> unlocked;
     @Unique private int remainingTime = 0;
     @Unique private int abilityCooldown = 0;
     @Unique private LivingEntity walkers = null;
@@ -51,17 +51,11 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void readNbt(NbtCompound tag, CallbackInfo info) {
-        unlocked.clear();
-
         // This is the new tag for saving Walkers unlock information.
         // It includes metadata for variants.
         NbtCompound unlockedShape = tag.getCompound("UnlockedShape");
         ShapeType<?> type = ShapeType.from(unlockedShape);
-        if(type != null) {
-            unlocked.add(type);
-        } else {
-            // TODO: log reading error here
-        }
+        this.unlocked = type;
 
         // Abilities
         abilityCooldown = tag.getInt(ABILITY_COOLDOWN_KEY);
@@ -76,14 +70,10 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     private void writeNbt(NbtCompound tag, CallbackInfo info) {
         // Write 'Unlocked' Walkers data
-        {
-            unlocked.forEach(walkers -> {
-                NbtCompound id = new NbtCompound();
-                id = walkers.writeCompound();
-                tag.put("UnlockedShape", id);
-            });
-        }
-
+        NbtCompound id = new NbtCompound();
+        id = unlocked.writeCompound();
+        tag.put("UnlockedShape", id);
+        
         // Abilities
         tag.putInt(ABILITY_COOLDOWN_KEY, abilityCooldown);
 
@@ -143,14 +133,13 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
 
     @Unique
     @Override
-    public Set<ShapeType<?>> get2ndShape() {
+    public ShapeType<?> get2ndShape() {
         return unlocked;
     }
 
     @Override
-    public void set2ndShape(Set<ShapeType<?>> unlocked) {
-        this.unlocked.clear();
-        this.unlocked.addAll(unlocked);
+    public void set2ndShape(ShapeType<?> unlocked) {
+        this.unlocked= unlocked;
     }
 
     @Unique

@@ -134,11 +134,9 @@ public class WalkersCommand {
 
     private static int show2ndShape(ServerPlayerEntity source, ServerPlayerEntity player) {
 
-        if(!((PlayerDataProvider) player).get2ndShape().isEmpty()) {
+        if(((PlayerDataProvider) player).get2ndShape() != null) {
             if(WalkersConfig.getInstance().logCommands()) {
-                ((PlayerDataProvider) player).get2ndShape().forEach(unlocked -> {
-                    source.sendMessage(Text.translatable("walkers.show2ndShapeNot_positive", player.getDisplayName(), Text.translatable(unlocked.getEntityType().getTranslationKey())), true);
-                });
+                source.sendMessage(Text.translatable("walkers.show2ndShapeNot_positive", player.getDisplayName(), Text.translatable(((PlayerDataProvider) player).get2ndShape().getEntityType().getTranslationKey())), true);
             }
 
             return 1;

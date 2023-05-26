@@ -8,8 +8,8 @@ import java.util.Set;
 
 public interface PlayerDataProvider {
 
-    Set<ShapeType<?>> get2ndShape();
-    void set2ndShape(Set<ShapeType<?>> unlocked);
+    ShapeType<?> get2ndShape();
+    void set2ndShape(ShapeType<?> unlocked);
 
     int getRemainingHostilityTime();
     void setRemainingHostilityTime(int max);

@@ -14,13 +14,10 @@ public class TransformKeyPressHandler implements ClientTickEvent.Client {
         assert client.player != null;
 
         if(WalkersClient.TRANSFORM_KEY.wasPressed()) {
-            for (ShapeType<?> unlocked : ((PlayerDataProvider) client.player).get2ndShape()) {
-                if (PlayerWalkers.getCurrentShape(client.player) == null)
-                    SwapPackets.sendSwapRequest(unlocked);
-                else
-                    SwapPackets.sendSwapRequest(null);
-                break;
-            }
+            if (PlayerWalkers.getCurrentShape(client.player) == null)
+                SwapPackets.sendSwapRequest(((PlayerDataProvider) client.player).get2ndShape());
+            else
+                SwapPackets.sendSwapRequest(null);
         }
     }
 }
