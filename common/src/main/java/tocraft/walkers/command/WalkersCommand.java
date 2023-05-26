@@ -37,17 +37,42 @@ public class WalkersCommand {
                     .build();
 
             /*
-            Used to give the specified Walkers to the specified Player.
+            Used to give the specified shape to the specified Player.
              */
             LiteralCommandNode<ServerCommandSource> change2ndShape = CommandManager
                     .literal("change2ndShape")
+                    .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                            .executes(context -> {
+                                change2ndShape(
+                                        context.getSource().getPlayer(),
+                                        context.getSource().getPlayer(),
+                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                        null
+                                );
+                                return 1;
+                            })
+                            .then(CommandManager.argument("nbt", NbtCompoundArgumentType.nbtCompound())
+                                    .executes(context -> {
+                                        NbtCompound nbt = NbtCompoundArgumentType.getNbtCompound(context, "nbt");
+
+                                        change2ndShape(
+                                                context.getSource().getPlayer(),
+                                                context.getSource().getPlayer(),
+                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                nbt
+                                        );
+
+                                        return 1;
+                                    })
+                            )
+                    )
                     .then(CommandManager.argument("player", EntityArgumentType.players())
-                            .then(CommandManager.argument("walkers", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                            .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         change2ndShape(
                                                 context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "walkers"),
+                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
                                                 null
                                         );
                                         return 1;
@@ -59,7 +84,7 @@ public class WalkersCommand {
                                                 change2ndShape(
                                                         context.getSource().getPlayer(),
                                                         EntityArgumentType.getPlayer(context, "player"),
-                                                        EntitySummonArgumentType.getEntitySummon(context, "walkers"),
+                                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
                                                         nbt
                                                 );
 
@@ -71,13 +96,42 @@ public class WalkersCommand {
                     .build();
 
             LiteralCommandNode<ServerCommandSource> equip = CommandManager
-                    .literal("equip")
+                    .literal("switchShape")
+                    .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                                    .executes(context -> {
+                                        equip(context.getSource().getPlayer(),
+                                                context.getSource().getPlayer(),
+                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                null);
+
+                                        return 1;
+                                    })
+                                    .then(CommandManager.argument("nbt", NbtCompoundArgumentType.nbtCompound())
+                                            .executes(context -> {
+                                                NbtCompound nbt = NbtCompoundArgumentType.getNbtCompound(context, "nbt");
+
+                                                equip(context.getSource().getPlayer(),
+                                                        context.getSource().getPlayer(),
+                                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                        nbt);
+
+                                                return 1;
+                                            })
+                                    )
+                            )
                     .then(CommandManager.argument("player", EntityArgumentType.players())
-                            .then(CommandManager.argument("walkers", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                            .executes(context -> {
+                                unequip(
+                                        context.getSource().getPlayer(),
+                                        EntityArgumentType.getPlayer(context, "player")
+                                );
+                                return 1;
+                            })
+                            .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         equip(context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "walkers"),
+                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
                                                 null);
 
                                         return 1;
@@ -88,7 +142,7 @@ public class WalkersCommand {
 
                                                 equip(context.getSource().getPlayer(),
                                                         EntityArgumentType.getPlayer(context, "player"),
-                                                        EntitySummonArgumentType.getEntitySummon(context, "walkers"),
+                                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
                                                         nbt);
 
                                                 return 1;
@@ -98,21 +152,14 @@ public class WalkersCommand {
                     )
                     .build();
 
-            LiteralCommandNode<ServerCommandSource> unequip = CommandManager
-                    .literal("unequip")
-                    .then(CommandManager.argument("player", EntityArgumentType.players())
-                            .executes(context -> {
-                                unequip(
-                                        context.getSource().getPlayer(),
-                                        EntityArgumentType.getPlayer(context, "player")
-                                );
-                                return 1;
-                            })
-                    )
-                    .build();
-
             LiteralCommandNode<ServerCommandSource> show2ndShape = CommandManager
                     .literal("show2ndShape")
+                    .executes(context -> {
+                            return show2ndShape(
+                                    context.getSource().getPlayer(),
+                                    context.getSource().getPlayer()
+                            );
+                        })
                     .then(CommandManager.argument("player", EntityArgumentType.player())
                         .executes(context -> {
                             return show2ndShape(
@@ -125,7 +172,6 @@ public class WalkersCommand {
 
             rootNode.addChild(change2ndShape);
             rootNode.addChild(equip);
-            rootNode.addChild(unequip);
             rootNode.addChild(show2ndShape);
 
             dispatcher.getRoot().addChild(rootNode);
