@@ -3,7 +3,7 @@
   "walkers.grant_success": "Successfully changed %s to be the second shape of %s.",
   "walkers.already_has": "%s already has the %s walkers!",
   "walkers.does_not_have": "%s does not have second shapes!",
-  "walkers.equip_success": "Set the second shape of %s to %s.",
+  "walkers.equip_success": "Set the current shape of %s to %s.",
   "walkers.unequip_success": "Removed the second shape of %s.",
   "walkers.show2ndShapeNot_positive": "%s is disguised as a %s.",
   "walkers.show2ndShapeNot_failed": "%s doesn't have a second shape.",
