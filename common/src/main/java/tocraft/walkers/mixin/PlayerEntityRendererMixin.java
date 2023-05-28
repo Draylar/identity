@@ -113,6 +113,7 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
             ((LivingEntityAccessor) walkers).callSetLivingFlag(1, player.isUsingItem());
             walkers.getItemUseTime();
             ((LivingEntityAccessor) walkers).callTickActiveItemStack();
+            walkers.hurtTime = player.hurtTime; // FIX: https://github.com/Draylar/identity/issues/424
 
             // update walkers specific properties
             EntityUpdater entityUpdater = EntityUpdaters.getUpdater((EntityType<? extends LivingEntity>) walkers.getType());
