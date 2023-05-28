@@ -20,7 +20,7 @@ public class UnlockPackets {
             NbtCompound idTag = nbt.getCompound(UNLOCK_KEY);
 
             ClientNetworking.runOrQueue(context, player -> {
-                ((PlayerDataProvider) player).set2ndShape(ShapeType.from(idTag));
+                if (idTag != null) ((PlayerDataProvider) player).set2ndShape(ShapeType.from(idTag));
             });
         }
     }

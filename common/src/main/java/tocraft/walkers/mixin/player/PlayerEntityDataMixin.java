@@ -71,7 +71,8 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
     private void writeNbt(NbtCompound tag, CallbackInfo info) {
         // Write 'Unlocked' Walkers data
         NbtCompound id = new NbtCompound();
-        id = unlocked.writeCompound();
+        if (unlocked != null)
+            id = unlocked.writeCompound();
         tag.put("UnlockedShape", id);
         
         // Abilities
