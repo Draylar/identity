@@ -30,15 +30,20 @@ public class PlayerManagerMixin {
             at = @At("RETURN")
     )
     private void onRespawn(ServerPlayerEntity player, boolean alive, CallbackInfoReturnable<ServerPlayerEntity> cir) {
-        LivingEntity walkers = PlayerShape.getCurrentShape(player);
+        LivingEntity shape = PlayerShape.getCurrentShape(player);
 
         // refresh entity hitbox dimensions after death
         ((DimensionsRefresher) player).walkers_refreshDimensions();
 
         // Re-sync max health for walkers
-        if(walkers != null && WalkersConfig.getInstance().scalingHealth()) {
-            player.setHealth(Math.min(player.getHealth(), walkers.getMaxHealth()));
-            player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(Math.min(WalkersConfig.getInstance().maxHealth(), walkers.getMaxHealth()));
+        if(shape != null && WalkersConfig.getInstance().scalingHealth()) {
+            if (WalkersConfig.getInstance().percentScalingHealth()) {
+                float currentHealthPercent = player.getHealth() / player.getMaxHealth();
+                player.setHealth(Math.min(currentHealthPercent * shape.getMaxHealth(), shape.getMaxHealth()));
+            }
+            else
+                player.setHealth(Math.min(player.getHealth(), shape.getMaxHealth()));
+            player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(Math.min(WalkersConfig.getInstance().maxHealth(), shape.getMaxHealth()));
             player.networkHandler.sendPacket(new EntityAttributesS2CPacket(player.getId(), player.getAttributes().getAttributesToSend()));
         }
     }
