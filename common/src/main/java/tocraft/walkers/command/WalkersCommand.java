@@ -244,7 +244,7 @@ public class WalkersCommand {
             if(defaultType != null) {
                 boolean result = PlayerShape.updateShapes(player, defaultType, (LivingEntity) created);
                 if(result && WalkersConfig.getInstance().logCommands()) {
-                    source.sendMessage(Text.translatable("walkers.equip_success", Text.translatable(created.getType().getTranslationKey()), player.getDisplayName()), true);
+                    source.sendMessage(Text.translatable("walkers.equip_success", player.getDisplayName(), Text.translatable(created.getType().getTranslationKey())), true);
                 }
             }
         }
