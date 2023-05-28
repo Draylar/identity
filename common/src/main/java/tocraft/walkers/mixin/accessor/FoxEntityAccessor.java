@@ -8,5 +8,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface FoxEntityAccessor {
 
     @Invoker
-    void callSetType(FoxEntity.Type type);
+    void callSetVariant(FoxEntity.Type type);
 }

@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.mob.WardenEntity;
@@ -95,7 +96,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     // Air has ran out, start drowning
                     if(this.getAir() == -20) {
                         this.setAir(0);
-                        this.damage(DamageSource.DROWN, 2.0F);
+                        this.damage(world.getDamageSources().drown(), 2.0F);
                     }
                 } else {
                     this.setAir(300);
@@ -313,7 +314,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private boolean isInDaylight() {
         if(world.isDay() && !world.isClient) {
             float brightnessAtEyes = getBrightnessAtEyes();
-            BlockPos daylightTestPosition = new BlockPos(getX(), (double) Math.round(getY()), getZ());
+            BlockPos daylightTestPosition = BlockPos.ofFloored(getX(), (double) Math.round(getY()), getZ());
 
             // move test position up one block for boats
             if(getVehicle() instanceof BoatEntity) {
@@ -339,8 +340,8 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 // damage player if they are an walkers that gets hurt by high temps (eg. snow golem in nether)
                 if(type.isIn(WalkersEntityTags.HURT_BY_HIGH_TEMPERATURE)) {
                     Biome biome = world.getBiome(getBlockPos()).value();
-                    if (biome.isHot(getBlockPos())) {
-                        player.damage(DamageSource.ON_FIRE, 1.0f);
+                    if (!biome.isCold(getBlockPos())) {
+                        player.damage(world.getDamageSources().onFire(), 1.0f);
                     }
                 }
             }

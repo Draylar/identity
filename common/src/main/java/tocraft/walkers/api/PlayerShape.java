@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class PlayerShape {
 
@@ -57,7 +57,7 @@ public class PlayerShape {
 
         // put entity type ID under the key "id", or "minecraft:empty" if no walkers is equipped (or the walkers entity type is invalid)
         packet.writeUuid(changed.getUuid());
-        packet.writeString(walkers == null ? "minecraft:empty" : Registry.ENTITY_TYPE.getId(walkers.getType()).toString());
+        packet.writeString(walkers == null ? "minecraft:empty" : Registries.ENTITY_TYPE.getId(walkers.getType()).toString());
         packet.writeNbt(entityTag);
         NetworkManager.sendToPlayer(packetTarget, NetworkHandler.WALKERS_SYNC, packet);
     }

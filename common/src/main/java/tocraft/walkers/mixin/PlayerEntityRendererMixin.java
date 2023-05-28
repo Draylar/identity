@@ -7,6 +7,7 @@ import tocraft.walkers.api.model.EntityUpdater;
 import tocraft.walkers.api.model.EntityUpdaters;
 import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.mixin.accessor.EntityAccessor;
+import tocraft.walkers.mixin.accessor.LimbAnimatorAccessor;
 import tocraft.walkers.mixin.accessor.LivingEntityAccessor;
 import tocraft.walkers.mixin.accessor.LivingEntityRendererAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -59,9 +60,9 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
         // sync player data to walkers walkers
         if(walkers != null) {
-            walkers.lastLimbDistance = player.lastLimbDistance;
-            walkers.limbDistance = player.limbDistance;
-            walkers.limbAngle = player.limbAngle;
+            ((LimbAnimatorAccessor)walkers.limbAnimator).setPrevSpeed(((LimbAnimatorAccessor)player.limbAnimator).getPrevSpeed());
+            walkers.limbAnimator.setSpeed(player.limbAnimator.getSpeed());
+            ((LimbAnimatorAccessor)walkers.limbAnimator).setPos(player.limbAnimator.getPos());
             walkers.handSwinging = player.handSwinging;
             walkers.handSwingTicks = player.handSwingTicks;
             walkers.lastHandSwingProgress = player.lastHandSwingProgress;

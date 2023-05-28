@@ -12,7 +12,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import org.jetbrains.annotations.Nullable;
 
 public class SwapPackets {
@@ -21,7 +21,7 @@ public class SwapPackets {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, NetworkHandler.WALKERS_REQUEST, (buf, context) -> {
             boolean validType = buf.readBoolean();
             if(validType) {
-                EntityType<?> entityType = Registry.ENTITY_TYPE.get(buf.readIdentifier());
+                EntityType<?> entityType = Registries.ENTITY_TYPE.get(buf.readIdentifier());
                 int variant = buf.readInt();
 
                 context.getPlayer().getServer().execute(() -> {
@@ -57,7 +57,7 @@ public class SwapPackets {
 
         packet.writeBoolean(type != null);
         if(type != null) {
-            packet.writeIdentifier(Registry.ENTITY_TYPE.getId(type.getEntityType()));
+            packet.writeIdentifier(Registries.ENTITY_TYPE.getId(type.getEntityType()));
             packet.writeInt(type.getVariantData());
         }
 

@@ -22,7 +22,7 @@ import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +93,7 @@ public class Walkers {
     }
 
     public static int getCooldown(EntityType<?> type) {
-        String id = Registry.ENTITY_TYPE.getId(type).toString();
+        String id = Registries.ENTITY_TYPE.getId(type).toString();
         return WalkersConfig.getInstance().getAbilityCooldownMap().getOrDefault(id, 20);
     }
 }

@@ -77,7 +77,7 @@ public abstract class PlayerSonicBoomMixin extends LivingEntity implements Sonic
                     ((ServerWorld) world).spawnParticles(ParticleTypes.SONIC_BOOM, particlePos.x, particlePos.y, particlePos.z, 1, 0.0, 0.0, 0.0, 0.0);
 
                     // Locate entities around the particle location for damage
-                    hit.addAll(world.getEntitiesByClass(LivingEntity.class, new Box(new BlockPos(particlePos.getX(), particlePos.getY(), particlePos.getZ())).expand(2), it -> !(it instanceof WolfEntity)));
+                    hit.addAll(world.getEntitiesByClass(LivingEntity.class, new Box(BlockPos.ofFloored(particlePos.getX(), particlePos.getY(), particlePos.getZ())).expand(2), it -> !(it instanceof WolfEntity)));
                 }
 
                 // Don't hit ourselves
@@ -86,7 +86,7 @@ public abstract class PlayerSonicBoomMixin extends LivingEntity implements Sonic
                 // Find
                 for (Entity hitTarget : hit) {
                     if(hitTarget instanceof LivingEntity living) {
-                        living.damage(DamageSource.sonicBoom((PlayerEntity) (Object) this), 10.0f);
+                        living.damage(world.getDamageSources().sonicBoom((PlayerEntity) (Object) this), 10.0f);
                         double vertical = 0.5 * (1.0 - living.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
                         double horizontal = 2.5 * (1.0 - living.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
                         living.addVelocity(normalized.getX() * horizontal, normalized.getY() * vertical, normalized.getZ() * horizontal);

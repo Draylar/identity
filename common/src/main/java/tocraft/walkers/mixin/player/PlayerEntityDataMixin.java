@@ -22,7 +22,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -98,7 +98,7 @@ public abstract class PlayerEntityDataMixin extends LivingEntity implements Play
         }
 
         // put entity type ID under the key "id", or "minecraft:empty" if no walkers is equipped (or the walkers entity type is invalid)
-        tag.putString("id", walkers == null ? "minecraft:empty" : Registry.ENTITY_TYPE.getId(walkers.getType()).toString());
+        tag.putString("id", walkers == null ? "minecraft:empty" : Registries.ENTITY_TYPE.getId(walkers.getType()).toString());
         tag.put("EntityData", entityTag);
         return tag;
     }

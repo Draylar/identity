@@ -1,16 +1,14 @@
 package tocraft.walkers.screen.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import tocraft.walkers.Walkers;
-import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.network.impl.SwapPackets;
 import tocraft.walkers.screen.WalkersScreen;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -51,7 +49,7 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
         // Some entities (namely Aether mobs) crash when rendered in a GUI.
         // Unsure as to the cause, but this try/catch should prevent the game from entirely dipping out.
         try {
-            InventoryScreen.drawEntity(x + this.getWidth() / 2, (int) (y + this.getHeight() * .75f), size, -10, -10, entity);
+            InventoryScreen.drawEntity(matrices, this.getX() + this.getWidth() / 2, (int) (this.getY() + this.getHeight() * .75f), size, -10, -10, entity);
         } catch (Exception ignored) {
 
         }
@@ -72,16 +70,7 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     }
 
     @Override
-    public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
-        Screen currentScreen = MinecraftClient.getInstance().currentScreen;
-
-        if(currentScreen != null) {
-            currentScreen.renderTooltip(matrices, Collections.singletonList(type.createTooltipText(entity)), mouseX, mouseY);
-        }
-    }
-
-    @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {
+public void appendClickableNarrations(NarrationMessageBuilder builder) {
 
     }
 }

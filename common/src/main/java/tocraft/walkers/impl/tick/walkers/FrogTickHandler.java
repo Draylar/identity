@@ -14,13 +14,6 @@ public class FrogTickHandler implements WalkersTickHandler<FrogEntity> {
             boolean walk = player.isOnGround() && player.getVelocity().horizontalLengthSquared() > 1.0E-6 && !player.isInsideWaterOrBubbleColumn();
             boolean swim = player.getVelocity().horizontalLengthSquared() > 1.0E-6 && player.isInsideWaterOrBubbleColumn();
 
-            // Walking implementation
-            if (walk) {
-                frog.walkingAnimationState.startIfNotRunning(frog.age);
-            } else {
-                frog.walkingAnimationState.stop();
-            }
-
             // Jumping
             if(!player.isOnGround() && !swim && !walk && !player.isInsideWaterOrBubbleColumn()) {
                 frog.longJumpingAnimationState.startIfNotRunning(frog.age);
@@ -31,12 +24,9 @@ public class FrogTickHandler implements WalkersTickHandler<FrogEntity> {
             // Swimming
             if (swim) {
                 frog.idlingInWaterAnimationState.stop();
-                frog.swimmingAnimationState.startIfNotRunning(frog.age);
             } else if (player.isInsideWaterOrBubbleColumn()) {
-                frog.swimmingAnimationState.stop();
                 frog.idlingInWaterAnimationState.startIfNotRunning(frog.age);
             } else {
-                frog.swimmingAnimationState.stop();
                 frog.idlingInWaterAnimationState.stop();
             }
 

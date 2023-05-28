@@ -10,7 +10,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 public class ServerNetworking implements NetworkHandler {
 

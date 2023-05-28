@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -30,13 +30,13 @@ public class CatTypeProvider extends TypeProvider<CatEntity> {
 
     @Override
     public int getVariantData(CatEntity entity) {
-        return Registry.CAT_VARIANT.getRawId(entity.getVariant());
+        return Registries.CAT_VARIANT.getRawId(entity.getVariant());
     }
 
     @Override
     public CatEntity create(EntityType<CatEntity> type, World world, int data) {
         CatEntity cat = new CatEntity(type, world);
-        cat.setVariant(Registry.CAT_VARIANT.get(data));
+        cat.setVariant(Registries.CAT_VARIANT.get(data));
         return cat;
     }
 

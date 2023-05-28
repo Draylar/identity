@@ -7,7 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,16 +78,16 @@ public class ShapeType<T extends LivingEntity> {
     @Nullable
     public static ShapeType<?> from(NbtCompound compound) {
         Identifier id = new Identifier(compound.getString("EntityID"));
-        if(!Registry.ENTITY_TYPE.containsId(id)) {
+        if(!Registries.ENTITY_TYPE.containsId(id)) {
             return null;
         }
 
-        return new ShapeType(Registry.ENTITY_TYPE.get(id), compound.contains("Variant") ? compound.getInt("Variant") : -1);
+        return new ShapeType(Registries.ENTITY_TYPE.get(id), compound.contains("Variant") ? compound.getInt("Variant") : -1);
     }
 
     public static List<ShapeType<?>> getAllTypes(World world) {
         if(LIVING_TYPE_CASH.isEmpty()) {
-            for (EntityType<?> type : Registry.ENTITY_TYPE) {
+            for (EntityType<?> type : Registries.ENTITY_TYPE) {
                 Entity instance = type.create(world);
                 if(instance instanceof LivingEntity) {
                     LIVING_TYPE_CASH.add((EntityType<? extends LivingEntity>) type);
@@ -124,7 +124,7 @@ public class ShapeType<T extends LivingEntity> {
 
     public NbtCompound writeCompound() {
         NbtCompound compound = new NbtCompound();
-        compound.putString("EntityID", Registry.ENTITY_TYPE.getId(type).toString());
+        compound.putString("EntityID", Registries.ENTITY_TYPE.getId(type).toString());
         compound.putInt("Variant", variantData);
         return compound;
     }

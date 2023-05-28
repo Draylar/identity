@@ -2,8 +2,8 @@ package tocraft.walkers.registry;
 
 import tocraft.walkers.Walkers;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.RegistryKeys;
 
 public class WalkersEntityTags {
 
@@ -26,6 +26,6 @@ public class WalkersEntityTags {
     }
 
     private static TagKey<EntityType<?>> register(String id) {
-        return TagKey.of(Registry.ENTITY_TYPE_KEY, Walkers.id(id));
+        return TagKey.of(RegistryKeys.ENTITY_TYPE, Walkers.id(id));
     }
 }

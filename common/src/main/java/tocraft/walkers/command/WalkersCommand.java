@@ -8,7 +8,7 @@ import tocraft.walkers.api.platform.WalkersConfig;
 import tocraft.walkers.api.variant.ShapeType;
 import tocraft.walkers.impl.PlayerDataProvider;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.EntitySummonArgumentType;
+import net.minecraft.command.argument.RegistryEntryArgumentType;
 import net.minecraft.command.argument.NbtCompoundArgumentType;
 import net.minecraft.command.suggestion.SuggestionProviders;
 import net.minecraft.entity.Entity;
@@ -21,7 +21,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.Registries;
 
 import java.util.Set;
 
@@ -41,12 +42,12 @@ public class WalkersCommand {
              */
             LiteralCommandNode<ServerCommandSource> change2ndShape = CommandManager
                     .literal("change2ndShape")
-                    .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                    .then(CommandManager.argument("shape", RegistryEntryArgumentType.registryEntry(ctx, RegistryKeys.ENTITY_TYPE)).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                             .executes(context -> {
                                 change2ndShape(
                                         context.getSource().getPlayer(),
                                         context.getSource().getPlayer(),
-                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                        EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                         null
                                 );
                                 return 1;
@@ -58,7 +59,7 @@ public class WalkersCommand {
                                         change2ndShape(
                                                 context.getSource().getPlayer(),
                                                 context.getSource().getPlayer(),
-                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                 nbt
                                         );
 
@@ -67,12 +68,12 @@ public class WalkersCommand {
                             )
                     )
                     .then(CommandManager.argument("player", EntityArgumentType.players())
-                            .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                            .then(CommandManager.argument("shape", RegistryEntryArgumentType.registryEntry(ctx, RegistryKeys.ENTITY_TYPE)).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         change2ndShape(
                                                 context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                 null
                                         );
                                         return 1;
@@ -84,7 +85,7 @@ public class WalkersCommand {
                                                 change2ndShape(
                                                         context.getSource().getPlayer(),
                                                         EntityArgumentType.getPlayer(context, "player"),
-                                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                        EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                         nbt
                                                 );
 
@@ -97,11 +98,11 @@ public class WalkersCommand {
 
             LiteralCommandNode<ServerCommandSource> equip = CommandManager
                     .literal("switchShape")
-                    .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                    .then(CommandManager.argument("shape", RegistryEntryArgumentType.registryEntry(ctx, RegistryKeys.ENTITY_TYPE)).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         equip(context.getSource().getPlayer(),
                                                 context.getSource().getPlayer(),
-                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                 null);
 
                                         return 1;
@@ -112,7 +113,7 @@ public class WalkersCommand {
 
                                                 equip(context.getSource().getPlayer(),
                                                         context.getSource().getPlayer(),
-                                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                        EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                         nbt);
 
                                                 return 1;
@@ -127,11 +128,11 @@ public class WalkersCommand {
                                 );
                                 return 1;
                             })
-                            .then(CommandManager.argument("shape", EntitySummonArgumentType.entitySummon()).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                            .then(CommandManager.argument("shape", RegistryEntryArgumentType.registryEntry(ctx, RegistryKeys.ENTITY_TYPE)).suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
                                     .executes(context -> {
                                         equip(context.getSource().getPlayer(),
                                                 EntityArgumentType.getPlayer(context, "player"),
-                                                EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                 null);
 
                                         return 1;
@@ -142,7 +143,7 @@ public class WalkersCommand {
 
                                                 equip(context.getSource().getPlayer(),
                                                         EntityArgumentType.getPlayer(context, "player"),
-                                                        EntitySummonArgumentType.getEntitySummon(context, "shape"),
+                                                        EntityType.getId(RegistryEntryArgumentType.getSummonableEntityType(context, "shape").value()),
                                                         nbt);
 
                                                 return 1;
@@ -195,7 +196,7 @@ public class WalkersCommand {
     }
 
     private static void change2ndShape(ServerPlayerEntity source, ServerPlayerEntity player, Identifier id, @Nullable NbtCompound nbt) {
-        ShapeType<LivingEntity> type = new ShapeType(Registry.ENTITY_TYPE.get(id));
+        ShapeType<LivingEntity> type = new ShapeType(Registries.ENTITY_TYPE.get(id));
         Text name = Text.translatable(type.getEntityType().getTranslationKey());
 
         // If the specified granting NBT is not null, change the ShapeType to reflect potential variants.
@@ -234,7 +235,7 @@ public class WalkersCommand {
             ServerWorld serverWorld = source.getWorld();
             created = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
         } else {
-            EntityType<?> entity = Registry.ENTITY_TYPE.get(walkers);
+            EntityType<?> entity = Registries.ENTITY_TYPE.get(walkers);
             created = entity.create(player.world);
         }
 

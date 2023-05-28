@@ -15,15 +15,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
 
-    @Inject(at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V",
-            ordinal = 0
-    ), method = "onPlayerConnect")
+   @Inject(method = "onPlayerConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;onPlayerConnected(Lnet/minecraft/server/network/ServerPlayerEntity;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void connect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         PlayerJoinCallback.EVENT.invoker().onPlayerJoin(player);
     }

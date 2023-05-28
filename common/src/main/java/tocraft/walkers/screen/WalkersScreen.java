@@ -11,6 +11,7 @@ import tocraft.walkers.screen.widget.SearchWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -21,6 +22,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,15 +86,6 @@ public class WalkersScreen extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        // tooltips
-        for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
-            if(selectable instanceof PressableWidget button) {
-                if(button.isHovered()) {
-                    button.renderTooltip(matrices, mouseX, mouseY);
-                    break;
-                }
-            }
-        }
 
         searchBar.render(matrices, mouseX, mouseY, delta);
         helpButton.render(matrices, mouseX, mouseY, delta);
@@ -122,7 +115,7 @@ public class WalkersScreen extends Screen {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if(entityWidgets.size() > 0) {
-            float firstPos = entityWidgets.get(0).y;
+            float firstPos = entityWidgets.get(0).getY();
 
             // Top section should always have mobs, prevent scrolling the entire list down the screen
             if(amount == 1 && firstPos >= 35) {
@@ -131,7 +124,7 @@ public class WalkersScreen extends Screen {
 
             ((ScreenAccessor) this).getSelectables().forEach(button -> {
                 if(button instanceof EntityWidget widget) {
-                    widget.y = (int) (widget.y + amount * 10);
+                    widget.setPosition(widget.getX(), (int) (widget.getY() + amount * 10));
                 }
             });
         }
@@ -162,6 +155,8 @@ public class WalkersScreen extends Screen {
                             renderEntities.get(type),
                             this
                     );
+
+                    entityWidget.setTooltip(Tooltip.of(Text.translatable(renderEntities.get(type).getType().getTranslationKey())));
 
                     addDrawableChild(entityWidget);
                     entityWidgets.add(entityWidget);
@@ -204,11 +199,13 @@ public class WalkersScreen extends Screen {
     }
 
     private ButtonWidget createHelpButton() {
-        return new HelpWidget(
+        HelpWidget helpWidget = new HelpWidget(
                 (int) (getWindow().getScaledWidth() / 2f + (getWindow().getScaledWidth() / 8f) + 5),
                 7,
                 20,
                 20);
+        helpWidget.setTooltip(Tooltip.of(Text.translatable("identity.help")));
+        return helpWidget;
     }
 
     public Window getWindow() {
