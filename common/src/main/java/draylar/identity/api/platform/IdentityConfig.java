@@ -56,6 +56,8 @@ public abstract class IdentityConfig {
 
     public abstract boolean showPlayerNametag();
 
+    public abstract boolean shouldRenderOwnNameTag();
+
     public abstract boolean foxesAttackIdentityPrey();
 
     public abstract boolean hostilesForgetNewHostileIdentityPlayer();

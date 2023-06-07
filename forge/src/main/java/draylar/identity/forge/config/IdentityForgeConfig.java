@@ -16,6 +16,7 @@ public class IdentityForgeConfig extends IdentityConfig {
     public boolean revokeIdentityOnDeath = false;
     public boolean identitiesEquipItems = true;
     public boolean identitiesEquipArmor = true;
+    public boolean renderOwnNameTag = false;
     public boolean hostilesIgnoreHostileIdentityPlayer = true;
     public boolean hostilesForgetNewHostileIdentityPlayer = false;
     public boolean wolvesAttackIdentityPrey = true;
@@ -172,6 +173,11 @@ public class IdentityForgeConfig extends IdentityConfig {
     @Override
     public boolean identitiesEquipArmor() {
         return identitiesEquipArmor;
+    }
+
+    @Override
+    public boolean shouldRenderOwnNameTag() {
+        return renderOwnNameTag;
     }
 
     @Override

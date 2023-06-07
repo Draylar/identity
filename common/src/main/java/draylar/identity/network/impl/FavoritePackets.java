@@ -12,8 +12,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -22,7 +22,7 @@ public class FavoritePackets {
 
     public static void sendFavoriteRequest(IdentityType<?> type, boolean favorite) {
         PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-        packet.writeIdentifier(Registry.ENTITY_TYPE.getId(type.getEntityType()));
+        packet.writeIdentifier(Registries.ENTITY_TYPE.getId(type.getEntityType()));
         packet.writeInt(type.getVariantData());
         packet.writeBoolean(favorite);
         NetworkManager.sendToServer(ClientNetworking.FAVORITE_UPDATE, packet);
@@ -30,7 +30,7 @@ public class FavoritePackets {
 
     public static void registerFavoriteRequestHandler() {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, NetworkHandler.FAVORITE_UPDATE, (buf, context) -> {
-            EntityType<?> entityType = Registry.ENTITY_TYPE.get(buf.readIdentifier());
+            EntityType<?> entityType = Registries.ENTITY_TYPE.get(buf.readIdentifier());
             int variant = buf.readInt();
             boolean favorite = buf.readBoolean();
             ServerPlayerEntity player = (ServerPlayerEntity) context.getPlayer();

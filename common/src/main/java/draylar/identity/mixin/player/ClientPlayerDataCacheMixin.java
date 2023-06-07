@@ -33,7 +33,7 @@ public class ClientPlayerDataCacheMixin {
 
     // This inject applies data cached from the previous inject.
     // Re-applying on the client will help to prevent sync blips which occur when wiping data and waiting for the server to send a sync packet.
-    @Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getRegistryKey()Lnet/minecraft/util/registry/RegistryKey;", ordinal = 1))
+    @Inject(method = "onPlayerRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;getRegistryKey()Lnet/minecraft/registry/RegistryKey;", ordinal = 1))
     private void afterPlayerReset(PlayerRespawnS2CPacket packet, CallbackInfo ci) {
         if(dataCache != null && client.player != null) {
             ((PlayerDataProvider) client.player).setIdentity(dataCache.getIdentity());

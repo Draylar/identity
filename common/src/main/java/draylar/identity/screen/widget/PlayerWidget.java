@@ -32,7 +32,7 @@ public class PlayerWidget extends PressableWidget {
 //
 
         RenderSystem.setShaderTexture(0, Identity.id("textures/gui/player.png"));
-        DrawableHelper.drawTexture(matrices, x, y, 16, 16, 0, 0, 8, 8, 8, 8);
+        DrawableHelper.drawTexture(matrices, getX(), getY(), 16, 16, 0, 0, 8, 8, 8, 8);
 
         super.render(matrices, mouseX, mouseY, delta);
     }
@@ -43,13 +43,13 @@ public class PlayerWidget extends PressableWidget {
     }
 
     @Override
-    public void onPress() {
-        SwapPackets.sendSwapRequest(null);
-        parent.disableAll();
+    protected void appendClickableNarrations(NarrationMessageBuilder builder) {
+
     }
 
     @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {
-
+    public void onPress() {
+        SwapPackets.sendSwapRequest(null);
+        parent.disableAll();
     }
 }

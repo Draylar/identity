@@ -34,7 +34,7 @@ public abstract class StrayOverlayMixin<T extends MobEntity & RangedAttackMob, M
         M model = getContextModel();
 
         if (model instanceof BipedEntityModel) {
-            ((BipedEntityModel) model).setAttributes(this.model);
+            ((BipedEntityModel) model).copyBipedStateTo(this.model);
             ((BipedEntityModel) model).sneaking = mobEntity.isInSneakingPose();
         }
     }

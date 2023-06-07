@@ -84,6 +84,9 @@ public class IdentityFabricConfig extends IdentityConfig implements Config {
     @Comment(value = "Should player nametags render above players disguised with an identity? Note that the server is the authority for this config option.")
     public boolean showPlayerNametag = false;
 
+    @Comment(value = "If true, a player with an active Identity can see their own nametag in third person.")
+    public boolean renderOwnNametag = false;
+
     @Comment(value = "If true, players that gain a NEW Identity will be forcibly changed into it on kill.")
     public boolean forceChangeNew = false;
 
@@ -248,6 +251,11 @@ public class IdentityFabricConfig extends IdentityConfig implements Config {
     @Override
     public boolean showPlayerNametag() {
         return showPlayerNametag;
+    }
+
+    @Override
+    public boolean shouldRenderOwnNameTag() {
+        return renderOwnNametag;
     }
 
     @Override

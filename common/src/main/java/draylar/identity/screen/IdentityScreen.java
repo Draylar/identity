@@ -116,14 +116,14 @@ public class IdentityScreen extends Screen {
         }
 
         // tooltips
-        for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
-            if(selectable instanceof PressableWidget button) {
-                if(button.isHovered()) {
-                    button.renderTooltip(matrices, mouseX, mouseY);
-                    break;
-                }
-            }
-        }
+//        for (Selectable selectable : ((ScreenAccessor) this).getSelectables()) {
+//            if(selectable instanceof PressableWidget button) {
+//                if(button.isHovered()) {
+//                    button.renderTooltip(matrices, mouseX, mouseY);
+//                    break;
+//                }
+//            }
+//        }
 
         searchBar.render(matrices, mouseX, mouseY, delta);
         playerButton.render(matrices, mouseX, mouseY, delta);
@@ -154,7 +154,7 @@ public class IdentityScreen extends Screen {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         if(entityWidgets.size() > 0) {
-            float firstPos = entityWidgets.get(0).y;
+            float firstPos = entityWidgets.get(0).getY();
 
             // Top section should always have mobs, prevent scrolling the entire list down the screen
             if(amount == 1 && firstPos >= 35) {
@@ -163,7 +163,7 @@ public class IdentityScreen extends Screen {
 
             ((ScreenAccessor) this).getSelectables().forEach(button -> {
                 if(button instanceof EntityWidget widget) {
-                    widget.y = (int) (widget.y + amount * 10);
+                    widget.setY((int) (widget.getY() + amount * 10));
                 }
             });
         }

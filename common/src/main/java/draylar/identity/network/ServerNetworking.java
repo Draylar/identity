@@ -3,7 +3,6 @@ package draylar.identity.network;
 import dev.architectury.networking.NetworkManager;
 import draylar.identity.ability.AbilityRegistry;
 import draylar.identity.api.PlayerIdentity;
-import draylar.identity.api.platform.IdentityConfig;
 import draylar.identity.api.PlayerAbilities;
 import draylar.identity.network.impl.FavoritePackets;
 import draylar.identity.network.impl.SwapPackets;
@@ -11,7 +10,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.registry.Registry;
 
 public class ServerNetworking implements NetworkHandler {
 

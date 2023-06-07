@@ -29,8 +29,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Shadow public abstract boolean isSpectator();
     @Shadow public abstract void sendMessage(Text message, boolean actionBar);
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile, @Nullable PlayerPublicKey publicKey) {
-        super(world, pos, yaw, gameProfile, publicKey);
+    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+        super(world, pos, yaw, gameProfile);
     }
 
     @Inject(

@@ -12,7 +12,7 @@ public class CreeperAbility extends IdentityAbility<CreeperEntity> {
 
     @Override
     public void onUse(PlayerEntity player, CreeperEntity identity, World world) {
-        world.createExplosion(player, player.getX(), player.getY(), player.getZ(), 3.0f, Explosion.DestructionType.NONE);
+        world.createExplosion(player, player.getX(), player.getY(), player.getZ(), 3.0f, World.ExplosionSourceType.NONE);
     }
 
     @Override

@@ -5,10 +5,10 @@ import draylar.identity.api.variant.IdentityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
 
 public class IdentityGranting {
 
@@ -18,7 +18,7 @@ public class IdentityGranting {
 
             // If the player has to kill a certain number of mobs before unlocking an Identity, check their statistic for the specific type.
             if(IdentityConfig.getInstance().requiresKillsForIdentity()) {
-                String id = Registry.ENTITY_TYPE.getId(granted.getEntityType()).toString();
+                String id = Registries.ENTITY_TYPE.getId(granted.getEntityType()).toString();
 
                 // Check against a specific count requirement or the default count.
                 int required = IdentityConfig.getInstance().getRequiredKillsForIdentity();
