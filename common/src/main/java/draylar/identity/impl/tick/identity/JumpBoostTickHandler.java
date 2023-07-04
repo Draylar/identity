@@ -16,7 +16,7 @@ public class JumpBoostTickHandler<T extends LivingEntity> implements IdentityTic
 
     @Override
     public void tick(PlayerEntity player, LivingEntity entity) {
-        if(!player.world.isClient) {
+        if(!player.getWorld().isClient) {
             if(player.age % 5 == 0) {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 20 * 2, level, true, false));
             }

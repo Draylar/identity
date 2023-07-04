@@ -53,7 +53,7 @@ public class IdentityGranting {
             }
 
             // force-morph player into new type
-            Entity instanced = granted.create(player.world);
+            Entity instanced = granted.create(player.getWorld());
             if(instanced instanceof LivingEntity) {
                 if(IdentityConfig.getInstance().forceChangeNew() && isNew) {
                     PlayerIdentity.updateIdentity(serverPlayerEntity, granted, (LivingEntity) instanced);

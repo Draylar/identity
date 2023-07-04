@@ -7,11 +7,14 @@ import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(RavagerEntity.class)
 public abstract class RavagerEntityMixin extends LivingEntity {
+
+    @Shadow @Nullable public abstract LivingEntity getControllingPassenger();
 
     private RavagerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -24,7 +27,7 @@ public abstract class RavagerEntityMixin extends LivingEntity {
 
             // Ensure Ravager has a passenger
             if (hasPassengers()) {
-                LivingEntity rider = (LivingEntity) getPrimaryPassenger();
+                LivingEntity rider = (LivingEntity) getControllingPassenger();
 
                 // Only players should be able to control Ravager
                 if (rider instanceof PlayerEntity) {
@@ -44,7 +47,6 @@ public abstract class RavagerEntityMixin extends LivingEntity {
                     }
 
                     // Update movement/velocity
-                    this.airStrafingSpeed = this.getMovementSpeed() * 0.1F;
                     if (this.isLogicalSideForUpdatingMovement()) {
                         this.setMovementSpeed((float) this.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
                         super.travel(new Vec3d(sidewaysSpeed, movementInput.y, forwardSpeed));
@@ -53,7 +55,7 @@ public abstract class RavagerEntityMixin extends LivingEntity {
                     }
 
                     // Limb updates for movement
-                    this.updateLimbs(this, false);
+                    this.updateLimbs(false);
                     return;
                 }
             }

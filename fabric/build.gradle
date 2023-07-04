@@ -16,7 +16,10 @@ configurations {
 }
 
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven {
+        url "https://maven.draylar.dev/releases"
+    }
+
 }
 
 
@@ -29,7 +32,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive = false }
 
     // config
-    modImplementation include ("com.github.Draylar.omega-config:omega-config-base:1.2.3-1.18.1") {
+    modImplementation include ("dev.draylar.omega-config:omega-config-base:1.4.0+1.20.1") {
         exclude group: "net.fabricmc.fabric-api"
     }
 }
@@ -46,17 +49,17 @@ processResources {
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier "fabric"
+    archiveClassifier = "fabric"
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier = "dev"
 }
 
 sourcesJar {

@@ -95,7 +95,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     // Air has ran out, start drowning
                     if(this.getAir() == -20) {
                         this.setAir(0);
-                        this.damage(DamageSource.DROWN, 2.0F);
+                        this.damage(getDamageSources().drown(), 2.0F);
                     }
                 } else {
                     this.setAir(300);
@@ -157,7 +157,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private void tickAmbientSounds(CallbackInfo ci) {
         LivingEntity identity = PlayerIdentity.getIdentity((PlayerEntity) (Object) this);
 
-        if(!world.isClient && IdentityConfig.getInstance().playAmbientSounds() && identity instanceof MobEntity) {
+        if(!getWorld().isClient && IdentityConfig.getInstance().playAmbientSounds() && identity instanceof MobEntity) {
             MobEntity mobIdentity = (MobEntity) identity;
 
             if(this.isAlive() && this.random.nextInt(1000) < this.identity_ambientSoundChance++) {
@@ -173,9 +173,9 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     // By default, players can not hear their own ambient noises.
                     // This is because ambient noises can be very annoying.
                     if(IdentityConfig.getInstance().hearSelfAmbient()) {
-                        this.world.playSound(null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
+                        this.getWorld().playSound(null, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
                     } else {
-                        this.world.playSound((PlayerEntity) (Object) this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
+                        this.getWorld().playSound((PlayerEntity) (Object) this, this.getX(), this.getY(), this.getZ(), sound, this.getSoundCategory(), volume, pitch);
                     }
                 }
             }
@@ -269,7 +269,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         PlayerEntity player = (PlayerEntity) (Object) this;
         LivingEntity identity = PlayerIdentity.getIdentity(player);
 
-        if(!player.world.isClient && !player.isCreative() && !player.isSpectator()) {
+        if(!player.getWorld().isClient && !player.isCreative() && !player.isSpectator()) {
             // check if the player is identity
             if(identity != null) {
                 EntityType<?> type = identity.getType();
@@ -280,7 +280,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     if(bl) {
 
                         // Can't burn in the rain
-                        if(player.world.isRaining()) {
+                        if(player.getWorld().isRaining()) {
                             return;
                         }
 
@@ -312,16 +312,16 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
     @Unique
     private boolean isInDaylight() {
-        if(world.isDay() && !world.isClient) {
+        if(getWorld().isDay() && !getWorld().isClient) {
             float brightnessAtEyes = getBrightnessAtEyes();
-            BlockPos daylightTestPosition = new BlockPos(getX(), (double) Math.round(getY()), getZ());
+            BlockPos daylightTestPosition = new BlockPos((int) getX(), (int) Math.round(getY()), (int) getZ());
 
             // move test position up one block for boats
             if(getVehicle() instanceof BoatEntity) {
                 daylightTestPosition = daylightTestPosition.up();
             }
 
-            return brightnessAtEyes > 0.5F && random.nextFloat() * 30.0F < (brightnessAtEyes - 0.4F) * 2.0F && world.isSkyVisible(daylightTestPosition);
+            return brightnessAtEyes > 0.5F && random.nextFloat() * 30.0F < (brightnessAtEyes - 0.4F) * 2.0F && getWorld().isSkyVisible(daylightTestPosition);
         }
 
         return false;
@@ -339,9 +339,9 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
                 // damage player if they are an identity that gets hurt by high temps (eg. snow golem in nether)
                 if(type.isIn(IdentityEntityTags.HURT_BY_HIGH_TEMPERATURE)) {
-                    Biome biome = world.getBiome(getBlockPos()).value();
-                    if (biome.isHot(getBlockPos())) {
-                        player.damage(DamageSource.ON_FIRE, 1.0f);
+                    Biome biome = getWorld().getBiome(getBlockPos()).value();
+                    if (!biome.isCold(getBlockPos())) {
+                        player.damage(getDamageSources().onFire(), 1.0f);
                     }
                 }
             }
@@ -350,7 +350,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tickIdentity(CallbackInfo ci) {
-        if(!world.isClient) {
+        if(!getWorld().isClient) {
             PlayerEntity player = (PlayerEntity) (Object) this;
             LivingEntity identity = PlayerIdentity.getIdentity(player);
 

@@ -18,7 +18,7 @@ public class IdentityEventHandlers {
 
     public static void registerHostilityUpdateHandler() {
         InteractionEvent.INTERACT_ENTITY.register((player, entity, hand) -> {
-            if(!player.world.isClient && entity instanceof HostileEntity) {
+            if(!player.getWorld().isClient && entity instanceof HostileEntity) {
                 PlayerHostility.set(player, IdentityConfig.getInstance().hostilityTime());
             }
 

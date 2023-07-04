@@ -13,7 +13,7 @@ public class WardenTickHandler implements IdentityTickHandler<WardenEntity> {
 
     @Override
     public void tick(PlayerEntity player, WardenEntity entity) {
-        if(!player.world.isClient) {
+        if(!player.getWorld().isClient) {
             if(player.age % 20 == 0) {
 
                 // Blind the Warden Identity player.
@@ -23,7 +23,7 @@ public class WardenTickHandler implements IdentityTickHandler<WardenEntity> {
 
                 // Blind other players near a player with the Warden Identity.
                 if(IdentityConfig.getInstance().wardenBlindsNearby()) {
-                    for (PlayerEntity target : player.world.getPlayers(TargetPredicate.DEFAULT, player, new Box(player.getBlockPos()).expand(16))) {
+                    for (PlayerEntity target : player.getWorld().getPlayers(TargetPredicate.DEFAULT, player, new Box(player.getBlockPos()).expand(16))) {
                         target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 20 * 3, 0, true, false));
                     }
                 }

@@ -10,15 +10,15 @@ public class FrogTickHandler implements IdentityTickHandler<FrogEntity> {
 
     @Override
     public void tick(PlayerEntity player, FrogEntity frog) {
-        if(player.world.isClient) {
+        if(player.getWorld().isClient) {
             boolean walk = player.isOnGround() && player.getVelocity().horizontalLengthSquared() > 1.0E-6 && !player.isInsideWaterOrBubbleColumn();
             boolean swim = player.getVelocity().horizontalLengthSquared() > 1.0E-6 && player.isInsideWaterOrBubbleColumn();
 
             // Walking implementation
             if (walk) {
-                frog.walkingAnimationState.startIfNotRunning(frog.age);
+//                frog.limbAnimator.startIfNotRunning(frog.age);
             } else {
-                frog.walkingAnimationState.stop();
+//                frog.walkingAnimationState.stop();
             }
 
             // Jumping
@@ -31,17 +31,17 @@ public class FrogTickHandler implements IdentityTickHandler<FrogEntity> {
             // Swimming
             if (swim) {
                 frog.idlingInWaterAnimationState.stop();
-                frog.swimmingAnimationState.startIfNotRunning(frog.age);
+//                frog.swimmingAnimationState.startIfNotRunning(frog.age);
             } else if (player.isInsideWaterOrBubbleColumn()) {
-                frog.swimmingAnimationState.stop();
+//                frog.swimmingAnimationState.stop();
                 frog.idlingInWaterAnimationState.startIfNotRunning(frog.age);
             } else {
-                frog.swimmingAnimationState.stop();
+//                frog.swimmingAnimationState.stop();
                 frog.idlingInWaterAnimationState.stop();
             }
 
             // Random croaking
-            if(player.world.random.nextDouble() <= 0.001) {
+            if(player.getWorld().random.nextDouble() <= 0.001) {
                 frog.croakingAnimationState.start(player.age);
             }
 

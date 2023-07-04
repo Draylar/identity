@@ -21,7 +21,7 @@ public class PlayerManagerMixin {
 
     @Inject(at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V",
+            target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V",
             ordinal = 0
     ), method = "onPlayerConnect")
     private void connect(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {

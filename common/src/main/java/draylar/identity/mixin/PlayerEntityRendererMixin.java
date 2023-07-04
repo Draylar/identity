@@ -59,9 +59,11 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
 
         // sync player data to identity identity
         if(identity != null) {
-            identity.lastLimbDistance = player.lastLimbDistance;
-            identity.limbDistance = player.limbDistance;
-            identity.limbAngle = player.limbAngle;
+            LimbAnimatorAccessor target = (LimbAnimatorAccessor) identity.limbAnimator;
+            LimbAnimatorAccessor source = (LimbAnimatorAccessor) player.limbAnimator;
+            target.setPrevSpeed(source.getPrevSpeed());
+            target.setSpeed(source.getSpeed());
+            target.setPos(source.getPos());
             identity.handSwinging = player.handSwinging;
             identity.handSwingTicks = player.handSwingTicks;
             identity.lastHandSwingProgress = player.lastHandSwingProgress;

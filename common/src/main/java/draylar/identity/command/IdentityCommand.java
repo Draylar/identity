@@ -42,7 +42,7 @@ public class IdentityCommand {
                             .then(CommandManager.literal("everything")
                                     .executes(context -> {
                                         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-                                        for (IdentityType<?> type : IdentityType.getAllTypes(player.world)) {
+                                        for (IdentityType<?> type : IdentityType.getAllTypes(player.getWorld())) {
                                             if(!PlayerUnlocks.has(player, type)) {
                                                 PlayerUnlocks.unlock(player, type);
                                             }
@@ -85,7 +85,7 @@ public class IdentityCommand {
                             .then(CommandManager.literal("everything")
                                     .executes(context -> {
                                         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-                                        for (IdentityType<?> type : IdentityType.getAllTypes(player.world)) {
+                                        for (IdentityType<?> type : IdentityType.getAllTypes(player.getWorld())) {
                                             if(PlayerUnlocks.has(player, type)) {
                                                 PlayerUnlocks.revoke(player, type);
                                             }
@@ -243,7 +243,7 @@ public class IdentityCommand {
         if(nbt != null) {
             NbtCompound copy = nbt.copy();
             copy.putString("id", id.toString());
-            ServerWorld serverWorld = source.getWorld();
+            ServerWorld serverWorld = source.getServerWorld();
             Entity loaded = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
             if(loaded instanceof LivingEntity living) {
                 type = new IdentityType<>(living);
@@ -273,7 +273,7 @@ public class IdentityCommand {
         if(nbt != null) {
             NbtCompound copy = nbt.copy();
             copy.putString("id", id.toString());
-            ServerWorld serverWorld = source.getWorld();
+            ServerWorld serverWorld = source.getServerWorld();
             Entity loaded = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
             if(loaded instanceof LivingEntity living) {
                 type = new IdentityType<>(living);
@@ -301,11 +301,11 @@ public class IdentityCommand {
         if(nbt != null) {
             NbtCompound copy = nbt.copy();
             copy.putString("id", identity.toString());
-            ServerWorld serverWorld = source.getWorld();
+            ServerWorld serverWorld = source.getServerWorld();
             created = EntityType.loadEntityWithPassengers(copy, serverWorld, it -> it);
         } else {
             EntityType<?> entity = Registries.ENTITY_TYPE.get(identity);
-            created = entity.create(player.world);
+            created = entity.create(player.getWorld());
         }
 
         if(created instanceof LivingEntity living) {

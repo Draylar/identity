@@ -6,9 +6,7 @@ import draylar.identity.api.variant.IdentityType;
 import draylar.identity.network.impl.FavoritePackets;
 import draylar.identity.network.impl.SwapPackets;
 import draylar.identity.screen.IdentityScreen;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -16,8 +14,6 @@ import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
-
-import java.util.Collections;
 
 public class EntityWidget<T extends LivingEntity> extends PressableWidget {
 
@@ -79,27 +75,25 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
 
         // Some entities (namely Aether mobs) crash when rendered in a GUI.
         // Unsure as to the cause, but this try/catch should prevent the game from entirely dipping out.
         try {
-            InventoryScreen.drawEntity(getX() + this.getWidth() / 2, (int) (getY() + this.getHeight() * .75f), size, -10, -10, entity);
+            InventoryScreen.drawEntity(context, getX() + this.getWidth() / 2, (int) (getY() + this.getHeight() * .75f), size, -10, -10, entity);
         } catch (Exception ignored) {
 
         }
 
         // Render selected outline
         if(active) {
-            RenderSystem.setShaderTexture(0, Identity.id("textures/gui/selected.png"));
-            DrawableHelper.drawTexture(matrices, getX(), getY(), getWidth(), getHeight(), 0, 0, 48, 32, 48, 32);
+            context.drawTexture(Identity.id("textures/gui/selected.png"), getX(), getY(), getWidth(), getHeight(), 0, 0, 48, 32, 48, 32);
         }
 
         // Render favorite star
         if(starred) {
-            RenderSystem.setShaderTexture(0, Identity.id("textures/gui/star.png"));
-            DrawableHelper.drawTexture(matrices, getX(), getY(), 0, 0, 15, 15, 15, 15);
+            context.drawTexture(Identity.id("textures/gui/star.png"), getX(), getY(), 0, 0, 15, 15, 15, 15);
         }
 
         // Draw tooltip
@@ -115,7 +109,7 @@ public class EntityWidget<T extends LivingEntity> extends PressableWidget {
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 
     }
 
