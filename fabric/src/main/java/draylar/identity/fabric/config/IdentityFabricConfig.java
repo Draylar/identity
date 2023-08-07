@@ -1,6 +1,5 @@
 package draylar.identity.fabric.config;
 
-
 import draylar.identity.api.platform.IdentityConfig;
 import draylar.omegaconfig.api.Comment;
 import draylar.omegaconfig.api.Config;
@@ -109,6 +108,9 @@ public class IdentityFabricConfig extends IdentityConfig implements Config {
 
     @Comment(value = "If true, players with the Warden Identity will blind other nearby players.")
     public boolean wardenBlindsNearby = true;
+
+    @Comment(value = "The Identity type that is forced on all players")
+    public String forcedIdentity = null;
 
     @Comment(value = "An override map for requiredKillsForIdentity for specific entity types.")
     public Map<String, Integer> requiredKillsByType = new HashMap<>() {
@@ -311,5 +313,10 @@ public class IdentityFabricConfig extends IdentityConfig implements Config {
     @Override
     public boolean wardenBlindsNearby() {
         return wardenBlindsNearby;
+    }
+
+    @Override
+    public String getForcedIdentity() {
+        return null;
     }
 }

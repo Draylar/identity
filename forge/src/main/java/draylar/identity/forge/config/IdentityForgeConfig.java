@@ -43,6 +43,7 @@ public class IdentityForgeConfig extends IdentityConfig {
     public int requiredKillsForIdentity = 50;
     public boolean wardenIsBlinded = true;
     public boolean wardenBlindsNearby = true;
+    public String forcedIdentity = null;
 
     public Map<String, Integer> requiredKillsByType = new HashMap<>() {
         {
@@ -238,5 +239,10 @@ public class IdentityForgeConfig extends IdentityConfig {
     @Override
     public boolean wardenBlindsNearby() {
         return wardenBlindsNearby;
+    }
+
+    @Override
+    public String getForcedIdentity() {
+        return forcedIdentity;
     }
 }

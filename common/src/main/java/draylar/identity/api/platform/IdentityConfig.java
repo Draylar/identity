@@ -79,4 +79,6 @@ public abstract class IdentityConfig {
     public abstract boolean wardenIsBlinded();
 
     public abstract boolean wardenBlindsNearby();
+
+    public abstract String getForcedIdentity();
 }

@@ -3,6 +3,7 @@ package draylar.identity.mixin;
 import draylar.identity.Identity;
 import draylar.identity.api.PlayerIdentity;
 import draylar.identity.api.platform.IdentityConfig;
+import draylar.identity.api.variant.IdentityType;
 import draylar.identity.mixin.accessor.*;
 import draylar.identity.registry.IdentityEntityTags;
 import net.fabricmc.api.EnvType;
@@ -18,11 +19,14 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -34,17 +38,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
-    @Shadow
-    public abstract boolean isSpectator();
-
-    @Shadow
-    public abstract EntityDimensions getDimensions(EntityPose pose);
-
-    @Shadow
-    public abstract boolean isSwimming();
+    @Shadow public abstract boolean isSpectator();
+    @Shadow public abstract EntityDimensions getDimensions(EntityPose pose);
+    @Shadow public abstract boolean isSwimming();
 
     private PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
         super(type, world);
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void identity$loadForcedIdentity(CallbackInfo ci) {
+        if((Object) this instanceof ServerPlayerEntity serverPlayerEntity) {
+            @Nullable LivingEntity active = PlayerIdentity.getIdentity(serverPlayerEntity);
+            if(active == null) {
+                @Nullable String forced = IdentityConfig.getInstance().getForcedIdentity();
+                if(forced != null) {
+                    EntityType foundType = Registries.ENTITY_TYPE.get(new Identifier(forced));
+                    if(foundType != null) {
+                        PlayerIdentity.updateIdentity(serverPlayerEntity, new IdentityType<LivingEntity>(
+                                foundType
+                        ), (LivingEntity) foundType.create(getWorld()));
+                    }
+                }
+            }
+        }
     }
 
     @Inject(
