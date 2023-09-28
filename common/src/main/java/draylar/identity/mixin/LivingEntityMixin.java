@@ -62,25 +62,6 @@ public abstract class LivingEntityMixin extends Entity implements NearbySongAcce
     }
 
     @Redirect(
-            method = "baseTick",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setAir(I)V", ordinal = 2)
-    )
-    private void cancelAirIncrement(LivingEntity livingEntity, int air) {
-        // Aquatic creatures should not regenerate breath on land
-        if ((Object) this instanceof PlayerEntity player) {
-            LivingEntity identity = PlayerIdentity.getIdentity(player);
-
-            if (identity != null) {
-                if (Identity.isAquatic(identity)) {
-                    return;
-                }
-            }
-        }
-
-        this.setAir(this.getNextAirOnLand(this.getAir()));
-    }
-
-    @Redirect(
             method = "travel",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 0)
     )

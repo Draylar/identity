@@ -4,6 +4,7 @@
   "package": "draylar.identity.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "LivingEntityMixin",
     "WitherEntityMixin"
   ],
   "client": [
