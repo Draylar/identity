@@ -28,6 +28,15 @@ public class IdentityType<T extends LivingEntity> {
         VARIANT_BY_TYPE.put(EntityType.CAT, new CatTypeProvider());
         VARIANT_BY_TYPE.put(EntityType.SLIME, new SlimeTypeProvider());
         VARIANT_BY_TYPE.put(EntityType.FROG, new FrogTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.MOOSHROOM, new MooshroomTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.MAGMA_CUBE, new MagmaCubeTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.RABBIT, new RabbitTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.LLAMA, new LlamaTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.HORSE, new HorseTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.VILLAGER, new VillagerTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.ZOMBIE_VILLAGER, new ZombieVillagerTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.GOAT, new GoatTypeProvider());
+        VARIANT_BY_TYPE.put(EntityType.PANDA, new PandaTypeProvider());
     }
 
     public IdentityType(EntityType<T> type) {
