@@ -25,6 +25,7 @@ public abstract class TypeProvider<T extends LivingEntity> {
     public abstract Text modifyText(T entity, MutableText text);
 
     public final String formatTypePrefix(String prefix) {
-        return String.valueOf(prefix.charAt(0)).toUpperCase(Locale.ROOT) + prefix.substring(1);
+        String formattedPrefix = prefix.replace('_', ' ');
+        return String.valueOf(formattedPrefix.charAt(0)).toUpperCase(Locale.ROOT) + formattedPrefix.substring(1);
     }
 }
